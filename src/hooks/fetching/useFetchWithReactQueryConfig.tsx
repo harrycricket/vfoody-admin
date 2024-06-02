@@ -16,6 +16,7 @@ const useFetchWithReactQueryConfig = <Model extends APIModel>(
   return useQuery<FetchResponse<Model>, Error>({
     queryKey: [keyBase, requestConfig],
     queryFn: fetchFunction,
+    // keepPreviousData: true,
   });
 };
 
