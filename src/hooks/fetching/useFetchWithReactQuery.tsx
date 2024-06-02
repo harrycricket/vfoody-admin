@@ -3,7 +3,7 @@ import useFetchWithReactQueryConfig from './useFetchWithReactQueryConfig';
 import PagingRequestQuery from '@/types/queries/PagingRequestQuery';
 
 const useFetchWithReactQuery = <Model extends APIModel, Query extends PagingRequestQuery>(
-  keyBase: string,
+  keyBase: any[],
   apiService: APIService<Model>,
   requestQuery: Query,
 ) => {

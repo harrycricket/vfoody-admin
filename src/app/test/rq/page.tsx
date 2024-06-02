@@ -7,10 +7,11 @@ import { testApiService } from '@/services/api-services/api-service-instances';
 import TestModel from '@/types/models/TestModel';
 import useFetchWithReactQuery from '@/hooks/fetching/useFetchWithReactQuery';
 import PagingRequestQuery from '@/types/queries/PagingRequestQuery';
+import REACT_QUERY_CACHE_KEYS from '@/data/constants/react-query-cache-keys';
 
 const PageWithRQ: React.FC = () => {
   const { data, isLoading, error } = useFetchWithReactQuery<TestModel, PagingRequestQuery>(
-    'list',
+    REACT_QUERY_CACHE_KEYS.TEST,
     testApiService,
     {} as PagingRequestQuery,
   );
