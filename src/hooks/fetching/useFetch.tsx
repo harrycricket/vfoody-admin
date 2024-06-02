@@ -17,7 +17,6 @@ const useFetch = <M extends APIModel>(
 
   useEffect(
     () => {
-      const controller = new AbortController();
       setIsLoading(true);
 
       const { request, cancel } = service.getAll<FetchResponse<M>>(requestConfig);

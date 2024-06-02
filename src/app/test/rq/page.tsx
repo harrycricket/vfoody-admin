@@ -1,28 +1,24 @@
 'use client';
 import React from 'react';
-import TestLayout from './layout';
+import TestLayout from '../layout';
 import useFetchGeneric from '@/hooks/fetching/useFetchGeneric';
 import apiClient from '@/services/api-services/api-client';
 import { testApiService } from '@/services/api-services/api-service-instances';
 import TestModel from '@/types/models/TestModel';
-import Link from 'next/link';
+import useFetchWithReactQuery from '@/hooks/fetching/useFetchWithReactQuery';
 import PagingRequestQuery from '@/types/queries/PagingRequestQuery';
 
-const Page: React.FC = () => {
-  const { models, pageable, isLoading, error } = useFetchGeneric<TestModel, PagingRequestQuery>(
+const PageWithRQ: React.FC = () => {
+  const { data, isLoading, error } = useFetchWithReactQuery<TestModel, PagingRequestQuery>(
+    'list',
     testApiService,
     {} as PagingRequestQuery,
   );
-  console.log(models);
   return (
-    <TestLayout>
-      <h1>Page 1</h1>
-      <nav>
-        <Link href="/test/page1">Page 1</Link>
-        <Link href="/test/page2">Page 2</Link>
-      </nav>
+    <>
+      <h1>Page RQ</h1>
       <ul>
-        {models.map((model) => (
+        {data?.value?.items?.map((model) => (
           <li key={model.id}>
             <h2>{model.name}</h2>
             <p>{model.description}</p>
@@ -30,8 +26,8 @@ const Page: React.FC = () => {
           </li>
         ))}
       </ul>
-    </TestLayout>
+    </>
   );
 };
 
-export default Page;
+export default PageWithRQ;
