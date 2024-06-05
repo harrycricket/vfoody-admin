@@ -1,3 +1,4 @@
+import { ThemeSwitch } from '@/components/theme-switch';
 import { Button } from '@nextui-org/button';
 import { Tooltip } from '@nextui-org/react';
 import Image from 'next/image';
@@ -12,6 +13,7 @@ export default function Home() {
         </Tooltip>
         <Image src="/images/logo.png" alt="Logo" width={120} height={150} />
         <h1 className="text-4xl font-thin text-center mt-8">Welcome to VFoody</h1>
+        <ThemeSwitch />
       </div>
     </main>
   );
