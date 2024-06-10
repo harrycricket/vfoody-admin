@@ -39,16 +39,28 @@ const Login = () => {
       return;
     }
 
-    await apiClient
-      .post('customer/login', { email: email, password: password })
+    fetch('https://localhost:7253/api/v1/customer/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: 'duyduc@vfoody.com', password: '123456' }),
+    })
       .then((response) => {
-        // session handle
-        router.push('/dashboard');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
       })
-      .catch((err) => {
-        console.log(err);
-        setError('Wrong email or password');
+      .then((data) => {
+        console.log('Login successful:', data);
+        // Handle successful login here, e.g., redirect to dashboard
+      })
+      .catch((error) => {
+        console.log('Error during login:', error);
+        // Handle error here, e.g., show error message
       });
+
     // Check if email and password match the sample credentials
     if (await authService.login(email, password)) {
       // Redirect to dashboard if login is successful
