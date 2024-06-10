@@ -5,9 +5,9 @@ const authEndpoints = {
   register: 'customer/register',
 };
 const authService = {
-  login: (email: string, password: string) => {
-    return apiClient
-      .post('https://localhost:7253/api/v1/customer/login', { email: email, password: password })
+  login: async (email: string, password: string) => {
+    return await apiClient
+      .post(authEndpoints.login, { email: email, password: password })
       .then((response) => {
         // session handle
         return true;

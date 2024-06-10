@@ -40,7 +40,7 @@ const Login = () => {
     }
 
     await apiClient
-      .post('https://localhost:7253/api/v1/customer/login', { email: email, password: password })
+      .post('customer/login', { email: email, password: password })
       .then((response) => {
         // session handle
         router.push('/dashboard');
@@ -49,13 +49,13 @@ const Login = () => {
         console.log(err);
         setError('Wrong email or password');
       });
-    // // Check if email and password match the sample credentials
-    // if (authService.login(email, password)) {
-    //   // Redirect to dashboard if login is successful
-    // } else {
-    //   // Show error message if login fails
-    //   setError('Wrong email or password');
-    // }
+    // Check if email and password match the sample credentials
+    if (await authService.login(email, password)) {
+      // Redirect to dashboard if login is successful
+    } else {
+      // Show error message if login fails
+      setError('Wrong email or password');
+    }
   };
 
   return (
