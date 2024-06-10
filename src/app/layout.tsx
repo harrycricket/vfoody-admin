@@ -5,7 +5,7 @@ import './globals.css';
 import TanStackProvider from '@/configs/providers/TanStackProvider';
 // const inter = Inter({ subsets: ['vietnamese'] });
 const roboto = Roboto({ subsets: ['vietnamese'], weight: ['400'] });
-import { NextUiProvider } from '../configs/providers/NextUiProviders';
+import NextUiProvider from '../configs/providers/NextUiProvider';
 
 const inter = Inter({ subsets: ['vietnamese'] });
 
