@@ -18,6 +18,7 @@ const AdminLayout = ({
     <div
       className={`grid grid-cols-1 md:grid-cols-[auto,3fr] grid-rows-[auto,1fr] h-screen w-screen overflow-hidden bg-gray-10 ${barlow.className}`}
     >
+      {/* Sider Bar */}
       <div className="col-span-1 row-span-2">
         <SideBar activeContentIndex={activeContentIndex} />
       </div>
