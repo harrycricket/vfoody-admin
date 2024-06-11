@@ -1,15 +1,10 @@
 import PageableModel from '../models/PageableModel';
+import APICommonResponse from './APICommonResponse';
 export type FetchResponseValue<T> = PageableModel & {
   items: Array<T>;
 };
 
-type FetchResponse<T> = {
-  isSuccess: boolean;
-  isFailure: boolean;
-  error: {
-    code: '';
-    message: '';
-  };
+type FetchResponse<T> = APICommonResponse & {
   value: FetchResponseValue<T>;
 };
 

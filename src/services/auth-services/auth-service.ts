@@ -1,3 +1,4 @@
+import APICommonResponse from '@/types/responses/APICommonResponse';
 import apiClient from '../api-services/api-client';
 
 const authEndpoints = {
@@ -7,10 +8,14 @@ const authEndpoints = {
 const authService = {
   login: async (email: string, password: string) => {
     return await apiClient
-      .post(authEndpoints.login, { email: email, password: password })
+      .post<APICommonResponse>(authEndpoints.login, { email: email, password: password })
       .then((response) => {
-        // session handle
-        return true;
+        if (response.data.isSuccess) {
+          // session handle
+          return true;
+        } else {
+          return false;
+        }
       })
       .catch((err) => {
         console.log(err);

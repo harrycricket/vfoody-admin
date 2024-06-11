@@ -53,13 +53,15 @@ const Login = () => {
       <ThemeSwitch className="fixed right-6 bottom-6" />
       <Card className="w-[400px] p-4">
         <CardHeader className="flex gap-3 justify-center items-center">
-          <Image
-            alt="VFoody Logo"
-            height={24}
-            radius="sm"
-            src="./images/vfoody-logo-bg-light-gray.png"
-            width={24}
-          />
+          <div style={{ marginLeft: '-12px' }}>
+            <Image
+              alt="VFoody Logo"
+              height={24}
+              radius="sm"
+              src="./images/vfoody-logo-bg-light-gray.png"
+              width={24}
+            />
+          </div>
           <div className="flex flex-col">
             <h1 className="text-2xl font-medium">VFOODY</h1>
           </div>
