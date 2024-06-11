@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { ThemeSwitch } from '@/components/theme-switch';
+import { ThemeSwitch } from '@/components/common/theme-switch';
 import { Button, Card, CardBody, CardFooter, CardHeader, Image, Input } from '@nextui-org/react';
 import React, { useState } from 'react';
 import authService from '@/services/auth-services/auth-service';

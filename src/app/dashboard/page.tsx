@@ -1,8 +1,11 @@
+import AdminLayout from '@/components/layouts/AdminLayout';
 import React from 'react';
 
 const Dashboard = () => {
   return (
-    <div className="w-screen h-screen flex justify-center items-center">Welcome to Dashboard</div>
+    <AdminLayout>
+      <div className="flex justify-center items-center">Welcome to Dashboard</div>
+    </AdminLayout>
   );
 };
 
