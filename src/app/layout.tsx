@@ -4,7 +4,7 @@ import { Inter, Roboto } from 'next/font/google';
 import './globals.css';
 import TanStackProvider from '@/configs/providers/TanStackProvider';
 // const inter = Inter({ subsets: ['vietnamese'] });
-const roboto = Roboto({ subsets: ['vietnamese'], weight: ['400'] });
+const roboto = Roboto({ subsets: ['vietnamese'], weight: ['400', '500', '700', '900'] });
 import NextUiProvider from '../configs/providers/NextUiProvider';
 
 const inter = Inter({ subsets: ['vietnamese'] });
