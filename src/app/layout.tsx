@@ -1,8 +1,11 @@
 import clsx from 'clsx';
 import { Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Roboto } from 'next/font/google';
 import './globals.css';
-import { Providers } from './providers';
+import TanStackProvider from '@/configs/providers/TanStackProvider';
+// const inter = Inter({ subsets: ['vietnamese'] });
+const roboto = Roboto({ subsets: ['vietnamese'], weight: ['400'] });
+import NextUiProvider from '../configs/providers/NextUiProvider';
 
 const inter = Inter({ subsets: ['vietnamese'] });
 
@@ -13,13 +16,17 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html suppressHydrationWarning lang="en">
-      <body className={clsx('bg-background', inter.className)}>
-        <Providers themeProps={{ attribute: 'class', defaultTheme: 'dark', children }}>
-          {children}
-        </Providers>
+    <html lang="en">
+      <body className={roboto.className}>
+        <NextUiProvider themeProps={{ attribute: 'class', defaultTheme: 'dark', children }}>
+          <TanStackProvider>{children}</TanStackProvider>
+        </NextUiProvider>
       </body>
     </html>
   );
