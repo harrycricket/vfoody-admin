@@ -4,7 +4,6 @@ import { ThemeSwitch } from '@/components/theme-switch';
 import { Button, Card, CardBody, CardFooter, CardHeader, Image, Input } from '@nextui-org/react';
 import React, { useState } from 'react';
 import authService from '@/services/auth-services/auth-service';
-import apiClient from '@/services/api-services/api-client';
 
 const Login = () => {
   const router = useRouter();
@@ -39,31 +38,10 @@ const Login = () => {
       return;
     }
 
-    fetch('https://localhost:7253/api/v1/customer/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email: 'duyduc@vfoody.com', password: '123456' }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log('Login successful:', data);
-        // Handle successful login here, e.g., redirect to dashboard
-      })
-      .catch((error) => {
-        console.log('Error during login:', error);
-        // Handle error here, e.g., show error message
-      });
-
     // Check if email and password match the sample credentials
     if (await authService.login(email, password)) {
       // Redirect to dashboard if login is successful
+      router.push('/dashboard');
     } else {
       // Show error message if login fails
       setError('Wrong email or password');
