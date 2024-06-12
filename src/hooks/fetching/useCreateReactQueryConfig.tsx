@@ -1,7 +1,7 @@
 import { useMutation, UseMutationResult, useQueryClient } from '@tanstack/react-query';
-import { APIModel, APIService } from '@/services/api-services/api-service';
+import { APIEntityModel, APIService } from '@/services/api-services/api-service';
 
-const useCreateReactQueryConfig = <Model extends APIModel>(
+const useCreateReactQueryConfig = <Model extends APIEntityModel>(
   keyBaseOfList: any[],
   apiService: APIService<Model>,
   model: Model,

@@ -5,7 +5,7 @@ import useFetchGeneric from '@/hooks/fetching/useFetchGeneric';
 import apiClient from '@/services/api-services/api-client';
 import { testApiService } from '@/services/api-services/api-service-instances';
 import TestModel from '@/types/models/TestModel';
-import useFetchWithReactQuery from '@/hooks/fetching/useFetchWithReactQuery';
+import useFetchWithReactQuery from '@/hooks/fetching/useFetchWithRQ';
 import PagingRequestQuery from '@/types/queries/PagingRequestQuery';
 import REACT_QUERY_CACHE_KEYS from '@/data/constants/react-query-cache-keys';
 
