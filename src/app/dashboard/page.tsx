@@ -1,6 +1,5 @@
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import DashboardGrowthChart from '@/components/dashboard/DashboardGrowthChart';
 import DashboardOrderChart from '@/components/dashboard/DashboardOrderChart';
 import DashboardOverview from '@/components/dashboard/DashboardOverview';
 import AdminLayout from '@/components/layouts/AdminLayout';
@@ -8,6 +7,12 @@ import React from 'react';
 
 const DashboardRevenueChart = dynamic(
   () => import('../../components/dashboard/DashboardRevenueChart'),
+  {
+    ssr: false,
+  },
+);
+const DashboardGrowthChart = dynamic(
+  () => import('../../components/dashboard/DashboardGrowthChart'),
   {
     ssr: false,
   },
