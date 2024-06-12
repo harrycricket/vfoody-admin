@@ -66,7 +66,7 @@ const options: Props['options'] = {
   },
   yaxis: {
     title: {
-      text: 'Revenue (kVND)',
+      text: 'Millions VNDs',
       rotate: -90,
       offsetX: 0,
       offsetY: 0,
