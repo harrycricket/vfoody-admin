@@ -1,54 +1,47 @@
+'use client';
+import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
+import DashboardOverview from '@/components/dashboard/DashboardOverview';
 import AdminLayout from '@/components/layouts/AdminLayout';
 import React from 'react';
 
-const Dashboard = () => {
+const DashboardOrderChart = dynamic(
+  () => import('../../components/dashboard/DashboardOrderChart'),
+  {
+    ssr: false,
+  },
+);
+const DashboardRevenueChart = dynamic(
+  () => import('../../components/dashboard/DashboardRevenueChart'),
+  {
+    ssr: false,
+  },
+);
+const DashboardGrowthChart = dynamic(
+  () => import('../../components/dashboard/DashboardGrowthChart'),
+  {
+    ssr: false,
+  },
+);
+
+const Dashboard: NextPage = () => {
   return (
     <AdminLayout activeContentIndex={0}>
       <div className="pl-4 pr-4">
         <h2 className="text-xl">Dashboard</h2>
         <p>Hi Duy Đức. Welcome back to VFoody Admin.</p>
-        <div className="flex justify-center items-center">Welcome to Dashboard</div>
-        {/* Dashboard Stats */}
-        <div className="grid grid-cols-4 gap-4 mb-8">
-          <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
-            <div className="bg-green-100 p-4 rounded-full mr-4">
-              <i className="fas fa-wallet text-green-500 text-2xl"></i>
-            </div>
-            <div>
-              <p className="text-2xl font-bold">292M</p>
-              <p className="text-gray-500">Total Revenue</p>
-              <p className="text-green-500 text-sm">12% (30 days)</p>
-            </div>
+        <div className="grid grid-cols-2 gap-8 mt-3">
+          <div className="h-full flex flex-grow justify-stretch items-stretch">
+            <DashboardOverview />
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
-            <div className="bg-green-100 p-4 rounded-full mr-4">
-              <i className="fas fa-shopping-cart text-green-500 text-2xl"></i>
-            </div>
-            <div>
-              <p className="text-2xl font-bold">1.052</p>
-              <p className="text-gray-500">Total Orders</p>
-              <p className="text-green-500 text-sm">12% (30 days)</p>
-            </div>
+          <div className="h-full flex flex-grow justify-stretch items-stretch">
+            <DashboardOrderChart />
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
-            <div className="bg-green-100 p-4 rounded-full mr-4">
-              <i className="fas fa-users text-green-500 text-2xl"></i>
-            </div>
-            <div>
-              <p className="text-2xl font-bold">2.152</p>
-              <p className="text-gray-500">Total Users</p>
-              <p className="text-green-500 text-sm">12% (30 days)</p>
-            </div>
+          <div className="h-full flex flex-grow justify-stretch items-stretch">
+            <DashboardRevenueChart />
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
-            <div className="bg-green-100 p-4 rounded-full mr-4">
-              <i className="fas fa-chart-line text-green-500 text-2xl"></i>
-            </div>
-            <div>
-              <p className="text-2xl font-bold">43M</p>
-              <p className="text-gray-500">Total Profit</p>
-              <p className="text-green-500 text-sm">20% (30 days)</p>
-            </div>
+          <div className="h-full flex flex-grow justify-stretch items-stretch">
+            <DashboardGrowthChart />
           </div>
         </div>
       </div>

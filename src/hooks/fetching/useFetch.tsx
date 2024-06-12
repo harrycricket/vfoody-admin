@@ -1,10 +1,10 @@
 import { AxiosRequestConfig, CanceledError } from 'axios';
 import { useEffect, useState } from 'react';
-import { APIService, APIModel } from '@/services/api-services/api-service';
+import { APIService, APIEntityModel } from '@/services/api-services/api-service';
 import FetchResponse from '@/types/responses/FetchResponse';
 import PageableModel from '@/types/models/PageableModel';
 
-const useFetch = <M extends APIModel>(
+const useFetch = <M extends APIEntityModel>(
   service: APIService<M>,
   requestConfig?: AxiosRequestConfig,
   deps?: any[],

@@ -1,11 +1,11 @@
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import sessionService from '../session-service';
 
-export interface APIModel {
+export interface APIEntityModel {
   id: number | string;
 }
 
-export class APIService<T extends APIModel> {
+export class APIService<T extends APIEntityModel> {
   apiClient: AxiosInstance;
   endpoint: string;
 
@@ -67,7 +67,7 @@ export class APIService<T extends APIModel> {
   }
 }
 
-const createAPIService = <T extends APIModel>(apiClient: AxiosInstance, endpoint: string) =>
+const createAPIService = <T extends APIEntityModel>(apiClient: AxiosInstance, endpoint: string) =>
   new APIService<T>(apiClient, endpoint);
 
 export default createAPIService;

@@ -1,8 +1,8 @@
 import useFetch from './useFetch';
 import PagingRequestQuery from '@/types/queries/PagingRequestQuery';
-import { APIModel, APIService } from '@/services/api-services/api-service';
+import { APIEntityModel, APIService } from '@/services/api-services/api-service';
 
-const useFetchGeneric = <Model extends APIModel, Query extends PagingRequestQuery>(
+const useFetchGeneric = <Model extends APIEntityModel, Query extends PagingRequestQuery>(
   apiService: APIService<Model>,
   requestQuery: Query,
 ) => {

@@ -1,25 +1,19 @@
 import FetchResponse from '@/types/responses/FetchResponse';
-import { APIModel, APIService } from '@/services/api-services/api-service';
 import { useQuery } from '@tanstack/react-query';
 import { AxiosRequestConfig } from 'axios';
 import { useEffect, useRef } from 'react';
 
-const useFetchWithReactQueryConfig = <Model extends APIModel>(
+const useFetchWithRQConfigWithFetchFunction = <Response,>(
   keyBase: any[],
-  apiService: APIService<Model>,
+  fetchFunc: () => Promise<Response>,
   requestConfig?: AxiosRequestConfig,
   deps?: any[],
 ) => {
   const isFirstRender = useRef(true);
 
-  const fetchFunction = async (): Promise<any> => {
-    const { request, cancel } = apiService.getAll<FetchResponse<Model>>(requestConfig);
-    return request.then((response) => response.data);
-  };
-
-  const query = useQuery<FetchResponse<Model>, Error>({
+  const query = useQuery<Response, Error>({
     queryKey: keyBase,
-    queryFn: fetchFunction,
+    queryFn: fetchFunc,
     // keepPreviousData: true,
   });
 
@@ -36,4 +30,4 @@ const useFetchWithReactQueryConfig = <Model extends APIModel>(
   return query;
 };
 
-export default useFetchWithReactQueryConfig;
+export default useFetchWithRQConfigWithFetchFunction;
