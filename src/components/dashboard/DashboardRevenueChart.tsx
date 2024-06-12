@@ -5,11 +5,11 @@ import Chart, { Props } from 'react-apexcharts';
 const state: Props['series'] = [
   {
     name: '2023',
-    data: [31, 40, 28, 51, 42, 109, 100, 100, 102, 102, 111, 90],
+    data: [11, 32, 45, 32, 34, 52, 41, 31, 40, 28, 51, 42],
   },
   {
     name: '2024',
-    data: [11, 32, 45, 32, 34, 52, 41, 31, 40, 28, 51, 42],
+    data: [31, 40, 28, 51, 42, 80, 100, 90, 85, 80, 90, 87],
   },
 ];
 
@@ -29,7 +29,7 @@ const options: Props['options'] = {
     id: 'basic-bar',
     fontFamily: 'Inter, sans-serif',
     foreColor: 'var(--nextui-colors-accents9)',
-    stacked: true,
+    stacked: false,
     toolbar: {
       show: true,
     },
@@ -99,6 +99,7 @@ const options: Props['options'] = {
       colors: ['red'],
     },
   },
+  colors: ['#33FF57', '#008FFB'],
   // @ts-ignore
   markers: false,
 };
