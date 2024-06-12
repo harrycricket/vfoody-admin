@@ -1,4 +1,4 @@
-import { ThemeSwitch } from '@/components/theme-switch';
+import { ThemeSwitch } from '@/components/common/theme-switch';
 import { Button } from '@nextui-org/button';
 import { Tooltip } from '@nextui-org/react';
 import Image from 'next/image';
