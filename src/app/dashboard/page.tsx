@@ -1,11 +1,19 @@
+import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import DashboardGrowthChart from '@/components/dashboard/DashboardGrowthChart';
 import DashboardOrderChart from '@/components/dashboard/DashboardOrderChart';
 import DashboardOverview from '@/components/dashboard/DashboardOverview';
-import DashboardRevenueChart from '@/components/dashboard/DashboardRevenueChart';
 import AdminLayout from '@/components/layouts/AdminLayout';
 import React from 'react';
 
-const Dashboard = () => {
+const DashboardRevenueChart = dynamic(
+  () => import('../../components/dashboard/DashboardRevenueChart'),
+  {
+    ssr: false,
+  },
+);
+
+const Dashboard: NextPage = () => {
   return (
     <AdminLayout activeContentIndex={0}>
       <div className="pl-4 pr-4">
