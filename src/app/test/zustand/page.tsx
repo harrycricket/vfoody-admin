@@ -1,13 +1,5 @@
 'use client';
 import React from 'react';
-import TestLayout from '../layout';
-import useFetchGeneric from '@/hooks/fetching/useFetchGeneric';
-import apiClient from '@/services/api-services/api-client';
-import { testApiService } from '@/services/api-services/api-service-instances';
-import TestModel from '@/types/models/TestModel';
-import useFetchWithReactQuery from '@/hooks/fetching/useFetchWithReactQuery';
-import PagingRequestQuery from '@/types/queries/PagingRequestQuery';
-import REACT_QUERY_CACHE_KEYS from '@/data/constants/react-query-cache-keys';
 import useCounterState from '@/hooks/states/useCounterState';
 
 const Page: React.FC = () => {
