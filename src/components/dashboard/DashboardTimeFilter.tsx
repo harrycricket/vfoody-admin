@@ -1,4 +1,3 @@
-'use client';
 import React, { useRef, useState } from 'react';
 import Selector from '../common/Selector';
 import { CalendarDate, DateRangePicker } from '@nextui-org/react';

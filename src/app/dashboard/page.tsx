@@ -5,6 +5,7 @@ import DashboardOverview from '@/components/dashboard/DashboardOverview';
 import AdminLayout from '@/components/layouts/AdminLayout';
 import React from 'react';
 import DashboardTimeFilter from '@/components/dashboard/DashboardTimeFilter';
+import usePeriodTimeFilterState from '@/hooks/states/usePeriodTimeFilterQuery';
 
 const DashboardOrderChart = dynamic(
   () => import('../../components/dashboard/DashboardOrderChart'),
@@ -26,6 +27,9 @@ const DashboardGrowthChart = dynamic(
 );
 
 const Dashboard: NextPage = () => {
+  const { range } = usePeriodTimeFilterState();
+  console.log('Dashboard: NextPage : ', range);
+
   return (
     <AdminLayout activeContentIndex={0}>
       <div className="pl-4 pr-4">
