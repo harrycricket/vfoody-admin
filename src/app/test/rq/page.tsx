@@ -1,8 +1,5 @@
 'use client';
 import React from 'react';
-import TestLayout from '../layout';
-import useFetchGeneric from '@/hooks/fetching/useFetchGeneric';
-import apiClient from '@/services/api-services/api-client';
 import { testApiService } from '@/services/api-services/api-service-instances';
 import TestModel from '@/types/models/TestModel';
 import useFetchWithReactQuery from '@/hooks/fetching/useFetchWithRQ';
@@ -10,11 +7,14 @@ import PagingRequestQuery from '@/types/queries/PagingRequestQuery';
 import REACT_QUERY_CACHE_KEYS from '@/data/constants/react-query-cache-keys';
 
 const PageWithRQ: React.FC = () => {
-  const { data, isLoading, error } = useFetchWithReactQuery<TestModel, PagingRequestQuery>(
+  const fetch = useFetchWithReactQuery<TestModel, PagingRequestQuery>(
     REACT_QUERY_CACHE_KEYS.TEST,
     testApiService,
     {} as PagingRequestQuery,
   );
+  console.log(fetch);
+  const { data, isLoading, error } = fetch;
+  console.log(data);
   return (
     <>
       <h1>Page RQ</h1>

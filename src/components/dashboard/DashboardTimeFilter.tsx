@@ -1,9 +1,17 @@
 'use client';
+import dynamic from 'next/dynamic';
 import React, { useRef, useState } from 'react';
 import Selector from '../common/Selector';
-import { CalendarDate, DateRangePicker } from '@nextui-org/react';
+import { CalendarDate, DateValue, RangeValue } from '@nextui-org/react';
 import { parseDate } from '@internationalized/date';
 import usePeriodTimeFilterState from '@/hooks/states/usePeriodTimeFilterQuery';
+
+const DateRangePicker = dynamic(
+  () => import('@nextui-org/react').then((mod) => mod.DateRangePicker),
+  {
+    ssr: false,
+  },
+);
 
 const dateToDateValue = (date: Date): CalendarDate => {
   const year = date.getFullYear();
@@ -80,10 +88,9 @@ const DashboardTimeFilter = () => {
     }
 
     setSelected(choice);
-    console.log(range.dateFrom, range.dateTo);
   };
 
-  const onDateRangePickerChange = (range: { start: CalendarDate; end: CalendarDate }) => {
+  const onDateRangePickerChange = (range: RangeValue<DateValue>) => {
     if (range.start) {
       setDateFrom(new Date(range.start.toString()));
     }
