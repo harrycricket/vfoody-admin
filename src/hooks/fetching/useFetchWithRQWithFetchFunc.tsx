@@ -1,12 +1,9 @@
-import FetchResponse from '@/types/responses/FetchResponse';
 import { useQuery } from '@tanstack/react-query';
-import { AxiosRequestConfig } from 'axios';
 import { useEffect, useRef } from 'react';
 
-const useFetchWithRQConfigWithFetchFunction = <Response,>(
+const useFetchWithRQWithFetchFunc = <Response,>(
   keyBase: any[],
   fetchFunc: () => Promise<Response>,
-  requestConfig?: AxiosRequestConfig,
   deps?: any[],
 ) => {
   const isFirstRender = useRef(true);
@@ -27,7 +24,8 @@ const useFetchWithRQConfigWithFetchFunction = <Response,>(
     },
     deps ? [...deps] : [],
   );
+
   return query;
 };
 
-export default useFetchWithRQConfigWithFetchFunction;
+export default useFetchWithRQWithFetchFunc;

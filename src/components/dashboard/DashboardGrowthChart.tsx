@@ -1,7 +1,28 @@
 'use client';
+import REACT_QUERY_CACHE_KEYS from '@/data/constants/react-query-cache-keys';
+import useFetchWithRQWithFetchFunc from '@/hooks/fetching/useFetchWithRQWithFetchFunc';
+import usePeriodTimeFilterState from '@/hooks/states/usePeriodTimeFilterQuery';
+import apiClient from '@/services/api-services/api-client';
+import { DashboardOverviewAPIReponse } from '@/types/responses/DashboardResponse';
 import React from 'react';
 import Chart from 'react-apexcharts';
+const dashboardOverviewEndpoint =
+  'https://my-json-server.typicode.com/duckodei/vfoody-admin-sample-api/overview/';
 const DashboardGrowthChart = () => {
+  const { range } = usePeriodTimeFilterState();
+  const { data, isLoading, error } = useFetchWithRQWithFetchFunc(
+    REACT_QUERY_CACHE_KEYS.DASHBOARD_OVERVIEW,
+    (): Promise<DashboardOverviewAPIReponse> =>
+      apiClient
+        .get<DashboardOverviewAPIReponse>(dashboardOverviewEndpoint, {
+          params: { ...range },
+        })
+        .then((response) => response.data),
+    [range],
+  );
+  const totalRevenueRate = data ? data.value.totalRevenueRate : 0;
+  const totalOrderRate = data ? data.value.totalOrderRate : 0;
+  const totalUserRate = data ? data.value.totalUserRate : 0;
   return (
     <div className="bg-white p-6 rounded-lg shadow-md flex flex-col w-full">
       <h2 className="text-xl font-semibold mb-4">Growh Rate</h2>
@@ -29,12 +50,12 @@ const DashboardGrowthChart = () => {
                 },
               },
             }}
-            series={[62]}
+            series={[totalRevenueRate]}
             type="radialBar"
             height={240}
           />
           <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center">
-            <div className="text-blue-500 text-2xl font-bold">62%</div>
+            <div className="text-blue-500 text-2xl font-bold">{totalRevenueRate}%</div>
             <div className="text-gray-500 text-sm">Revenue Growth</div>
           </div>
         </div>
@@ -62,12 +83,12 @@ const DashboardGrowthChart = () => {
               },
               colors: ['#EAB308'],
             }}
-            series={[62]}
+            series={[totalOrderRate]}
             type="radialBar"
             height={240}
           />
           <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center">
-            <div className="text-yellow-500 text-2xl font-bold">81%</div>
+            <div className="text-yellow-500 text-2xl font-bold">{totalOrderRate}%</div>
             <div className="text-gray-500 text-sm">Total Order Growth</div>
           </div>
         </div>
@@ -95,12 +116,12 @@ const DashboardGrowthChart = () => {
               },
               colors: ['#22C55E'],
             }}
-            series={[62]}
+            series={[totalUserRate]}
             type="radialBar"
             height={240}
           />
           <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center">
-            <div className="text-green-500 text-2xl font-bold">22%</div>
+            <div className="text-green-500 text-2xl font-bold">{totalUserRate}%</div>
             <div className="text-gray-500 text-sm">User Growth</div>
           </div>
         </div>

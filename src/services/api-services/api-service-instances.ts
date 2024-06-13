@@ -3,7 +3,7 @@ import apiClient from './api-client';
 import createHttpService from './api-service';
 
 const endpoints = {
-  TEST: 'list',
+  TEST: 'https://my-json-server.typicode.com/duckodei/test-json-server/list/',
 };
 
 export const testApiService = createHttpService<TestModel>(apiClient, endpoints.TEST);
