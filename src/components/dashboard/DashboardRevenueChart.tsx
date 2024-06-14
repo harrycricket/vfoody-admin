@@ -29,13 +29,13 @@ const DashboardRevenueChart = () => {
     {
       name: lastYear,
       data: data?.value?.twelveMonthRevenue
-        ? data?.value?.twelveMonthRevenue.map((item) => item.lastYear)
+        ? data?.value?.twelveMonthRevenue.map((item) => item.lastYear / 1_000_000)
         : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     },
     {
       name: thisYear,
       data: data?.value?.twelveMonthRevenue
-        ? data?.value?.twelveMonthRevenue.map((item) => item.thisYear)
+        ? data?.value?.twelveMonthRevenue.map((item) => item.thisYear / 1_000_000)
         : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     },
   ];
