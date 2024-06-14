@@ -2,7 +2,6 @@ import { Avatar, Input } from '@nextui-org/react';
 import React from 'react';
 import { FiSettings } from 'react-icons/fi';
 import { IoIosSearch, IoMdNotificationsOutline } from 'react-icons/io';
-import { IoSettingsOutline } from 'react-icons/io5';
 
 const Header = () => {
   return (
@@ -17,7 +16,7 @@ const Header = () => {
       </div>
       <div className="flex gap-4 justify-between items-center px-4">
         <div className="flex justify-center items-center h-[32px] w-[32px] bg-vfoody-primary bg-opacity-10 rounded-lg">
-          <FiSettings size={21} className="text-vfoody-primary" />
+          <FiSettings size={21} className="text-primary" />
         </div>
 
         <div className="flex justify-center items-center h-[32px] w-[32px] bg-blue-100 rounded-lg">

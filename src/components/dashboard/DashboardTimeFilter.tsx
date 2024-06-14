@@ -103,20 +103,20 @@ const DashboardTimeFilter = () => {
     <div className="grid grid-cols-2 gap-1">
       <Selector
         width="180px"
-        label="Filter by time"
+        label="Lọc theo thời gian"
         onSelect={(id) => onChangeDashboardTimeFilterQuery(parseInt(id.toString()))}
         selected={selected}
         options={[
-          { key: 1, label: 'All of time' },
-          { key: 2, label: 'Last 7 days' },
-          { key: 3, label: 'Last 30 days' },
-          { key: 4, label: 'This year' },
-          { key: 5, label: 'Last year' },
-          { key: 6, label: 'Specific period' },
+          { key: 1, label: 'Tất cả' },
+          { key: 2, label: '7 ngày trước' },
+          { key: 3, label: '30 ngày trước' },
+          { key: 4, label: 'Trong năm này' },
+          { key: 5, label: 'Trong năm trước' },
+          { key: 6, label: 'Tự chọn' },
         ]}
       />
       <DateRangePicker
-        label="Duration"
+        label="Chọn ngày"
         variant="bordered"
         isDisabled={isSpecificTimeFilter}
         value={{

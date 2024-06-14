@@ -6,6 +6,7 @@ import AdminLayout from '@/components/layouts/AdminLayout';
 import React from 'react';
 import DashboardTimeFilter from '@/components/dashboard/DashboardTimeFilter';
 import usePeriodTimeFilterState from '@/hooks/states/usePeriodTimeFilterQuery';
+import Header from '@/components/common/Header';
 
 const DashboardOrderChart = dynamic(
   () => import('../../components/dashboard/DashboardOrderChart'),
@@ -32,7 +33,11 @@ const Dashboard: NextPage = () => {
 
   return (
     <AdminLayout activeContentIndex={0}>
-      <div className="pl-4 pr-4">
+      {/* Header */}
+      <div className="md:col-span-1 py-4">
+        <Header />
+      </div>
+      <div className="px-4">
         <div className="flex justify-between items-center">
           <div>
             <h2 className="text-xl">Dashboard</h2>
