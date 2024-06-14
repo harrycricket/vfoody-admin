@@ -4,9 +4,9 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '', // provide host name here
+        hostname: 'v-foody.s3.ap-southeast-1.amazonaws.com', // provide host name here
         port: '',
-        pathname: '/**', // detailed path can be specified here for more security
+        pathname: '/image/**', // detailed path can be specified here for more security
       },
     ],
   },

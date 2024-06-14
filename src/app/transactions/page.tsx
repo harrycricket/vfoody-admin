@@ -1,9 +1,9 @@
 'use client';
-import { columns, rows, status, transactions } from '@/data';
+import DashboardTimeFilter from '@/components/dashboard/DashboardTimeFilter';
+import AdminLayout from '@/components/layouts/AdminLayout';
+import { columns, status, transactions } from '@/data';
 import { capitalize, formatDate, formatNumberVND } from '@/util';
 import {
-  BreadcrumbItem,
-  Breadcrumbs,
   Button,
   Chip,
   ChipProps,
@@ -22,15 +22,14 @@ import {
   TableHeader,
   TableRow,
 } from '@nextui-org/react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useCallback, useMemo, useState } from 'react';
-import { BsThreeDotsVertical } from 'react-icons/bs';
 import { CiSearch } from 'react-icons/ci';
 import { IoChevronDown } from 'react-icons/io5';
 
 const statusColorMap: Record<string, ChipProps['color']> = {
   'Đã hoàn thành': 'success',
-  'Đang thực hiện': 'secondary',
+  'Đang thực hiện': 'warning',
   'Đã hủy': 'danger',
 };
 
@@ -56,6 +55,7 @@ export default function Transactions() {
     column: 'age',
     direction: 'ascending',
   });
+  const router = useRouter();
 
   const [page, setPage] = useState(1);
 
@@ -220,18 +220,10 @@ export default function Transactions() {
   const topContent = useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
-        <>
-          <Breadcrumbs size="lg">
-            <BreadcrumbItem>
-              <Link href={'dashboard'}>Thống kê tổng quan</Link>
-            </BreadcrumbItem>
-            <BreadcrumbItem>Quản lý giao dịch</BreadcrumbItem>
-          </Breadcrumbs>
-        </>
         <div className="flex justify-between gap-3 items-end">
           <Input
             isClearable
-            className="w-full sm:max-w-[44%]"
+            className="w-full sm:max-w-[80%]"
             placeholder="Tìm kiếm theo tên cửa hàng..."
             startContent={<CiSearch />}
             value={filterValue}
@@ -334,37 +326,49 @@ export default function Transactions() {
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
   return (
-    <Table
-      isHeaderSticky
-      bottomContent={bottomContent}
-      bottomContentPlacement="outside"
-      selectedKeys={selectedKeys}
-      selectionMode="single"
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === 'actions' ? 'center' : 'start'}
-            allowsSorting={column.sortable}
-            className="text-center"
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody emptyContent={'No transactions found'} items={sortedItems}>
-        {(item) => (
-          <TableRow key={item.id} className="text-center">
-            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <AdminLayout activeContentIndex={1}>
+      <div className="px-4 py-2">
+        <h1 className="text-3xl font-bold text-primary">Quản lý giao dịch</h1>
+        <div className="flex items-center justify-end mb-4">
+          <DashboardTimeFilter />
+        </div>
+        <Table
+          isHeaderSticky
+          bottomContent={bottomContent}
+          bottomContentPlacement="outside"
+          selectedKeys={selectedKeys}
+          selectionMode="single"
+          sortDescriptor={sortDescriptor}
+          topContent={topContent}
+          topContentPlacement="outside"
+          onSelectionChange={setSelectedKeys}
+          onSortChange={setSortDescriptor}
+        >
+          <TableHeader columns={headerColumns}>
+            {(column) => (
+              <TableColumn
+                key={column.uid}
+                align={column.uid === 'actions' ? 'center' : 'start'}
+                allowsSorting={column.sortable}
+                className="text-center"
+              >
+                {column.name}
+              </TableColumn>
+            )}
+          </TableHeader>
+          <TableBody emptyContent={'No transactions found'} items={sortedItems}>
+            {(item) => (
+              <TableRow
+                key={item.id}
+                className="text-center cursor-pointer"
+                onClick={() => router.push('/transactions/order-details')}
+              >
+                {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </AdminLayout>
   );
 }

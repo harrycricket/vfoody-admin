@@ -15,7 +15,7 @@ const config: Config = {
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       colors: {
-        'vfoody-primary': '#DF4830',
+        'primary': '#DF4830',
       },
     },
   },
