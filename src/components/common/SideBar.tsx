@@ -2,11 +2,11 @@ import Link from 'next/link';
 import React from 'react';
 import { IconType } from 'react-icons';
 import { FaRegUser } from 'react-icons/fa';
-import { GoHome } from 'react-icons/go';
+import { MdOutlineDashboard } from 'react-icons/md';
 import { GrTransaction } from 'react-icons/gr';
 import { IoMdGift } from 'react-icons/io';
 import { IoSettingsOutline } from 'react-icons/io5';
-import { MdOutlineShoppingBag } from 'react-icons/md';
+import { BsShop } from 'react-icons/bs';
 
 interface SibarItemProps {
   title: string;
@@ -15,18 +15,17 @@ interface SibarItemProps {
   link: string;
 }
 export const SibarItemPropsList: Array<SibarItemProps> = [
-  { title: 'Dashboard', icon: GoHome, iconSize: 19, link: '/dashboard' },
-  { title: 'Transactions', icon: GrTransaction, iconSize: 18, link: '/transactions' },
-  { title: 'Top shops', icon: MdOutlineShoppingBag, iconSize: 19, link: '/top-shops' },
-  { title: 'Top customers', icon: FaRegUser, iconSize: 17, link: '/top-customers' },
-  { title: 'Promotions', icon: IoMdGift, iconSize: 19, link: '/promotions' },
-  { title: 'Settings', icon: IoSettingsOutline, iconSize: 19, link: '/settings' },
+  { title: 'Thống kê tổng quan', icon: MdOutlineDashboard, iconSize: 19, link: '/dashboard' },
+  { title: 'Quản lý giao dịch', icon: GrTransaction, iconSize: 18, link: '/transactions' },
+  { title: 'Quản lý cửa hàng', icon: BsShop, iconSize: 19, link: '/top-shops' },
+  { title: 'Quản lý tài khoản', icon: FaRegUser, iconSize: 17, link: '/accounts' },
+  { title: 'Quản lý khuyến mãi', icon: IoMdGift, iconSize: 19, link: '/promotions' },
+  { title: 'Cài đặt', icon: IoSettingsOutline, iconSize: 19, link: '/settings' },
 ];
 const SideBar = ({ activeContentIndex }: { activeContentIndex: number }) => {
   return (
-    <aside className="bg-white shadow-md p-12 pt-5 h-screen flex-col items-center min-w-[240px]">
-      <div className="text-4xl font-bold text-vfoody-primary mb-1">VFoody.</div>
-      <div className="text-zinc-400 text-lg font-medium">Admin Dashboard</div>
+    <aside className="bg-white shadow-md p-6 pt-5 h-screen flex-col items-center min-w-[240px]">
+      <div className="text-4xl font-bold text-vfoody-primary text-center">VFoody</div>
       <nav className="pt-12">
         <ul className="space-y-6">
           {SibarItemPropsList.map((item, index) => (
