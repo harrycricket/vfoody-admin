@@ -2,7 +2,7 @@
 import BreadcrumbsCustom from '@/components/common/Breadcrumbs';
 import AdminLayout from '@/components/layouts/AdminLayout';
 import { transactionDetail } from '@/data';
-import { formatCurrency, formatTimeToSeconds } from '@/util';
+import { formatCurrency, formatPhoneNumber, formatTimeToSeconds } from '@/util';
 import { Divider } from '@nextui-org/react';
 import Image from 'next/image';
 
@@ -16,8 +16,8 @@ export default function OrderDetails() {
           rootName="Quản lý giao dịch"
           childrenName="Đơn hàng chi tiết"
         />
-        <div className="p-8 bg-slate-100 rounded-lg">
-          <div className="flex flex-col mr-auto w-1/2 text-lg mb-2">
+        <div className="px-8 py-4 bg-slate-100 rounded-lg">
+          <div className="flex flex-col mr-auto w-1/2 text-lg mb-4">
             <div className="flex justify-between">
               <p>Tên khách hàng:</p>
               <p className="font-semibold">{transactionDetail.customerName}</p>
@@ -25,6 +25,10 @@ export default function OrderDetails() {
             <div className="flex justify-between">
               <p>Địa chỉ nhận hàng:</p>
               <p className="font-semibold">{transactionDetail.address}</p>
+            </div>
+            <div className="flex justify-between">
+              <p>Số điện thoại người nhận:</p>
+              <p className="font-semibold">{formatPhoneNumber(transactionDetail.phoneNumber)}</p>
             </div>
             <div className="flex justify-between">
               <p>Tên cửa hàng:</p>
@@ -83,7 +87,7 @@ export default function OrderDetails() {
           <div className="flex flex-col ml-auto w-1/3 pt-4 text-lg">
             <div className="flex justify-between">
               <p>Tổng giá trị đơn hàng:</p>
-              <p className="text-primary font-bold">
+              <p className="text-primary font-bold text-2xl">
                 {formatCurrency(transactionDetail.totalPrice)}
               </p>
             </div>

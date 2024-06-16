@@ -13,16 +13,16 @@ const Login = () => {
 
   const handleLogin = async () => {
     if (email.length == 0 && password.length == 0) {
-      setError('Please enter email & password');
+      setError('Vui lòng nhập email và mật khẩu');
       return;
     }
     if (email.length == 0) {
-      setError('Please enter email');
+      setError('Vui lòng nhập email');
       return;
     }
 
     if (password.length == 0) {
-      setError('Please enter password');
+      setError('Vui lòng nhập mật khẩu');
       return;
     }
 
@@ -44,7 +44,7 @@ const Login = () => {
       router.push('/dashboard');
     } else {
       // Show error message if login fails
-      setError('Wrong email or password');
+      setError('Email hoặc mật khẩu không đúng');
     }
   };
 
@@ -54,13 +54,7 @@ const Login = () => {
       <Card className="w-[400px] p-4">
         <CardHeader className="flex gap-3 justify-center items-center">
           <div style={{ marginLeft: '-12px' }}>
-            <Image
-              alt="VFoody Logo"
-              height={24}
-              radius="sm"
-              src="./images/vfoody-logo-bg-light-gray.png"
-              width={24}
-            />
+            <Image alt="VFoody Logo" height={32} radius="sm" src="./images/logo.png" width={32} />
           </div>
           <div className="flex flex-col">
             <h1 className="text-2xl font-medium">VFOODY</h1>
@@ -70,8 +64,8 @@ const Login = () => {
           <Input
             type="email"
             label="Email"
-            placeholder="Enter your email"
-            errorMessage="Please enter email format"
+            placeholder="Vui lòng nhập email"
+            errorMessage="Email không hợp lệ"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
@@ -80,10 +74,10 @@ const Login = () => {
           />
           <Input
             type="password"
-            label="Password"
-            placeholder="Enter your password"
+            label="Mật khẩu"
+            placeholder="Vui lòng nhập mật khẩu"
             minLength={6}
-            errorMessage="Enter password at least 6 characters"
+            errorMessage="Mật khẩu phải có ít nhất 6 ký tự"
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
@@ -98,7 +92,7 @@ const Login = () => {
             className="w-[400px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg mt-2"
             onClick={handleLogin}
           >
-            Sign In
+            Đăng nhập
           </Button>
         </CardFooter>
       </Card>

@@ -309,6 +309,7 @@ const transactionDetail = {
   id: 1,
   shopName: 'Tiệm ăn tháng năm',
   customerName: 'Huỳnh Văn Phướt',
+  phoneNumber: '0372548189',
   status: 'Đã hoàn thành',
   orderDate: '2024-06-14 10:23:22',
   address: 'Tòa S202 Vinhomes Grand Park',
