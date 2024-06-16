@@ -28,13 +28,14 @@ export const SibarItemPropsList: Array<SibarItemProps> = [
 const SideBar = ({ activeContentIndex }: { activeContentIndex: number }) => {
   const router = useRouter();
   const handleLogout = () => {
+    // handle logout here
     router.push('/login');
   };
 
   return (
     <aside className="bg-white shadow-md p-6 pt-5 h-screen flex-col items-center min-w-[240px]">
       <div className="text-4xl font-bold text-primary text-center">VFoody</div>
-      <nav className="pt-12">
+      <nav className="pt-6">
         <ul className="space-y-6">
           {SibarItemPropsList.map((item, index) => (
             <li key={index}>
