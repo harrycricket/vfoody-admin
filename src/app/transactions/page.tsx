@@ -1,8 +1,8 @@
 'use client';
 import DashboardTimeFilter from '@/components/dashboard/DashboardTimeFilter';
 import AdminLayout from '@/components/layouts/AdminLayout';
-import { columns, status, transactions } from '@/data';
-import { capitalize, formatDate, formatNumberVND } from '@/util';
+import { transactionColumns, transactions, transactionStatus } from '@/data';
+import { capitalize, formatCurrency, formatTimeToSeconds } from '@/util';
 import {
   Button,
   Chip,
@@ -40,7 +40,6 @@ const INITIAL_VISIBLE_COLUMNS = [
   'status',
   'orderDate',
   'price',
-  // 'actions',
 ];
 
 type Transactions = (typeof transactions)[0];
@@ -62,9 +61,9 @@ export default function Transactions() {
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = useMemo(() => {
-    if (visibleColumns === 'all') return columns;
+    if (visibleColumns === 'all') return transactionColumns;
 
-    return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
+    return transactionColumns.filter((column) => Array.from(visibleColumns).includes(column.uid));
   }, [visibleColumns]);
 
   const filteredItems = useMemo(() => {
@@ -82,7 +81,7 @@ export default function Transactions() {
     }
 
     return filteredTransactions;
-  }, [transactions, filterValue, statusFilter]);
+  }, [transactions, filterValue, statusFilter, hasSearchFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -107,16 +106,6 @@ export default function Transactions() {
     const cellValue = transaction[columnKey as keyof Transactions];
 
     switch (columnKey) {
-      // case 'name':
-      //   return (
-      //     <User
-      //       avatarProps={{ radius: 'lg', src: transaction.avatar }}
-      //       description={transaction.email}
-      //       name={cellValue}
-      //     >
-      //       {transaction.email}
-      //     </User>
-      //   );
       case 'shopName':
         return (
           <div className="flex flex-col">
@@ -132,25 +121,25 @@ export default function Transactions() {
       case 'orderDate':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{formatDate(transaction.orderDate)}</p>
+            <p className="text-bold text-small">{formatTimeToSeconds(transaction.orderDate)}</p>
           </div>
         );
       case 'price':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{formatNumberVND(transaction.price)}</p>
+            <p className="text-bold text-small">{formatCurrency(transaction.price)}</p>
           </div>
         );
       case 'orderDate':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{transaction.orderDate}</p>
+            <p className="text-bold text-small">{transaction.orderDate}</p>
           </div>
         );
       case 'orderId':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{transaction.orderId}</p>
+            <p className="text-bold text-small">{transaction.orderId}</p>
           </div>
         );
       case 'status':
@@ -164,23 +153,6 @@ export default function Transactions() {
             {transaction.status}
           </Chip>
         );
-      // case 'actions':
-      //   return (
-      //     <div className="relative flex justify-end items-center gap-2">
-      //       <Dropdown>
-      //         <DropdownTrigger>
-      //           <Button isIconOnly size="sm" variant="light">
-      //             <BsThreeDotsVertical className="text-default-300" />
-      //           </Button>
-      //         </DropdownTrigger>
-      //         <DropdownMenu>
-      //           <DropdownItem>View</DropdownItem>
-      //           <DropdownItem>Edit</DropdownItem>
-      //           <DropdownItem>Delete</DropdownItem>
-      //         </DropdownMenu>
-      //       </Dropdown>
-      //     </div>
-      //   );
       default:
         return cellValue;
     }
@@ -245,9 +217,9 @@ export default function Transactions() {
                 selectionMode="multiple"
                 onSelectionChange={setStatusFilter}
               >
-                {status.map((item) => (
+                {transactionStatus.map((item) => (
                   <DropdownItem key={item.uid} className="capitalize">
-                    {capitalize(item.name)}
+                    {item.name}
                   </DropdownItem>
                 ))}
               </DropdownMenu>
@@ -266,9 +238,9 @@ export default function Transactions() {
                 selectionMode="multiple"
                 onSelectionChange={setVisibleColumns}
               >
-                {columns.map((column) => (
+                {transactionColumns.map((column) => (
                   <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
+                    {column.name}
                   </DropdownItem>
                 ))}
               </DropdownMenu>
@@ -299,6 +271,7 @@ export default function Transactions() {
     onRowsPerPageChange,
     transactions.length,
     hasSearchFilter,
+    onClear,
   ]);
 
   const bottomContent = useMemo(() => {

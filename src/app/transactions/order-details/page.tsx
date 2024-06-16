@@ -2,7 +2,7 @@
 import BreadcrumbsCustom from '@/components/common/Breadcrumbs';
 import AdminLayout from '@/components/layouts/AdminLayout';
 import { transactionDetail } from '@/data';
-import { formatDate, formatNumberVND } from '@/util';
+import { formatCurrency, formatTimeToSeconds } from '@/util';
 import { Divider } from '@nextui-org/react';
 import Image from 'next/image';
 
@@ -32,7 +32,7 @@ export default function OrderDetails() {
             </div>
             <div className="flex justify-between">
               <p>Thời gian giao dịch:</p>
-              <p className="font-semibold">{formatDate(transactionDetail.orderDate)}</p>
+              <p className="font-semibold">{formatTimeToSeconds(transactionDetail.orderDate)}</p>
             </div>
           </div>
           <Divider />
@@ -51,7 +51,7 @@ export default function OrderDetails() {
                         <div key={q.id}>
                           {q.price ? (
                             <p>
-                              {q.name}: {q.value} (+{formatNumberVND(q.price)})
+                              {q.name}: {q.value} (+{formatCurrency(q.price)})
                             </p>
                           ) : (
                             <p>
@@ -64,7 +64,7 @@ export default function OrderDetails() {
                   </div>
                 </div>
                 <strong className="text-primary text-xl">
-                  {formatNumberVND(
+                  {formatCurrency(
                     product.price * product.quantity +
                       product?.question?.reduce(
                         (acc, q) => (q.price ? acc + q.price * product.quantity : acc),
@@ -84,7 +84,7 @@ export default function OrderDetails() {
             <div className="flex justify-between">
               <p>Tổng giá trị đơn hàng:</p>
               <p className="text-primary font-bold">
-                {formatNumberVND(transactionDetail.totalPrice)}
+                {formatCurrency(transactionDetail.totalPrice)}
               </p>
             </div>
             <div className="flex justify-between">
