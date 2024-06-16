@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 import { IconType } from 'react-icons';
 import { FaRegUser } from 'react-icons/fa';
-import { MdOutlineDashboard } from 'react-icons/md';
+import { MdOutlineDashboard, MdOutlineReportProblem } from 'react-icons/md';
 import { GrTransaction } from 'react-icons/gr';
 import { IoMdGift } from 'react-icons/io';
 import { IoSettingsOutline } from 'react-icons/io5';
@@ -22,6 +22,7 @@ export const SibarItemPropsList: Array<SibarItemProps> = [
   { title: 'Quản lý cửa hàng', icon: BsShop, iconSize: 19, link: '/shops' },
   { title: 'Quản lý tài khoản', icon: FaRegUser, iconSize: 17, link: '/accounts' },
   { title: 'Quản lý khuyến mãi', icon: IoMdGift, iconSize: 19, link: '/promotions' },
+  { title: 'Quản lý báo cáo', icon: MdOutlineReportProblem, iconSize: 19, link: '/reports' },
   { title: 'Cài đặt', icon: IoSettingsOutline, iconSize: 19, link: '/settings' },
 ];
 const SideBar = ({ activeContentIndex }: { activeContentIndex: number }) => {
