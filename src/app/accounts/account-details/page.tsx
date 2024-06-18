@@ -5,15 +5,15 @@ import { formatCurrency, formatPhoneNumber, formatTimeToSeconds } from '@/util';
 import { Divider } from '@nextui-org/react';
 import Image from 'next/image';
 
-export default function OrderDetails() {
+export default function AccountDetails() {
   return (
-    <AdminLayout activeContentIndex={1}>
+    <AdminLayout activeContentIndex={3}>
       <div className="px-4 py-2">
-        <h1 className="text-3xl font-bold text-primary">Đơn hàng chi tiết</h1>
+        <h1 className="text-3xl font-bold text-primary">Thông tin tài khoản</h1>
         <BreadcrumbsCustom
-          root="transactions"
-          rootName="Quản lý giao dịch"
-          childrenName="Đơn hàng chi tiết"
+          root="accounts"
+          rootName="Quản lý tài khoản"
+          childrenName="Thông tin tài khoản"
         />
         <div className="px-8 py-4 bg-slate-100 rounded-lg">
           <div className="flex flex-col mr-auto w-1/2 text-lg mb-4">

@@ -637,16 +637,116 @@ const shopInformation = {
     'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716574021822-6d18826e-c040-491e-8462-141dfb7b5783',
   bannerUrl:
     'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716574070180-9fe6423d-0fbb-433b-a35f-54a40df7c9c1',
-  description: 'Tiệm ăn tháng năm là một trong những tiệm ăn nổi tiếng tại Vinhomes Grand Park',
+  description:
+    'Tiệm ăn tháng năm là một trong những tiệm ăn nổi tiếng tại Vinhomes Grand Park chuyên phục vụ các món ăn giá rẻ chất lượng và các loại nước uống đa dạng',
   phoneNumber: '0912345670',
-  totalOrder: 100,
+  email: 'phuothuynhfptk16@gmail.com',
+  totalOrder: 1234,
   totalProduct: 50,
-  totalRating: 100,
+  totalRating: 1001,
   star: 4.8,
   status: 'Đang hoạt động',
   registerDate: '2024-01-14 10:23:22',
   address: 'Tòa S703 Vinhomes Grand Park',
   revenue: 10000000,
+  products: [
+    {
+      id: 1,
+      name: 'Phở gà',
+      des: 'Món phở gà thơm ngon',
+      price: 45000,
+      image:
+        'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716572943501-2b4a8028-27e2-44cf-8691-10de31c750cf',
+    },
+    {
+      id: 2,
+      name: 'Bánh Mì Thịt Nướng',
+      des: 'Bánh mì thơm ngon, thịt nướng tươi',
+      price: 30000,
+      image:
+        'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716573036213-30976207-9743-4c17-b8d3-9ad53f9bc05d',
+    },
+    {
+      id: 3,
+      name: 'Cà Phê Sữa Đá',
+      des: 'Cà phê sữa đá mát lạnh',
+      price: 25000,
+      image:
+        'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716573145625-f56c72dd-9c2a-404f-8b9b-238ecee008ab',
+    },
+    {
+      id: 4,
+      name: 'Gỏi Cuốn',
+      des: 'Gỏi cuốn tươi ngon',
+      price: 35000,
+      image:
+        'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716573222065-3dfc243d-5e6e-44c3-89b3-f115de0bd411',
+    },
+    {
+      id: 5,
+      name: 'Nước Chanh',
+      des: 'Nước chanh mát lạnh',
+      price: 20000,
+      image:
+        'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716573336608-02b81f10-0f34-4ad0-a0f9-759ab5cc8601',
+    },
+    {
+      id: 6,
+      name: 'Bún Chả',
+      des: 'Bún chả thơm ngon',
+      price: 50000,
+      image:
+        'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716573601283-9fb9570b-a1b2-4375-bce2-a73318b1dd8e',
+    },
+    {
+      id: 7,
+      name: 'Trà Đào',
+      des: 'Trà đào mát lạnh',
+      price: 18000,
+      image:
+        'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716573664139-7e9af081-9759-4c1a-b19a-302095c18dff',
+    },
+    {
+      id: 8,
+      name: 'Bánh Xèo',
+      des: 'Bánh xèo giòn tan',
+      price: 40000,
+      image:
+        'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716573753102-971c5a69-ef96-4916-865c-96d70b356e81',
+    },
+    {
+      id: 9,
+      name: 'Soda',
+      des: 'Soda ngọt lạnh',
+      price: 22000,
+      image:
+        'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716573840577-3d73b3cd-ebbf-456a-9e92-e83ff7b0b15d',
+    },
+    {
+      id: 10,
+      name: 'Cơm Gà',
+      des: 'Cơm gà hấp dẫn',
+      price: 45000,
+      image:
+        'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716573911665-347d615c-5259-4c1e-840e-19da4eaf47d4',
+    },
+    {
+      id: 11,
+      name: 'Soda',
+      des: 'Soda ngọt lạnh',
+      price: 22000,
+      image:
+        'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716573840577-3d73b3cd-ebbf-456a-9e92-e83ff7b0b15d',
+    },
+    {
+      id: 12,
+      name: 'Cơm Gà',
+      des: 'Cơm gà hấp dẫn',
+      price: 45000,
+      image:
+        'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716573911665-347d615c-5259-4c1e-840e-19da4eaf47d4',
+    },
+  ],
 };
 
 // Manage accounts
@@ -831,6 +931,19 @@ const accountInformation = {
   address: 'Tòa S703 Vinhomes Grand Park',
 };
 
+const productDetail = {
+  id: 1,
+  shopName: 'Tiệm ăn tháng năm',
+  name: 'Phở gà',
+  des: 'Món phở gà thơm ngon',
+  price: 45000,
+  createdDate: '2024-05-21 21:07:55',
+  totalOrder: 100,
+  status: 'Đang bán',
+  image:
+    'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716572943501-2b4a8028-27e2-44cf-8691-10de31c750cf',
+};
+
 export {
   transactionColumns,
   transactionStatus,
@@ -845,4 +958,5 @@ export {
   accountStatus,
   accountType,
   accountInformation,
+  productDetail,
 };

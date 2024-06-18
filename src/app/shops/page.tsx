@@ -12,6 +12,7 @@ import {
   DropdownTrigger,
   User,
 } from '@nextui-org/react';
+import { useRouter } from 'next/navigation';
 import React, { useCallback } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
@@ -32,11 +33,12 @@ const INITIAL_VISIBLE_COLUMNS = [
 
 type Shops = (typeof shops)[0];
 
-const handleClick = () => {
-  alert('Shops clicked');
-};
-
 export default function Shops() {
+  const router = useRouter();
+  const handleClick = () => {
+    router.push('/shops/shop-details');
+  };
+
   const renderCell = useCallback((shop: Shops, columnKey: React.Key) => {
     const cellValue = shop[columnKey as keyof Shops];
 

@@ -3,6 +3,7 @@ import TableCustom from '@/components/common/TableCustom';
 import { transactionColumns, transactions, transactionStatus } from '@/data';
 import { formatCurrency, formatTimeToSeconds } from '@/util';
 import { Chip, ChipProps } from '@nextui-org/react';
+import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 
 const INITIAL_VISIBLE_COLUMNS = [
@@ -22,11 +23,12 @@ const statusColorMap: Record<string, ChipProps['color']> = {
 
 type Transactions = (typeof transactions)[0];
 
-const handleClick = () => {
-  alert('Transactions clicked');
-};
-
 export default function Transactions() {
+  const router = useRouter();
+  const handleClick = () => {
+    router.push('/transactions/order-details');
+  };
+
   const renderCell = useCallback((transaction: Transactions, columnKey: React.Key) => {
     const cellValue = transaction[columnKey as keyof Transactions];
 
