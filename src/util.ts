@@ -41,7 +41,7 @@ export const formatNumber = (value: number | string) => {
     value = 0;
   }
 
-  return value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return value.toLocaleString('en-US');
 };
 
 export const formatPhoneNumber = (phone: string) => {
