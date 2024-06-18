@@ -944,6 +944,19 @@ const productDetail = {
     'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716572943501-2b4a8028-27e2-44cf-8691-10de31c750cf',
 };
 
+const accountDetail = {
+  id: 1,
+  accountId: 1,
+  accountName: 'Huỳnh Văn Phướt',
+  avatarUrl:
+    'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1717665106663-d519af0b-897f-4c92-b776-f628060e4926',
+  email: 'phuothvfptu@gmail.com',
+  phoneNumber: '0372485570',
+  status: 'Đang hoạt động',
+  accountType: 'Khách hàng',
+  registerDate: '2024-01-14 10:23:22',
+};
+
 export {
   transactionColumns,
   transactionStatus,
@@ -959,4 +972,5 @@ export {
   accountType,
   accountInformation,
   productDetail,
+  accountDetail,
 };
