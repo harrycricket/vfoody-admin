@@ -16,7 +16,7 @@ export default function ProductDetails() {
           extraName="Thông tin cửa hàng"
           childrenName="Thông tin sản phẩm"
         />
-        <div className="px-8 py-4 bg-slate-100 rounded-lg flex gap-4">
+        <div className="p-4 bg-slate-100 rounded-lg flex gap-4">
           <Image
             src={productDetail.image}
             width={180}
