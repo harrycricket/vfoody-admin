@@ -12,6 +12,7 @@ import {
   DropdownTrigger,
   User,
 } from '@nextui-org/react';
+import { useRouter } from 'next/navigation';
 import React, { useCallback } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
@@ -24,11 +25,12 @@ const INITIAL_VISIBLE_COLUMNS = ['accountName', 'status', 'accountType', 'regist
 
 type Accounts = (typeof accounts)[0];
 
-const handleClick = () => {
-  alert('Accounts clicked');
-};
-
 export default function Accounts() {
+  const router = useRouter();
+  const handleClick = () => {
+    router.push('/accounts/account-details');
+  };
+
   const renderCell = useCallback((account: Accounts, columnKey: React.Key) => {
     const cellValue = account[columnKey as keyof Accounts];
 
