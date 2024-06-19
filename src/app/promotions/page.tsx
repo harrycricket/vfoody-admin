@@ -108,7 +108,7 @@ const PromotionPage: NextPage = () => {
 
   return (
     <TableCommonCustom
-      indexPage={5}
+      indexPage={4}
       title="Promotions"
       initColumns={['id', 'bannerUrl', 'title', 'startDate', 'endDate', 'status', 'numberOfUsed']}
       placeHolderSearch="Tìm kiếm khuyến mãi..."
