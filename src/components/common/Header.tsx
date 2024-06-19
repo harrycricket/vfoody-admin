@@ -1,4 +1,4 @@
-import { Avatar, Input } from '@nextui-org/react';
+import { Avatar, Badge, Input } from '@nextui-org/react';
 import React from 'react';
 import { FiSettings } from 'react-icons/fi';
 import { IoIosSearch, IoMdNotificationsOutline } from 'react-icons/io';
@@ -20,7 +20,9 @@ const Header = () => {
         </div>
 
         <div className="flex justify-center items-center h-[32px] w-[32px] bg-blue-100 rounded-lg">
-          <IoMdNotificationsOutline size={24} className="text-blue-600" />
+          <Badge content="5" color="primary">
+            <IoMdNotificationsOutline size={24} className="text-blue-600" />
+          </Badge>
         </div>
       </div>
       <div className="flex gap-1 justify-between items-center self-stretch my-auto text-base text-gray-700">

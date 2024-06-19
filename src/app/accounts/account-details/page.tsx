@@ -17,12 +17,12 @@ export default function AccountDetails() {
         <div className="p-4 bg-slate-100 rounded-lg flex gap-4">
           <Image
             src={accountDetail.avatarUrl}
-            width={180}
-            height={180}
-            alt="image product"
+            width={200}
+            height={200}
+            alt="image account"
             loading="lazy"
             quality={100}
-            className="rounded-lg"
+            className="rounded-lg w-44 h-44 object-cover"
           />
           <div className="flex flex-col text-lg justify-center">
             <p>
