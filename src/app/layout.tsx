@@ -1,13 +1,20 @@
-import clsx from 'clsx';
-import { Viewport } from 'next';
-import { Inter, Roboto } from 'next/font/google';
-import './globals.css';
 import TanStackProvider from '@/configs/providers/TanStackProvider';
-// const inter = Inter({ subsets: ['vietnamese'] });
-const roboto = Roboto({ subsets: ['vietnamese'], weight: ['400', '500', '700', '900'] });
+import { Metadata, Viewport } from 'next';
+import { Roboto } from 'next/font/google';
 import NextUiProvider from '../configs/providers/NextUiProvider';
+import './globals.css';
+const roboto = Roboto({ subsets: ['vietnamese'], weight: ['400', '500', '700', '900'] });
 
-const inter = Inter({ subsets: ['vietnamese'] });
+export const metadata: Metadata = {
+  title: {
+    default: 'VFoody',
+    template: '%s - VFoody',
+  },
+  description: 'VFoody - The best food delivery service in Vinhomes.',
+  icons: {
+    icon: '/images/logo.png',
+  },
+};
 
 export const viewport: Viewport = {
   themeColor: [
