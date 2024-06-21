@@ -1,7 +1,7 @@
 import BreadcrumbsCustom from '@/components/common/Breadcrumbs';
 import AdminLayout from '@/components/layouts/AdminLayout';
 import { accountDetail } from '@/data';
-import { formatCurrency, formatDate } from '@/util';
+import { formatCurrency, formatDate, formatPhoneNumber } from '@/util';
 import Image from 'next/image';
 
 export default function AccountDetails() {
@@ -32,7 +32,7 @@ export default function AccountDetails() {
               Email: <strong>{accountDetail.email}</strong>
             </p>
             <p>
-              Số điện thoại: <strong>{accountDetail.phoneNumber}</strong>
+              Số điện thoại: <strong>{formatPhoneNumber(accountDetail.phoneNumber)}</strong>
             </p>
             <p>
               Loại người dùng: <strong>{formatCurrency(accountDetail.accountType)}</strong>

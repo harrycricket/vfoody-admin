@@ -1,4 +1,4 @@
-import { shops } from '@/data';
+import Shop from '@/types/shops/Shop';
 import { formatCurrency, formatDate, formatNumber, formatPhoneNumber } from '@/util';
 import {
   Button,
@@ -23,13 +23,12 @@ export const statusColorMap: Record<string, ChipProps['color']> = {
 export const INITIAL_VISIBLE_COLUMNS = [
   'shopName',
   'shopOwnerName',
-  'revenue',
+  'balance',
   'status',
-  'registerDate',
+  'createdDate',
   'actions',
 ];
 
-export type Shops = (typeof shops)[0];
 export default function RenderCell() {
   const router = useRouter();
   const handleClick = () => {
@@ -44,8 +43,12 @@ export default function RenderCell() {
     alert('Unbanned shop');
   };
 
-  return useCallback((shop: Shops, columnKey: React.Key) => {
-    const cellValue = shop[columnKey as keyof Shops];
+  const handleApprove = () => {
+    alert('Approved shop');
+  };
+
+  return useCallback((shop: Shop, columnKey: React.Key) => {
+    const cellValue = shop[columnKey as keyof Shop];
 
     switch (columnKey) {
       case 'shopName':
@@ -76,10 +79,10 @@ export default function RenderCell() {
             <p className="text-bold text-small ">{formatNumber(shop.totalProduct)}</p>
           </div>
         );
-      case 'registerDate':
+      case 'createdDate':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small ">{formatDate(shop.registerDate)}</p>
+            <p className="text-bold text-small ">{formatDate(shop.createdDate)}</p>
           </div>
         );
       case 'phoneNumber':
@@ -88,23 +91,41 @@ export default function RenderCell() {
             <p className="text-bold text-small ">{formatPhoneNumber(shop.phoneNumber)}</p>
           </div>
         );
-      case 'revenue':
+      case 'balance':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small">{formatCurrency(shop.revenue)}</p>
+            <p className="text-bold text-small">{formatCurrency(shop.balance)}</p>
           </div>
         );
-      case 'shopId':
+      case 'id':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small">{shop.shopId}</p>
+            <p className="text-bold text-small">{shop.id}</p>
           </div>
         );
       case 'status':
         return (
-          <Chip className="capitalize" color={statusColorMap[shop.status]} size="sm" variant="flat">
-            {shop.status}
-          </Chip>
+          <>
+            {shop.status !== 'Đã phê duyệt' ? (
+              <Chip
+                className="capitalize"
+                color={statusColorMap[shop.status]}
+                size="sm"
+                variant="flat"
+              >
+                {shop.status}
+              </Chip>
+            ) : (
+              <Chip
+                className="capitalize"
+                color={statusColorMap[shop.active]}
+                size="sm"
+                variant="flat"
+              >
+                {shop.active}
+              </Chip>
+            )}
+          </>
         );
       case 'actions':
         return (
@@ -117,7 +138,9 @@ export default function RenderCell() {
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem onClick={() => handleClick()}>Xem chi tiết</DropdownItem>
-                {shop.status === 'Đã bị cấm' ? (
+                {shop.status === 'Chưa phê duyệt' ? (
+                  <DropdownItem onClick={() => handleApprove()}>Duyệt</DropdownItem>
+                ) : shop.status === 'Đã bị cấm' ? (
                   <DropdownItem onClick={() => handleUnban()}>Bỏ cấm</DropdownItem>
                 ) : (
                   <DropdownItem onClick={() => handleBan()}>Cấm</DropdownItem>
