@@ -1,23 +1,38 @@
 'use client';
 import { NextPage } from 'next';
 import TableCommonCustom, { TableCustomFilter } from '@/components/common/TableCommonCustom';
-import { promotionApplyTypes, promotionColumns, promotionStatuses, promotions } from '@/data';
-import {
-  Avatar,
-  Button,
-  Chip,
-  ChipProps,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  User,
-} from '@nextui-org/react';
-import { ReactNode, useCallback } from 'react';
+import { promotionApplyTypes, promotionColumns, promotionStatuses } from '@/data';
+import { Avatar, Selection } from '@nextui-org/react';
+import { ReactNode, useCallback, useState } from 'react';
 import PlatformPromotionModel from '@/types/models/PlatformPromotionModel';
-import { formatDate } from '@/services/util-services/TimeFormatService';
+import { formatDate, formatDateString } from '@/services/util-services/TimeFormatService';
+import useFetchWithReactQuery from '@/hooks/fetching/useFetchWithRQ';
+import PlatformPromotionQuery from '@/types/queries/PlatformPromotionQuery';
+import REACT_QUERY_CACHE_KEYS from '@/data/constants/react-query-cache-keys';
+import { platfromPromotionApiService } from '@/services/api-services/api-service-instances';
+import PageableModel from '@/types/models/PageableModel';
+import PagingRequestQuery from '@/types/queries/PagingRequestQuery';
 
 const PromotionPage: NextPage = () => {
+  const [statuses, setStatuses] = useState<Selection>('all');
+  const [applyTypes, setApplyTypes] = useState<Selection>('all');
+  const [query, setQuery] = useState<PlatformPromotionQuery>({
+    pageIndex: 1,
+    pageSize: 4,
+    status: 0,
+    applyType: 0,
+    title: '',
+    description: '',
+  } as PlatformPromotionQuery);
+  const {
+    data: promotions,
+    isLoading,
+    error,
+  } = useFetchWithReactQuery<PlatformPromotionModel, PlatformPromotionQuery>(
+    REACT_QUERY_CACHE_KEYS.PROMOTION_PLATFROM,
+    platfromPromotionApiService,
+    query,
+  );
   const statusFilterOptions = [{ key: 0, desc: 'Tất cả' }].concat(
     promotionStatuses.map((item) => ({ key: item.key, desc: item.label })),
   );
@@ -25,9 +40,15 @@ const PromotionPage: NextPage = () => {
   const statusFilter = {
     label: 'Trạng thái',
     mappingField: 'status',
+    selectionMode: 1,
     options: statusFilterOptions,
-    selectedValue: 0,
-    handleFunc: (value: number) => console.log('Filter selected status: ', value),
+    selectedValues: statuses,
+    handleFunc: (values: Selection) => {
+      let value = Array.from(values).map((val) => parseInt(val.toString()))[0];
+      setStatuses(values);
+      setQuery({ ...query, status: value });
+      console.log('Filter selected status: ', value);
+    },
   } as TableCustomFilter;
 
   const applyTypeFilterOptions = [{ key: 0, desc: 'Tất cả' }].concat(
@@ -37,9 +58,15 @@ const PromotionPage: NextPage = () => {
   const applyTypeFilter = {
     label: 'Loại áp dụng',
     mappingField: 'applyType',
+    selectionMode: 1,
     options: applyTypeFilterOptions,
-    selectedValue: 0,
-    handleFunc: (value: number) => console.log('Filter selected apply type: ', value),
+    selectedValues: applyTypes,
+    handleFunc: (values: Selection) => {
+      let value = Array.from(values).map((val) => parseInt(val.toString()))[0];
+      setApplyTypes(values);
+      setQuery({ ...query, status: value });
+      console.log('Filter selected status: ', value);
+    },
   } as TableCustomFilter;
 
   const renderCell = useCallback(
@@ -62,13 +89,13 @@ const PromotionPage: NextPage = () => {
         case 'startDate':
           return (
             <div className="flex flex-col">
-              <p className="text-bold text-small">{formatDate(promotion.startDate)}</p>
+              <p className="text-bold text-small">{formatDateString(promotion.startDate)}</p>
             </div>
           );
         case 'endDate':
           return (
             <div className="flex flex-col">
-              <p className="text-bold text-small">{formatDate(promotion.endDate)}</p>
+              <p className="text-bold text-small">{formatDateString(promotion.endDate)}</p>
             </div>
           );
         case 'status':
@@ -109,15 +136,21 @@ const PromotionPage: NextPage = () => {
   return (
     <TableCommonCustom
       indexPage={4}
-      title="Promotions"
+      title="Chương trình khuyến mãi"
+      description="Danh sách chương trình khuyến mãi và ưu đãi của nền tảng"
       initColumns={['id', 'bannerUrl', 'title', 'startDate', 'endDate', 'status', 'numberOfUsed']}
+      searchHandler={(value: string) => {
+        setQuery({ ...query, title: value, description: value });
+      }}
       placeHolderSearch="Tìm kiếm khuyến mãi..."
-      dataName="chương trình khuyến mãi của nền tảng"
-      arrayData={promotions}
+      arrayData={promotions?.value?.items ?? []}
       arrayDataColumns={promotionColumns}
-      searchFields={['title']}
+      pagination={promotions?.value as PageableModel}
+      goToPage={(index: number) => setQuery({ ...query, pageIndex: index })}
+      setPageSize={(size: number) => setQuery({ ...query, pageSize: size })}
       filters={[statusFilter, applyTypeFilter]}
       renderCell={renderCell}
+      onReset={() => setQuery({} as PlatformPromotionQuery)}
     />
   );
 };

@@ -11,6 +11,7 @@ export enum PlatformPromotionStatus {
 export default interface PlatformPromotionModel {
   id: number;
   title: string;
+  description: string;
   bannerUrl: string;
   amountRate: number;
   minimumOrderValue: number;
@@ -18,8 +19,8 @@ export default interface PlatformPromotionModel {
   amountValue: number;
   applyType: number;
   status: number;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   usageLimit: number;
   numberOfUsed: number;
 }
