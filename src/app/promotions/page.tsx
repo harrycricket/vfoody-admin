@@ -4,7 +4,9 @@ import TableCommonCustom, { TableCustomFilter } from '@/components/common/TableC
 import { promotionApplyTypes, promotionColumns, promotionStatuses } from '@/data';
 import { Avatar, Selection } from '@nextui-org/react';
 import { ReactNode, useCallback, useState } from 'react';
-import PlatformPromotionModel from '@/types/models/PlatformPromotionModel';
+import PlatformPromotionModel, {
+  PlatformPromotionType,
+} from '@/types/models/PlatformPromotionModel';
 import { formatDate, formatDateString } from '@/services/util-services/TimeFormatService';
 import useFetchWithReactQuery from '@/hooks/fetching/useFetchWithRQ';
 import PlatformPromotionQuery from '@/types/queries/PlatformPromotionQuery';
@@ -12,10 +14,11 @@ import REACT_QUERY_CACHE_KEYS from '@/data/constants/react-query-cache-keys';
 import { platfromPromotionApiService } from '@/services/api-services/api-service-instances';
 import PageableModel from '@/types/models/PageableModel';
 import PagingRequestQuery from '@/types/queries/PagingRequestQuery';
+import numberFormatUtilService from '@/services/util-services/NumberFormatUtilService';
 
 const PromotionPage: NextPage = () => {
-  const [statuses, setStatuses] = useState<Selection>('all');
-  const [applyTypes, setApplyTypes] = useState<Selection>('all');
+  const [statuses, setStatuses] = useState<Selection>(new Set([0]));
+  const [applyTypes, setApplyTypes] = useState<Selection>(new Set([0]));
   const [query, setQuery] = useState<PlatformPromotionQuery>({
     pageIndex: 1,
     pageSize: 4,
@@ -98,6 +101,25 @@ const PromotionPage: NextPage = () => {
               <p className="text-bold text-small">{formatDateString(promotion.endDate)}</p>
             </div>
           );
+        case 'applyType':
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small">
+                {promotion.applyType === PlatformPromotionType.AmountApply ? 'Giá trị' : 'Tỉ lệ'}
+              </p>
+            </div>
+          );
+        case 'amountValue':
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small">
+                {promotion.applyType == PlatformPromotionType.AmountApply
+                  ? numberFormatUtilService.formatNumberWithDotEach3digits(promotion.amountValue) +
+                    ' đ'
+                  : promotion.amountRate + '%'}
+              </p>
+            </div>
+          );
         case 'status':
           return (
             <div className="flex flex-col ">
@@ -138,9 +160,19 @@ const PromotionPage: NextPage = () => {
       indexPage={4}
       title="Chương trình khuyến mãi"
       description="Danh sách chương trình khuyến mãi và ưu đãi của nền tảng"
-      initColumns={['id', 'bannerUrl', 'title', 'startDate', 'endDate', 'status', 'numberOfUsed']}
+      initColumns={[
+        'id',
+        'bannerUrl',
+        'title',
+        'startDate',
+        'endDate',
+        'applyType',
+        'amountValue',
+        'status',
+        'numberOfUsed',
+      ]}
       searchHandler={(value: string) => {
-        setQuery({ ...query, title: value, description: value });
+        setQuery({ ...query, title: value });
       }}
       placeHolderSearch="Tìm kiếm khuyến mãi..."
       arrayData={promotions?.value?.items ?? []}
