@@ -1,4 +1,4 @@
-import { accounts } from '@/data';
+import Account from '@/types/accounts/Account';
 import { formatDate, formatPhoneNumber } from '@/util';
 import {
   Button,
@@ -14,20 +14,13 @@ import { useRouter } from 'next/navigation';
 import React, { useCallback } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
-export const INITIAL_VISIBLE_COLUMNS = [
-  'accountName',
-  'status',
-  'accountType',
-  'registerDate',
-  'actions',
-];
+export const INITIAL_VISIBLE_COLUMNS = ['fullName', 'status', 'role', 'createdDate', 'actions'];
 
 export const statusColorMap: Record<string, ChipProps['color']> = {
   'Đang hoạt động': 'success',
   'Đã bị cấm': 'danger',
 };
 
-export type Accounts = (typeof accounts)[0];
 export const RenderCell = () => {
   const router = useRouter();
   const handleClick = () => {
@@ -42,18 +35,18 @@ export const RenderCell = () => {
     alert('Unbanned account');
   };
 
-  return useCallback((account: Accounts, columnKey: React.Key) => {
-    const cellValue = account[columnKey as keyof Accounts];
+  return useCallback((account: Account, columnKey: React.Key) => {
+    const cellValue = account[columnKey as keyof Account];
 
     switch (columnKey) {
-      case 'accountName':
+      case 'fullName':
         return (
           <User
             avatarProps={{ radius: 'full', src: account.avatarUrl }}
-            name={account.accountName}
+            name={account.fullName}
             className="flex justify-start font-semibold"
           >
-            {account.accountName}
+            {account.fullName}
           </User>
         );
       case 'email':
@@ -68,22 +61,22 @@ export const RenderCell = () => {
             <p className="text-bold text-small">{formatPhoneNumber(account.phoneNumber)}</p>
           </div>
         );
-      case 'registerDate':
+      case 'createdDate':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small">{formatDate(account.registerDate)}</p>
+            <p className="text-bold text-small">{formatDate(account.createdDate)}</p>
           </div>
         );
-      case 'accountId':
+      case 'id':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small">{account.accountId}</p>
+            <p className="text-bold text-small">{account.id}</p>
           </div>
         );
-      case 'accountType':
+      case 'role':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{account.accountType}</p>
+            <p className="text-bold text-small capitalize">{account.role}</p>
           </div>
         );
       case 'status':
@@ -106,14 +99,20 @@ export const RenderCell = () => {
                   <BsThreeDotsVertical className="text-black" />
                 </Button>
               </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem onClick={() => handleClick()}>Xem chi tiết</DropdownItem>
-                {account.status === 'Đã bị cấm' ? (
-                  <DropdownItem onClick={() => handleUnban()}>Bỏ cấm</DropdownItem>
-                ) : (
-                  <DropdownItem onClick={() => handleBan()}>Cấm</DropdownItem>
-                )}
-              </DropdownMenu>
+              {account.status === 'Chưa xác thực' ? (
+                <DropdownMenu>
+                  <DropdownItem onClick={() => handleClick()}>Xem chi tiết</DropdownItem>
+                </DropdownMenu>
+              ) : (
+                <DropdownMenu>
+                  <DropdownItem onClick={() => handleClick()}>Xem chi tiết</DropdownItem>
+                  {account.status === 'Đã bị cấm' ? (
+                    <DropdownItem onClick={() => handleUnban()}>Bỏ cấm</DropdownItem>
+                  ) : (
+                    <DropdownItem onClick={() => handleBan()}>Cấm</DropdownItem>
+                  )}
+                </DropdownMenu>
+              )}
             </Dropdown>
           </div>
         );

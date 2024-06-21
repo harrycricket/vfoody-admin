@@ -1,14 +1,32 @@
 'use client';
 import { INITIAL_VISIBLE_COLUMNS, RenderCell, statusColorMap } from '@/app/accounts/renderCell';
 import TableCustom from '@/components/common/TableCustom';
-import { accountColumns, accounts, accountStatus, accountType } from '@/data';
+import { accountColumns, accountStatus, accountType } from '@/data';
+import apiClient from '@/services/api-services/api-client';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function Accounts() {
+  const [accounts, setAccounts] = useState<any[]>([]);
   const router = useRouter();
   const handleClick = () => {
     router.push('/accounts/account-details');
   };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const responseData = await apiClient.get('admin/account/all');
+        if (responseData.data.isSuccess) {
+          setAccounts(responseData.data?.value?.items);
+        } else {
+          throw new Error(responseData.data.error.message);
+        }
+      } catch (error) {
+        console.log('>>> error', error);
+      }
+    })();
+  }, []);
 
   return (
     <TableCustom
