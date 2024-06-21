@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import TableCommonCustom, { TableCustomFilter } from '@/components/common/TableCommonCustom';
 import { promotionApplyTypes, promotionColumns, promotionStatuses } from '@/data';
 import { Avatar, Selection } from '@nextui-org/react';
-import { ReactNode, useCallback, useState } from 'react';
+import { ReactNode, useCallback, useRef, useState } from 'react';
 import PlatformPromotionModel, {
   PlatformPromotionType,
 } from '@/types/models/PlatformPromotionModel';
@@ -15,8 +15,11 @@ import { platfromPromotionApiService } from '@/services/api-services/api-service
 import PageableModel from '@/types/models/PageableModel';
 import PagingRequestQuery from '@/types/queries/PagingRequestQuery';
 import numberFormatUtilService from '@/services/util-services/NumberFormatUtilService';
+import usePeriodTimeFilterState from '@/hooks/states/usePeriodTimeFilterQuery';
 
 const PromotionPage: NextPage = () => {
+  const { range } = usePeriodTimeFilterState();
+  const isFirstRender = useRef(true);
   const [statuses, setStatuses] = useState<Selection>(new Set([0]));
   const [applyTypes, setApplyTypes] = useState<Selection>(new Set([0]));
   const [query, setQuery] = useState<PlatformPromotionQuery>({
@@ -26,16 +29,25 @@ const PromotionPage: NextPage = () => {
     applyType: 0,
     title: '',
     description: '',
+    ...range,
   } as PlatformPromotionQuery);
   const {
     data: promotions,
     isLoading,
     error,
+    refetch,
   } = useFetchWithReactQuery<PlatformPromotionModel, PlatformPromotionQuery>(
     REACT_QUERY_CACHE_KEYS.PROMOTION_PLATFROM,
     platfromPromotionApiService,
     query,
   );
+
+  if (isFirstRender.current) {
+    isFirstRender.current = false;
+  } else {
+    refetch();
+  }
+
   const statusFilterOptions = [{ key: 0, desc: 'Tất cả' }].concat(
     promotionStatuses.map((item) => ({ key: item.key, desc: item.label })),
   );
@@ -49,7 +61,7 @@ const PromotionPage: NextPage = () => {
     handleFunc: (values: Selection) => {
       let value = Array.from(values).map((val) => parseInt(val.toString()))[0];
       setStatuses(values);
-      setQuery({ ...query, status: value });
+      setQuery({ ...query, status: value, ...range });
       console.log('Filter selected status: ', value);
     },
   } as TableCustomFilter;
@@ -67,7 +79,7 @@ const PromotionPage: NextPage = () => {
     handleFunc: (values: Selection) => {
       let value = Array.from(values).map((val) => parseInt(val.toString()))[0];
       setApplyTypes(values);
-      setQuery({ ...query, status: value });
+      setQuery({ ...query, status: value, ...range });
       console.log('Filter selected status: ', value);
     },
   } as TableCustomFilter;

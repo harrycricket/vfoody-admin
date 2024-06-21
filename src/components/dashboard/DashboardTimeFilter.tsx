@@ -108,8 +108,8 @@ const DashboardTimeFilter = () => {
         selected={selected}
         options={[
           { key: 1, label: 'Tất cả' },
-          { key: 2, label: '7 ngày trước' },
-          { key: 3, label: '30 ngày trước' },
+          { key: 2, label: '7 ngày gần nhất' },
+          { key: 3, label: '30 ngày gần nhất' },
           { key: 4, label: 'Trong năm này' },
           { key: 5, label: 'Trong năm trước' },
           { key: 6, label: 'Tự chọn' },
