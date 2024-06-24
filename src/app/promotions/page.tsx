@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import TableCommonCustom, { TableCustomFilter } from '@/components/common/TableCommonCustom';
 import { promotionApplyTypes, promotionColumns, promotionStatuses } from '@/data';
 import { Avatar, Selection } from '@nextui-org/react';
-import { ReactNode, useCallback, useRef, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import PlatformPromotionModel, {
   PlatformPromotionType,
 } from '@/types/models/PlatformPromotionModel';
@@ -29,8 +29,10 @@ const PromotionPage: NextPage = () => {
     applyType: 0,
     title: '',
     description: '',
-    ...range,
+    dateFrom: range.dateFrom,
+    dateTo: range.dateTo,
   } as PlatformPromotionQuery);
+
   const {
     data: promotions,
     isLoading,
@@ -42,11 +44,13 @@ const PromotionPage: NextPage = () => {
     query,
   );
 
-  if (isFirstRender.current) {
-    isFirstRender.current = false;
-  } else {
-    refetch();
-  }
+  useEffect(() => {
+    setQuery((prevQuery) => ({
+      ...prevQuery,
+      dateFrom: range.dateFrom,
+      dateTo: range.dateTo,
+    }));
+  }, [range]);
 
   const statusFilterOptions = [{ key: 0, desc: 'Tất cả' }].concat(
     promotionStatuses.map((item) => ({ key: item.key, desc: item.label })),
