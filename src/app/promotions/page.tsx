@@ -20,8 +20,8 @@ import usePeriodTimeFilterState from '@/hooks/states/usePeriodTimeFilterQuery';
 const PromotionPage: NextPage = () => {
   const { range } = usePeriodTimeFilterState();
   const isFirstRender = useRef(true);
-  const [statuses, setStatuses] = useState<Selection>(new Set([0]));
-  const [applyTypes, setApplyTypes] = useState<Selection>(new Set([0]));
+  const [statuses, setStatuses] = useState<Selection>(new Set(['0']));
+  const [applyTypes, setApplyTypes] = useState<Selection>(new Set(['0']));
   const [query, setQuery] = useState<PlatformPromotionQuery>({
     pageIndex: 1,
     pageSize: 4,
