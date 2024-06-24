@@ -1,28 +1,28 @@
 'use client';
 import { NextPage } from 'next';
 import TableCommonCustom, { TableCustomFilter } from '@/components/common/TableCommonCustom';
-import { promotionApplyTypes, promotionColumns, promotionStatuses } from '@/data';
 import { Avatar, Selection } from '@nextui-org/react';
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
-import PlatformPromotionModel, {
-  PlatformPromotionType,
-} from '@/types/models/PlatformPromotionModel';
+import PromotionModel, {
+  PromotionApplyType,
+  promotionApplyTypes,
+  promotionTableColumns,
+  promotionStatuses,
+} from '@/types/models/PromotionModel';
 import { formatDate, formatDateString } from '@/services/util-services/TimeFormatService';
 import useFetchWithReactQuery from '@/hooks/fetching/useFetchWithRQ';
-import PlatformPromotionQuery from '@/types/queries/PlatformPromotionQuery';
+import PromotionQuery from '@/types/queries/PromotionQuery';
 import REACT_QUERY_CACHE_KEYS from '@/data/constants/react-query-cache-keys';
-import { platfromPromotionApiService } from '@/services/api-services/api-service-instances';
+import { promotionApiService } from '@/services/api-services/api-service-instances';
 import PageableModel from '@/types/models/PageableModel';
-import PagingRequestQuery from '@/types/queries/PagingRequestQuery';
 import numberFormatUtilService from '@/services/util-services/NumberFormatUtilService';
 import usePeriodTimeFilterState from '@/hooks/states/usePeriodTimeFilterQuery';
 
 const PromotionPage: NextPage = () => {
-  const { range } = usePeriodTimeFilterState();
-  const isFirstRender = useRef(true);
+  const { range, selected, setSelected, isSpecificTimeFilter } = usePeriodTimeFilterState();
   const [statuses, setStatuses] = useState<Selection>(new Set(['0']));
   const [applyTypes, setApplyTypes] = useState<Selection>(new Set(['0']));
-  const [query, setQuery] = useState<PlatformPromotionQuery>({
+  const [query, setQuery] = useState<PromotionQuery>({
     pageIndex: 1,
     pageSize: 4,
     status: 0,
@@ -31,16 +31,17 @@ const PromotionPage: NextPage = () => {
     description: '',
     dateFrom: range.dateFrom,
     dateTo: range.dateTo,
-  } as PlatformPromotionQuery);
+    promotionType: 1,
+  } as PromotionQuery);
 
   const {
     data: promotions,
     isLoading,
     error,
     refetch,
-  } = useFetchWithReactQuery<PlatformPromotionModel, PlatformPromotionQuery>(
+  } = useFetchWithReactQuery<PromotionModel, PromotionQuery>(
     REACT_QUERY_CACHE_KEYS.PROMOTION_PLATFROM,
-    platfromPromotionApiService,
+    promotionApiService,
     query,
   );
 
@@ -88,88 +89,91 @@ const PromotionPage: NextPage = () => {
     },
   } as TableCustomFilter;
 
-  const renderCell = useCallback(
-    (promotion: PlatformPromotionModel, columnKey: React.Key): ReactNode => {
-      const cellValue = promotion[columnKey as keyof PlatformPromotionModel];
+  const renderCell = useCallback((promotion: PromotionModel, columnKey: React.Key): ReactNode => {
+    const cellValue = promotion[columnKey as keyof PromotionModel];
 
-      switch (columnKey) {
-        case 'bannerUrl':
-          return (
-            <div className="flex flex-col">
-              <Avatar src={promotion.bannerUrl} />
-            </div>
-          );
-        case 'title':
-          return (
-            <div className="flex flex-col">
-              <p className="text-bold text-small">{promotion.title}</p>
-            </div>
-          );
-        case 'startDate':
-          return (
-            <div className="flex flex-col">
-              <p className="text-bold text-small">{formatDateString(promotion.startDate)}</p>
-            </div>
-          );
-        case 'endDate':
-          return (
-            <div className="flex flex-col">
-              <p className="text-bold text-small">{formatDateString(promotion.endDate)}</p>
-            </div>
-          );
-        case 'applyType':
-          return (
-            <div className="flex flex-col">
-              <p className="text-bold text-small">
-                {promotion.applyType === PlatformPromotionType.AmountApply ? 'Giá trị' : 'Tỉ lệ'}
-              </p>
-            </div>
-          );
-        case 'amountValue':
-          return (
-            <div className="flex flex-col">
-              <p className="text-bold text-small">
-                {promotion.applyType == PlatformPromotionType.AmountApply
-                  ? numberFormatUtilService.formatNumberWithDotEach3digits(promotion.amountValue) +
-                    ' đ'
-                  : promotion.amountRate + '%'}
-              </p>
-            </div>
-          );
-        case 'status':
-          return (
-            <div className="flex flex-col ">
-              <span
-                className={
-                  promotion.status == 1
-                    ? 'w-fit bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300'
-                    : promotion.status == 2
-                      ? 'w-fit bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300'
-                      : 'w-fit bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300'
-                }
-              >
-                {promotionStatuses.find((item) => item.key == promotion.status)?.label}
-              </span>
-            </div>
-          );
-        case 'numberOfUsed':
-          return (
-            <div className="flex flex-col">
-              <p className="text-bold text-small">
-                {promotion.numberOfUsed + ' / ' + promotion.usageLimit}
-              </p>
-            </div>
-          );
-        default:
-          return (
-            <div className="flex flex-col">
-              <p className="text-bold text-small">{cellValue.toString()}</p>
-            </div>
-          );
-      }
-    },
-    [],
-  );
+    switch (columnKey) {
+      case 'id':
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small">{numberFormatUtilService.hashId(promotion.id)}</p>
+          </div>
+        );
+      case 'bannerUrl':
+        return (
+          <div className="flex flex-col">
+            <Avatar src={promotion.bannerUrl} />
+          </div>
+        );
+      case 'title':
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small">{promotion.title}</p>
+          </div>
+        );
+      case 'startDate':
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small">{formatDateString(promotion.startDate)}</p>
+          </div>
+        );
+      case 'endDate':
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small">{formatDateString(promotion.endDate)}</p>
+          </div>
+        );
+      case 'applyType':
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small">
+              {promotion.applyType === PromotionApplyType.AmountApply ? 'Giá trị' : 'Tỉ lệ'}
+            </p>
+          </div>
+        );
+      case 'amountValue':
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small">
+              {promotion.applyType == PromotionApplyType.AmountApply
+                ? numberFormatUtilService.formatNumberWithDotEach3digits(promotion.amountValue) +
+                  ' đ'
+                : promotion.amountRate + '%'}
+            </p>
+          </div>
+        );
+      case 'status':
+        return (
+          <div className="flex flex-col ">
+            <span
+              className={
+                promotion.status == 1
+                  ? 'w-fit bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300'
+                  : promotion.status == 2
+                    ? 'w-fit bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300'
+                    : 'w-fit bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300'
+              }
+            >
+              {promotionStatuses.find((item) => item.key == promotion.status)?.label}
+            </span>
+          </div>
+        );
+      case 'numberOfUsed':
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small">
+              {promotion.numberOfUsed + ' / ' + promotion.usageLimit}
+            </p>
+          </div>
+        );
+      default:
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small">{cellValue.toString()}</p>
+          </div>
+        );
+    }
+  }, []);
 
   return (
     <TableCommonCustom
@@ -192,13 +196,13 @@ const PromotionPage: NextPage = () => {
       }}
       placeHolderSearch="Tìm kiếm khuyến mãi..."
       arrayData={promotions?.value?.items ?? []}
-      arrayDataColumns={promotionColumns}
+      arrayDataColumns={promotionTableColumns}
       pagination={promotions?.value as PageableModel}
       goToPage={(index: number) => setQuery({ ...query, pageIndex: index })}
       setPageSize={(size: number) => setQuery({ ...query, pageSize: size })}
       filters={[statusFilter, applyTypeFilter]}
       renderCell={renderCell}
-      onReset={() => setQuery({} as PlatformPromotionQuery)}
+      onReset={() => setQuery({} as PromotionQuery)}
     />
   );
 };
