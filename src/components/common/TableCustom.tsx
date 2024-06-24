@@ -39,7 +39,7 @@ type TableCustomProps = {
     uid: string;
     name: string;
   }[];
-  renderCell: (item: any, columnKey: React.Key) => React.ReactNode;
+  renderCell: any;
   handleClick: () => void;
 };
 
@@ -88,7 +88,7 @@ export default function TableCustom({
     if (hasSearchFilter) {
       if (accountFilter) {
         filteredData = filteredData.filter((data) =>
-          data.accountName.toLowerCase().includes(filterValue.toLowerCase()),
+          data.fullName.toLowerCase().includes(filterValue.toLowerCase()),
         );
       } else {
         filteredData = filteredData.filter((data) =>
@@ -97,7 +97,10 @@ export default function TableCustom({
       }
     }
 
-    if (statusFilter !== 'all' && Array.from(statusFilter).length !== status.length) {
+    // && Array.from(statusFilter).length !== status.length
+    // handle both active and status
+
+    if (statusFilter !== 'all') {
       filteredData = filteredData.filter((data) => Array.from(statusFilter).includes(data.status));
     }
 
@@ -107,7 +110,7 @@ export default function TableCustom({
       Array.from(typeFilter).length !== accountType?.length
     ) {
       filteredData = filteredData.filter((account) =>
-        Array.from(typeFilter).includes(account.accountType),
+        Array.from(typeFilter).includes(account.role),
       );
     }
 
@@ -329,7 +332,7 @@ export default function TableCustom({
               </TableColumn>
             )}
           </TableHeader>
-          <TableBody emptyContent={'No transactions found'} items={sortedItems}>
+          <TableBody emptyContent={`Không có ${smallText} nào`} items={sortedItems}>
             {(item) => (
               <TableRow
                 key={item.id}

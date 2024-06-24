@@ -61,4 +61,4 @@ const SideBar = ({ activeContentIndex }: { activeContentIndex: number }) => {
   );
 };
 
-export default SideBar;
+export default React.memo(SideBar);
