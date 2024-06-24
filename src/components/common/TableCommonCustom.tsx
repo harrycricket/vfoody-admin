@@ -78,7 +78,6 @@ export default function TableCommonCustom<T>({
   renderCell,
   onReset,
 }: TableCustomProps) {
-  console.log(arrayData);
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [searchText, setSearchText] = useState('');
@@ -142,11 +141,6 @@ export default function TableCommonCustom<T>({
                   selectedKeys={filter.selectedValues}
                   selectionMode={filter.selectionMode == 1 ? 'single' : 'multiple'}
                   onSelectionChange={(selected) => {
-                    console.log(
-                      new Set<number>(
-                        Array.from(selected).map((item) => parseInt(item.toString())),
-                      ),
-                    );
                     filter.handleFunc(selected);
                   }}
                 >
@@ -186,7 +180,10 @@ export default function TableCommonCustom<T>({
           color="primary"
           page={page}
           total={pagination?.totalOfPages ?? 0}
-          onChange={setPage}
+          onChange={(index: number) => {
+            goToPage(index);
+            setPage(index);
+          }}
         />
         <div className="hidden sm:flex w-[30%] justify-end gap-2">
           <Button
