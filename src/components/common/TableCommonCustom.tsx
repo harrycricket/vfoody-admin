@@ -20,7 +20,7 @@ import {
   pagination,
 } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { CiSearch } from 'react-icons/ci';
 import { IoChevronDown } from 'react-icons/io5';
 import DashboardTimeFilter from '@/components/dashboard/DashboardTimeFilter';
@@ -39,6 +39,7 @@ export type TableCustomProps = {
   indexPage: number;
   title: string;
   description: string;
+  leftHeaderNode: ReactNode;
   initColumns: string[];
 
   placeHolderSearch: string;
@@ -61,6 +62,7 @@ export default function TableCommonCustom<T>({
   indexPage,
   title,
   description,
+  leftHeaderNode,
   initColumns,
 
   searchHandler,
@@ -205,7 +207,8 @@ export default function TableCommonCustom<T>({
     <AdminLayout activeContentIndex={indexPage}>
       <div className="px-4 py-2">
         <h1 className="text-3xl font-bold text-primary">{title}</h1>
-        <div className="flex items-center justify-end mb-4">
+        <div className="flex items-center justify-between mb-4">
+          {leftHeaderNode}
           <DashboardTimeFilter />
         </div>
         <Table

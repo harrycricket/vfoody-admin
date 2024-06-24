@@ -1,7 +1,7 @@
 'use client';
 import { NextPage } from 'next';
 import TableCommonCustom, { TableCustomFilter } from '@/components/common/TableCommonCustom';
-import { Avatar, Selection } from '@nextui-org/react';
+import { Avatar, Button, Selection, useDisclosure } from '@nextui-org/react';
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import PromotionModel, {
   PromotionApplyType,
@@ -17,6 +17,7 @@ import { promotionApiService } from '@/services/api-services/api-service-instanc
 import PageableModel from '@/types/models/PageableModel';
 import numberFormatUtilService from '@/services/util-services/NumberFormatUtilService';
 import usePeriodTimeFilterState from '@/hooks/states/usePeriodTimeFilterQuery';
+import CreatePromotionModal from '@/components/promotions/CreatePromotionModal';
 
 const PromotionPage: NextPage = () => {
   const { range, selected, setSelected, isSpecificTimeFilter } = usePeriodTimeFilterState();
@@ -33,6 +34,7 @@ const PromotionPage: NextPage = () => {
     dateTo: range.dateTo,
     promotionType: 1,
   } as PromotionQuery);
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const {
     data: promotions,
@@ -175,35 +177,62 @@ const PromotionPage: NextPage = () => {
     }
   }, []);
 
+  const handleCreateNew = () => {
+    onOpen();
+  };
+
   return (
-    <TableCommonCustom
-      indexPage={4}
-      title="Chương trình khuyến mãi"
-      description="Danh sách chương trình khuyến mãi và ưu đãi của nền tảng"
-      initColumns={[
-        'id',
-        'bannerUrl',
-        'title',
-        'startDate',
-        'endDate',
-        'applyType',
-        'amountValue',
-        'status',
-        'numberOfUsed',
-      ]}
-      searchHandler={(value: string) => {
-        setQuery({ ...query, title: value });
-      }}
-      placeHolderSearch="Tìm kiếm khuyến mãi..."
-      arrayData={promotions?.value?.items ?? []}
-      arrayDataColumns={promotionTableColumns}
-      pagination={promotions?.value as PageableModel}
-      goToPage={(index: number) => setQuery({ ...query, pageIndex: index })}
-      setPageSize={(size: number) => setQuery({ ...query, pageSize: size })}
-      filters={[statusFilter, applyTypeFilter]}
-      renderCell={renderCell}
-      onReset={() => setQuery({} as PromotionQuery)}
-    />
+    <div style={{ position: 'relative' }}>
+      <TableCommonCustom
+        indexPage={4}
+        title="Chương trình khuyến mãi"
+        description="Danh sách chương trình khuyến mãi và ưu đãi của nền tảng"
+        initColumns={[
+          'id',
+          'bannerUrl',
+          'title',
+          'startDate',
+          'endDate',
+          'applyType',
+          'amountValue',
+          'status',
+          'numberOfUsed',
+        ]}
+        leftHeaderNode={
+          <Button
+            onClick={handleCreateNew}
+            style={{
+              backgroundColor: '#DF4830',
+              color: 'white',
+              boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+              padding: '10px 20px',
+              borderRadius: '5px',
+              fontSize: '18px',
+            }}
+          >
+            Tạo mới
+          </Button>
+        }
+        searchHandler={(value: string) => {
+          setQuery({ ...query, title: value });
+        }}
+        placeHolderSearch="Tìm kiếm khuyến mãi..."
+        arrayData={promotions?.value?.items ?? []}
+        arrayDataColumns={promotionTableColumns}
+        pagination={promotions?.value as PageableModel}
+        goToPage={(index: number) => setQuery({ ...query, pageIndex: index })}
+        setPageSize={(size: number) => setQuery({ ...query, pageSize: size })}
+        filters={[statusFilter, applyTypeFilter]}
+        renderCell={renderCell}
+        onReset={() => setQuery({} as PromotionQuery)}
+      />
+      <CreatePromotionModal
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onOpenChange={onOpenChange}
+        onClose={onClose}
+      />
+    </div>
   );
 };
 
