@@ -17,9 +17,13 @@ import { promotionApiService } from '@/services/api-services/api-service-instanc
 import PageableModel from '@/types/models/PageableModel';
 import numberFormatUtilService from '@/services/util-services/NumberFormatUtilService';
 import usePeriodTimeFilterState from '@/hooks/states/usePeriodTimeFilterQuery';
-import CreatePromotionModal from '@/components/promotions/CreatePromotionModal';
+import PromotionCreateModal from '@/components/promotions/PromotionCreateModal';
+import usePromotionTargetState from '@/hooks/states/usePromotionTargetState';
+import PromotionDetailModal from '@/components/promotions/PromotionDetailModal';
+import PromotionUpdateModal from '@/components/promotions/PromotionUpdateModal';
 
 const PromotionPage: NextPage = () => {
+  const { setModel: setPromotionTarget } = usePromotionTargetState();
   const { range, selected, setSelected, isSpecificTimeFilter } = usePeriodTimeFilterState();
   const [statuses, setStatuses] = useState<Selection>(new Set(['0']));
   const [applyTypes, setApplyTypes] = useState<Selection>(new Set(['0']));
@@ -34,7 +38,25 @@ const PromotionPage: NextPage = () => {
     dateTo: range.dateTo,
     promotionType: 1,
   } as PromotionQuery);
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const {
+    isOpen: isCreateOpen,
+    onOpen: onCreateOpen,
+    onOpenChange: onCreateOpenChange,
+    onClose: onCreateClose,
+  } = useDisclosure();
+  const {
+    isOpen: isDetailOpen,
+    onOpen: onDetailOpen,
+    onOpenChange: onDetailOpenChange,
+    onClose: onDetailClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isUpdateOpen,
+    onOpen: onUpdateOpen,
+    onOpenChange: onUpdateOpenChange,
+    onClose: onUpdateClose,
+  } = useDisclosure();
 
   const {
     data: promotions,
@@ -178,7 +200,7 @@ const PromotionPage: NextPage = () => {
   }, []);
 
   const handleCreateNew = () => {
-    onOpen();
+    onCreateOpen();
   };
 
   return (
@@ -226,11 +248,36 @@ const PromotionPage: NextPage = () => {
         renderCell={renderCell}
         onReset={() => setQuery({} as PromotionQuery)}
       />
-      <CreatePromotionModal
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onOpenChange={onOpenChange}
-        onClose={onClose}
+      <PromotionCreateModal
+        isOpen={isCreateOpen}
+        onOpen={onCreateOpen}
+        onOpenChange={onCreateOpenChange}
+        onClose={onCreateClose}
+        onHandleSubmitSuccess={(promotion: PromotionModel) => {
+          setPromotionTarget(promotion);
+          refetch();
+        }}
+      />
+      <PromotionDetailModal
+        isOpen={isDetailOpen}
+        onOpen={onDetailOpen}
+        onOpenChange={onDetailOpenChange}
+        onClose={onDetailClose}
+        onHandleSubmitSuccess={(promotion: PromotionModel) => {
+          setPromotionTarget(promotion);
+          refetch();
+        }}
+      />
+
+      <PromotionUpdateModal
+        isOpen={isUpdateOpen}
+        onOpen={onUpdateOpen}
+        onOpenChange={onUpdateOpenChange}
+        onClose={onUpdateClose}
+        onHandleSubmitSuccess={(promotion: PromotionModel) => {
+          setPromotionTarget(promotion);
+          refetch();
+        }}
       />
     </div>
   );

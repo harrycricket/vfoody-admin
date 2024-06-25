@@ -19,21 +19,27 @@ import PromotionModel, {
   promotionStatuses,
   promotionApplyTypes,
 } from '@/types/models/PromotionModel';
+import { promotionApiService } from '@/services/api-services/api-service-instances';
+import usePromotionTargetState from '@/hooks/states/usePromotionTargetState';
+import MutationResponse from '@/types/responses/MutationReponse';
 
 interface CreatePromotionModalProps {
   isOpen: boolean;
   onOpen: () => void;
   onOpenChange: (isOpen: boolean) => void;
   onClose: () => void;
+  onHandleSubmitSuccess: (promotion: PromotionModel) => void;
 }
 
-export default function CreatePromotionModal({
+export default function PromotionUpdateModal({
   isOpen,
   onOpen,
   onOpenChange,
   onClose,
+  onHandleSubmitSuccess,
 }: CreatePromotionModalProps) {
   const isAnyRequestSubmit = useRef(false);
+  const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false);
   const [promotion, setPromotion] = useState<PromotionModel>({
     id: 0,
     title: '',
@@ -50,7 +56,7 @@ export default function CreatePromotionModal({
     endDate: new Date().toDateString(),
     usageLimit: 100,
     numberOfUsed: 0,
-    promotionType: '',
+    promotionType: 1,
   });
 
   const [errors, setErrors] = useState<any>({});
@@ -96,6 +102,33 @@ export default function CreatePromotionModal({
     console.log('Promotion details:', promotion, validate(promotion), errors);
     if (validate(promotion)) {
       console.log('Promotion details:', promotion);
+      promotionApiService
+        .create(promotion)
+        .then((res) => {
+          let result = res.data as MutationResponse<PromotionModel>;
+          if (result.isSuccess) {
+            // Simulate submission process
+            setIsSubmitSuccessful(true);
+
+            // Reset isSubmitSuccessful to false after 3 seconds
+            setTimeout(() => {
+              setIsSubmitSuccessful(false);
+            }, 3000);
+
+            onHandleSubmitSuccess(result.value);
+          } else {
+            if (result.error.code == '500') {
+              window.alert('Máy chủ gặp lỗi trong quá trình tạo mới, vui lòng thử lại!');
+            } else {
+              window.alert(
+                'Gặp lỗi trong quá trình tạo mới, vui lòng thử lại: ' + result.error.message,
+              );
+            }
+          }
+        })
+        .catch((err) => {
+          window.alert('Something went wrong: ' + err.message);
+        });
       onClose();
     }
   };
@@ -280,6 +313,16 @@ export default function CreatePromotionModal({
           </>
         )}
       </ModalContent>
+      {isSubmitSuccessful && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg p-4 shadow-lg text-center">
+            <p className="text-xl font-bold text-green-500 mb-3">Tạo mới thành công!</p>
+            <Button color="success" variant="flat" onPress={() => setIsSubmitSuccessful(false)}>
+              Đóng
+            </Button>
+          </div>
+        </div>
+      )}
     </Modal>
   );
 }

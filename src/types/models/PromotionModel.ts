@@ -23,7 +23,7 @@ export default interface PromotionModel {
   endDate: string;
   usageLimit: number;
   numberOfUsed: number;
-  promotionType: string;
+  promotionType: number;
 }
 
 export const promotionTableColumns = [
