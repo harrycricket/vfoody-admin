@@ -238,7 +238,7 @@ export default function TableCommonCustom<T>({
           </TableHeader>
           <TableBody emptyContent="No data found" items={arrayData}>
             {(item) => (
-              <TableRow key={item.id} onClick={() => handleRowClick(item.id)}>
+              <TableRow key={item.id} onDoubleClick={() => handleRowClick(item.id)}>
                 {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
               </TableRow>
             )}

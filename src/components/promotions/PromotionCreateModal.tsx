@@ -27,6 +27,7 @@ import {
   formatDateStringYYYYMMDD,
   formatDateStringYYYYMMDD_HHMM,
 } from '@/services/util-services/TimeFormatService';
+import Swal from 'sweetalert2';
 
 interface CreatePromotionModalProps {
   isOpen: boolean;
@@ -36,6 +37,25 @@ interface CreatePromotionModalProps {
   onHandleSubmitSuccess: (promotion: PromotionModel) => void;
 }
 
+const initPromotionSampleObject = {
+  id: 0,
+  title: '',
+  description: '',
+  bannerUrl:
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5UW3VOtxCrPlSPnHEWVi_OndZbv7IzamS6g&s',
+  amountRate: 0,
+  minimumOrderValue: 1000,
+  maximumApplyValue: 40000,
+  amountValue: 0,
+  applyType: PromotionApplyType.RateApply,
+  status: PromotionStatus.Active,
+  startDate: formatDateStringYYYYMMDD_HHMM(new Date().toISOString()),
+  endDate: formatDateStringYYYYMMDD_HHMM(new Date().toISOString()),
+  usageLimit: 100,
+  numberOfUsed: 0,
+  promotionType: 1,
+};
+
 export default function PromotionCreateModal({
   isOpen,
   onOpen,
@@ -44,24 +64,7 @@ export default function PromotionCreateModal({
   onHandleSubmitSuccess,
 }: CreatePromotionModalProps) {
   const isAnyRequestSubmit = useRef(false);
-  const [promotion, setPromotion] = useState<PromotionModel>({
-    id: 0,
-    title: '',
-    description: '',
-    bannerUrl:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5UW3VOtxCrPlSPnHEWVi_OndZbv7IzamS6g&s',
-    amountRate: 0,
-    minimumOrderValue: 0,
-    maximumApplyValue: 0,
-    amountValue: 0,
-    applyType: PromotionApplyType.RateApply,
-    status: PromotionStatus.Active,
-    startDate: formatDateStringYYYYMMDD_HHMM(new Date().toISOString()),
-    endDate: formatDateStringYYYYMMDD_HHMM(new Date().toISOString()),
-    usageLimit: 100,
-    numberOfUsed: 0,
-    promotionType: 1,
-  });
+  const [promotion, setPromotion] = useState<PromotionModel>({ ...initPromotionSampleObject });
 
   const [errors, setErrors] = useState<any>({});
   const validate = (promotion: PromotionModel) => {
@@ -73,8 +76,8 @@ export default function PromotionCreateModal({
       (promotion.amountRate < 1 || promotion.amountRate > 100)
     )
       tempErrors.amountRate = 'Tỉ lệ giảm giá nằm trong khoảng từ 1 đến 100 (%).';
-    if (promotion.minimumOrderValue < 0)
-      tempErrors.minimumOrderValue = 'Giá trị đơn hàng tối thiểu lớn hơn hoặc bằng 0.';
+    if (promotion.minimumOrderValue < 1000)
+      tempErrors.minimumOrderValue = 'Giá trị đơn hàng tối thiểu lớn hơn hoặc bằng 1000 đồng.';
     if (promotion.maximumApplyValue < 0)
       tempErrors.maximumApplyValue = 'Giá trị áp dụng tối đa cần lớn hơn hoặc bằng 0.';
     if (promotion.applyType == PromotionApplyType.AmountApply && promotion.amountValue < 1000)
@@ -113,22 +116,53 @@ export default function PromotionCreateModal({
         .then((res) => {
           let result = res.data as MutationResponse<PromotionModel>;
           if (result.isSuccess) {
-            // onHandleSubmitSuccess(result.value);
-            onHandleSubmitSuccess(promotion);
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Tạo mới thành công',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            onHandleSubmitSuccess({ ...promotion, ...result.value });
+
+            // set to init
+            isAnyRequestSubmit.current = false;
+            setPromotion({ ...initPromotionSampleObject });
+            onClose();
           } else {
             if (result.error.code == '500') {
-              window.alert('Máy chủ gặp lỗi trong quá trình tạo mới, vui lòng thử lại!');
+              Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Oh no, lỗi máy chủ!',
+                text: 'Máy chủ gặp sự cố trong quá trình tạo mới, vui lòng thử lại!',
+                showConfirmButton: false,
+                timer: 1500,
+              });
             } else {
-              window.alert(
-                'Gặp lỗi trong quá trình tạo mới, vui lòng thử lại: ' + result.error.message,
-              );
+              Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Oh no!',
+                text: "Gặp lỗi trong quá trình tạo mới, vui lòng thử lại: ' + result.error.message",
+                showConfirmButton: false,
+                timer: 1500,
+              });
             }
           }
         })
         .catch((err) => {
-          window.alert('Something went wrong: ' + err.message);
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Oh no, lỗi máy chủ!',
+            text: 'Máy chủ gặp sự cố trong quá trình tạo mới, vui lòng thử lại!',
+            showConfirmButton: false,
+            timer: 1500,
+          });
         });
-      onClose();
+      promotion.startDate = formatDateStringYYYYMMDD_HHMM(promotion.startDate);
+      promotion.endDate = formatDateStringYYYYMMDD_HHMM(promotion.endDate);
     }
   };
 
@@ -152,6 +186,7 @@ export default function PromotionCreateModal({
                       onChange={handleChange}
                       isInvalid={errors.title ? true : false}
                       errorMessage={errors.title}
+                      required
                       fullWidth
                     />
                   </div>
@@ -173,6 +208,7 @@ export default function PromotionCreateModal({
                       name="startDate"
                       label="Thời gian bắt đầu"
                       type="datetime-local"
+                      required
                       value={promotion.startDate}
                       onChange={handleChange}
                       fullWidth
@@ -182,6 +218,7 @@ export default function PromotionCreateModal({
                       name="endDate"
                       label="Thời gian kết thúc"
                       type="datetime-local"
+                      required
                       value={promotion.endDate}
                       onChange={handleChange}
                       fullWidth

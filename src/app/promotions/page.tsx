@@ -29,7 +29,7 @@ const PromotionPage: NextPage = () => {
   const [applyTypes, setApplyTypes] = useState<Selection>(new Set(['0']));
   const [query, setQuery] = useState<PromotionQuery>({
     pageIndex: 1,
-    pageSize: 4,
+    pageSize: 10,
     status: 0,
     applyType: 0,
     title: '',
@@ -266,6 +266,7 @@ const PromotionPage: NextPage = () => {
         onHandleSubmitSuccess={(promotion: PromotionModel) => {
           setPromotionTarget(promotion);
           refetch();
+          onDetailOpen();
         }}
       />
       <PromotionDetailModal
