@@ -31,8 +31,8 @@ export const INITIAL_VISIBLE_COLUMNS = [
 
 export default function RenderCell() {
   const router = useRouter();
-  const handleClick = () => {
-    router.push('/shops/shop-details');
+  const handleClick = (shopId: number) => {
+    router.push(`/shops/shop-details?shopId=${shopId}`);
   };
 
   const handleBan = () => {
@@ -94,7 +94,7 @@ export default function RenderCell() {
       case 'balance':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small">{formatCurrency(shop.balance)}</p>
+            <p className="text-bold text-small">{formatCurrency(shop.shopRevenue)}</p>
           </div>
         );
       case 'id':
@@ -137,7 +137,7 @@ export default function RenderCell() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem onClick={() => handleClick()}>Xem chi tiết</DropdownItem>
+                <DropdownItem onClick={() => handleClick(shop.id)}>Xem chi tiết</DropdownItem>
                 {shop.status === 'Chưa phê duyệt' ? (
                   <DropdownItem onClick={() => handleApprove()}>Duyệt</DropdownItem>
                 ) : shop.status === 'Đã bị cấm' ? (

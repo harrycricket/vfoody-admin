@@ -40,7 +40,7 @@ type TableCustomProps = {
     name: string;
   }[];
   renderCell: any;
-  handleClick: () => void;
+  handleClick: (id: number) => void;
 };
 
 export default function TableCustom({
@@ -68,8 +68,6 @@ export default function TableCustom({
     column: 'age',
     direction: 'ascending',
   });
-  const router = useRouter();
-
   const [page, setPage] = useState(1);
 
   const hasSearchFilter = Boolean(filterValue);
@@ -97,9 +95,6 @@ export default function TableCustom({
       }
     }
 
-    // && Array.from(statusFilter).length !== status.length
-    // handle both active and status
-
     if (statusFilter !== 'all') {
       filteredData = filteredData.filter((data) => Array.from(statusFilter).includes(data.status));
     }
@@ -110,7 +105,7 @@ export default function TableCustom({
       Array.from(typeFilter).length !== accountType?.length
     ) {
       filteredData = filteredData.filter((account) =>
-        Array.from(typeFilter).includes(account.role),
+        Array.from(typeFilter).includes(account.roleName),
       );
     }
 
@@ -337,7 +332,7 @@ export default function TableCustom({
               <TableRow
                 key={item.id}
                 className="text-center cursor-pointer"
-                onClick={() => handleClick()}
+                onClick={() => handleClick(item.id)}
               >
                 {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
               </TableRow>

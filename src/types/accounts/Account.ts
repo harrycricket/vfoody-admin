@@ -4,7 +4,14 @@ export default interface Account {
   phoneNumber: string;
   avatarUrl: string;
   email: string;
-  role: string;
-  status: string;
+  roleName: string;
+  status: number;
   createdDate: string;
+}
+
+export enum AccountStatus {
+  UnVerify = 1,
+  Verify = 2,
+  Ban = 3,
+  Delete = 4,
 }

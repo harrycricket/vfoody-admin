@@ -3,6 +3,7 @@ import RenderCell, { INITIAL_VISIBLE_COLUMNS, statusColorMap } from '@/app/trans
 import TableCustom from '@/components/common/TableCustom';
 import { transactionColumns, transactionStatus } from '@/data';
 import apiClient from '@/services/api-services/api-client';
+import { error } from 'console';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -20,6 +21,7 @@ export default function Transactions() {
         if (responseData.data.isSuccess) {
           setTransactions(responseData.data?.value?.items);
         } else {
+          console.log(responseData.data.error.message);
           throw new Error(responseData.data.error.message);
         }
       } catch (error) {
