@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "export": "next export",
     "lint": "next lint",
     "format": "lint-staged",
     "prepare": "husky install"
@@ -16,6 +17,7 @@
     "*.lint-staged": "prettier --write"
   },
   "dependencies": {
+    "@emotion/is-prop-valid": "^1.2.2",
     "@nextui-org/button": "^2.0.31",
     "@nextui-org/react": "^2.3.6",
     "@nextui-org/system": "^2.1.2",

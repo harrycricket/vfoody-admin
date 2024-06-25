@@ -295,6 +295,5 @@ export {
   accountStatus,
   accountType,
   productDetail,
-  accountDetail,
   PROMOTIONS_SAMPLE_LIST,
 };

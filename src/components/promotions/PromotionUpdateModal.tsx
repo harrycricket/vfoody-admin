@@ -73,19 +73,34 @@ export default function PromotionUpdateModal({
     return Object.keys(tempErrors).length === 0;
   };
 
+  const numericFields = [
+    'id',
+    'amountRate',
+    'minimumOrderValue',
+    'maximumApplyValue',
+    'amountValue',
+    'applyType',
+    'status',
+    'usageLimit',
+    'numberOfUsed',
+    'promotionType',
+  ];
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
+    const newValue = numericFields.includes(name) ? Number(value) : value;
+
     if (isAnyRequestSubmit.current) {
       validate({
         ...promotion,
-        [name]: value,
+        [name]: newValue,
       });
     }
+
     setPromotion({
       ...promotion,
-      [name]: value,
+      [name]: newValue,
     });
   };
 
