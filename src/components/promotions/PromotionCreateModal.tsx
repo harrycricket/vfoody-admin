@@ -23,6 +23,7 @@ import { promotionApiService } from '@/services/api-services/api-service-instanc
 import usePromotionTargetState from '@/hooks/states/usePromotionTargetState';
 import MutationResponse from '@/types/responses/MutationReponse';
 import {
+  convertDateTimeToISO,
   formatDateStringYYYYMMDD,
   formatDateStringYYYYMMDD_HHMM,
 } from '@/services/util-services/TimeFormatService';
@@ -43,7 +44,6 @@ export default function PromotionCreateModal({
   onHandleSubmitSuccess,
 }: CreatePromotionModalProps) {
   const isAnyRequestSubmit = useRef(false);
-  const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false);
   const [promotion, setPromotion] = useState<PromotionModel>({
     id: 0,
     title: '',
@@ -106,21 +106,15 @@ export default function PromotionCreateModal({
     isAnyRequestSubmit.current = true;
     console.log('Promotion details:', promotion, validate(promotion), errors);
     if (validate(promotion)) {
-      console.log('Promotion details:', promotion);
+      promotion.startDate = convertDateTimeToISO(promotion.startDate);
+      promotion.endDate = convertDateTimeToISO(promotion.endDate);
       promotionApiService
         .create(promotion)
         .then((res) => {
           let result = res.data as MutationResponse<PromotionModel>;
           if (result.isSuccess) {
-            // Simulate submission process
-            setIsSubmitSuccessful(true);
-
-            // Reset isSubmitSuccessful to false after 3 seconds
-            setTimeout(() => {
-              setIsSubmitSuccessful(false);
-            }, 3000);
-
-            onHandleSubmitSuccess(result.value);
+            // onHandleSubmitSuccess(result.value);
+            onHandleSubmitSuccess(promotion);
           } else {
             if (result.error.code == '500') {
               window.alert('Máy chủ gặp lỗi trong quá trình tạo mới, vui lòng thử lại!');
@@ -318,16 +312,6 @@ export default function PromotionCreateModal({
           </>
         )}
       </ModalContent>
-      {isSubmitSuccessful && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg p-4 shadow-lg text-center">
-            <p className="text-xl font-bold text-green-500 mb-3">Tạo mới thành công!</p>
-            <Button color="success" variant="flat" onPress={() => setIsSubmitSuccessful(false)}>
-              Đóng
-            </Button>
-          </div>
-        </div>
-      )}
     </Modal>
   );
 }

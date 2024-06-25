@@ -49,6 +49,12 @@ export function formatDate(date: Date) {
   return `${day}/${month}/${year}`;
 }
 
+export const convertDateTimeToISO = (timeString: string) => {
+  const date = new Date(timeString);
+
+  return date.toISOString();
+};
+
 export const formatCurrency = (value: number | string) => {
   // Handle undefined, null, or empty values
   if (value === undefined || value === null) {
