@@ -265,7 +265,7 @@ export default function CreatePromotionModal({
                     }));
                   }}
                 >
-                  Trạng thái hoạt động
+                  Trạng thái khả dụng
                 </Switch>
               </div>
             </ModalBody>
