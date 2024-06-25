@@ -1,10 +1,35 @@
+'use client';
 import BreadcrumbsCustom from '@/components/common/Breadcrumbs';
 import AdminLayout from '@/components/layouts/AdminLayout';
-import { accountDetail } from '@/data';
+import apiClient from '@/services/api-services/api-client';
+// import { accountDetail } from '@/data';
+import Account, { AccountStatus } from '@/types/accounts/Account';
 import { formatCurrency, formatDate, formatPhoneNumber } from '@/util';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function AccountDetails() {
+  const account = useSearchParams();
+  const accountId = account.get('accountId');
+  const [accountDetail, setAccountDetail] = useState<Account>();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const responseData = await apiClient.get(`admin/account/info?accountId=${accountId}`);
+        if (responseData.data.isSuccess) {
+          setAccountDetail(responseData.data?.value);
+          console.log('accountDetail', responseData.data?.value);
+        } else {
+          throw new Error(responseData.data.error.message);
+        }
+      } catch (error) {
+        console.log('>>> error', error);
+      }
+    })();
+  }, []);
+
   return (
     <AdminLayout activeContentIndex={3}>
       <div className="px-4 py-2">
@@ -16,7 +41,7 @@ export default function AccountDetails() {
         />
         <div className="p-4 bg-slate-100 rounded-lg flex gap-4">
           <Image
-            src={accountDetail.avatarUrl}
+            src={accountDetail?.avatarUrl || ''}
             width={200}
             height={200}
             alt="image account"
@@ -26,22 +51,40 @@ export default function AccountDetails() {
           />
           <div className="flex flex-col text-lg justify-center">
             <p>
-              Tên tài khoản: <strong>{accountDetail.accountName}</strong>
+              Tên tài khoản: <strong>{accountDetail?.fullName || ''}</strong>
             </p>
             <p>
-              Email: <strong>{accountDetail.email}</strong>
+              Email: <strong>{accountDetail?.email}</strong>
             </p>
             <p>
-              Số điện thoại: <strong>{formatPhoneNumber(accountDetail.phoneNumber)}</strong>
+              Số điện thoại: <strong>{formatPhoneNumber(accountDetail?.phoneNumber || '')}</strong>
             </p>
             <p>
-              Loại người dùng: <strong>{formatCurrency(accountDetail.accountType)}</strong>
+              Loại người dùng: <strong>{accountDetail?.roleName || ''}</strong>
             </p>
             <p>
-              Ngày đăng ký tài khoản: <strong>{formatDate(accountDetail.registerDate)}</strong>
+              Ngày đăng ký tài khoản:{' '}
+              <strong>{formatDate(accountDetail?.createdDate || '')}</strong>
             </p>
             <p>
-              Trạng thái: <strong className="text-green-500">{accountDetail.status}</strong>
+              Trạng thái:{' '}
+              <strong
+                className={`${
+                  accountDetail?.status === AccountStatus.Verify
+                    ? 'text-green-500'
+                    : accountDetail?.status === AccountStatus.Ban
+                      ? 'text-red-500'
+                      : 'text-gray-500'
+                }`}
+              >
+                {accountDetail?.status === AccountStatus.Verify
+                  ? 'Đang hoạt động'
+                  : accountDetail?.status === AccountStatus.Ban
+                    ? 'Đã bị cấm'
+                    : accountDetail?.status === AccountStatus.Delete
+                      ? 'Đã xóa'
+                      : 'Chưa xác thực'}
+              </strong>
             </p>
           </div>
         </div>

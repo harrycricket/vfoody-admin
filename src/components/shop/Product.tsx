@@ -17,8 +17,8 @@ export default function Product({ name, price, image, des }: Props) {
     router.push('/shops/shop-details/product-details');
   };
   return (
-    <div className="w-5/12 cursor-pointer" onClick={handleClick}>
-      <Card className="space-y-5 p-6 shadow-xl" radius="md">
+    <div className="w-1/2 cursor-pointer" onClick={handleClick}>
+      <Card className="space-y-5 p-6 shadow-xl mb-4 mr-4" radius="md">
         <div className="flex items-center gap-4">
           <Image
             src={image}
