@@ -23,8 +23,8 @@ export const statusColorMap: Record<string, ChipProps['color']> = {
 
 export const RenderCell = () => {
   const router = useRouter();
-  const handleClick = () => {
-    router.push('/accounts/account-details');
+  const handleClick = (accountId: number) => {
+    router.push(`/accounts/account-details?accountId=${accountId}`);
   };
 
   const handleBan = () => {
@@ -73,10 +73,10 @@ export const RenderCell = () => {
             <p className="text-bold text-small">{account.id}</p>
           </div>
         );
-      case 'role':
+      case 'roleName':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{account.role}</p>
+            <p className="text-bold text-small capitalize">{account.roleName}</p>
           </div>
         );
       case 'status':
@@ -99,14 +99,14 @@ export const RenderCell = () => {
                   <BsThreeDotsVertical className="text-black" />
                 </Button>
               </DropdownTrigger>
-              {account.status === 'Chưa xác thực' ? (
+              {account.status === 1 ? (
                 <DropdownMenu>
-                  <DropdownItem onClick={() => handleClick()}>Xem chi tiết</DropdownItem>
+                  <DropdownItem onClick={() => handleClick(account.id)}>Xem chi tiết</DropdownItem>
                 </DropdownMenu>
               ) : (
                 <DropdownMenu>
-                  <DropdownItem onClick={() => handleClick()}>Xem chi tiết</DropdownItem>
-                  {account.status === 'Đã bị cấm' ? (
+                  <DropdownItem onClick={() => handleClick(account.id)}>Xem chi tiết</DropdownItem>
+                  {account.status === 3 ? (
                     <DropdownItem onClick={() => handleUnban()}>Bỏ cấm</DropdownItem>
                   ) : (
                     <DropdownItem onClick={() => handleBan()}>Cấm</DropdownItem>

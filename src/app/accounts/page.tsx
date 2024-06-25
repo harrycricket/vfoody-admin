@@ -9,8 +9,8 @@ import { useEffect, useState } from 'react';
 export default function Accounts() {
   const [accounts, setAccounts] = useState<any[]>([]);
   const router = useRouter();
-  const handleClick = () => {
-    router.push('/accounts/account-details');
+  const handleClick = (accountId: number) => {
+    router.push(`/accounts/account-details?accountId=${accountId}`);
   };
 
   useEffect(() => {

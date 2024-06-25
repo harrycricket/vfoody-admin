@@ -9,14 +9,15 @@ import { useEffect, useState } from 'react';
 export default function Shops() {
   const [shops, setShops] = useState<any[]>([]);
   const router = useRouter();
-  const handleClick = () => {
-    router.push('/shops/shop-details');
+  const handleClick = (shopId: number) => {
+    router.push(`/shops/shop-details?shopId=${shopId}`);
   };
 
   useEffect(() => {
     (async () => {
       try {
-        const responseData = await apiClient.get('admin/shop/all');
+        const payload = {};
+        const responseData = await apiClient.post('admin/shop/all', payload);
         if (responseData.data.isSuccess) {
           setShops(responseData.data?.value?.items);
         } else {
