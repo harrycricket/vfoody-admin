@@ -20,7 +20,7 @@ import {
   pagination,
 } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { CiSearch } from 'react-icons/ci';
 import { IoChevronDown } from 'react-icons/io5';
 import DashboardTimeFilter from '@/components/dashboard/DashboardTimeFilter';
@@ -39,6 +39,7 @@ export type TableCustomProps = {
   indexPage: number;
   title: string;
   description: string;
+  leftHeaderNode: ReactNode;
   initColumns: string[];
 
   placeHolderSearch: string;
@@ -54,6 +55,7 @@ export type TableCustomProps = {
   filters?: TableCustomFilter[]; // New prop for array of filters
 
   renderCell: (item: any, columnKey: React.Key) => React.ReactNode;
+  handleRowClick: (id: number) => void;
   onReset: () => void;
 };
 
@@ -61,6 +63,7 @@ export default function TableCommonCustom<T>({
   indexPage,
   title,
   description,
+  leftHeaderNode,
   initColumns,
 
   searchHandler,
@@ -76,9 +79,9 @@ export default function TableCommonCustom<T>({
   filters = [],
 
   renderCell,
+  handleRowClick,
   onReset,
 }: TableCustomProps) {
-  console.log(arrayData);
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [searchText, setSearchText] = useState('');
@@ -142,11 +145,6 @@ export default function TableCommonCustom<T>({
                   selectedKeys={filter.selectedValues}
                   selectionMode={filter.selectionMode == 1 ? 'single' : 'multiple'}
                   onSelectionChange={(selected) => {
-                    console.log(
-                      new Set<number>(
-                        Array.from(selected).map((item) => parseInt(item.toString())),
-                      ),
-                    );
                     filter.handleFunc(selected);
                   }}
                 >
@@ -186,7 +184,10 @@ export default function TableCommonCustom<T>({
           color="primary"
           page={page}
           total={pagination?.totalOfPages ?? 0}
-          onChange={setPage}
+          onChange={(index: number) => {
+            goToPage(index);
+            setPage(index);
+          }}
         />
         <div className="hidden sm:flex w-[30%] justify-end gap-2">
           <Button
@@ -208,7 +209,8 @@ export default function TableCommonCustom<T>({
     <AdminLayout activeContentIndex={indexPage}>
       <div className="px-4 py-2">
         <h1 className="text-3xl font-bold text-primary">{title}</h1>
-        <div className="flex items-center justify-end mb-4">
+        <div className="flex items-center justify-between mb-4">
+          {leftHeaderNode}
           <DashboardTimeFilter />
         </div>
         <Table
@@ -236,7 +238,7 @@ export default function TableCommonCustom<T>({
           </TableHeader>
           <TableBody emptyContent="No data found" items={arrayData}>
             {(item) => (
-              <TableRow key={item.id}>
+              <TableRow key={item.id} onDoubleClick={() => handleRowClick(item.id)}>
                 {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
               </TableRow>
             )}

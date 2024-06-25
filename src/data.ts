@@ -122,7 +122,7 @@ const productDetail = {
 };
 
 // promotions
-const promotions = [
+const PROMOTIONS_SAMPLE_LIST = [
   {
     id: 1,
     title: 'Summer Sale',
@@ -284,32 +284,6 @@ const promotions = [
     numberOfUsed: 60,
   },
 ];
-const promotionColumns = [
-  { name: 'Thứ tự', uid: 'id', sortable: true },
-  { name: 'Tiêu đề', uid: 'title', sortable: true },
-  { name: 'Banner', uid: 'bannerUrl', imageable: true },
-  { name: 'Ngày bắt đầu', uid: 'startDate', sortable: true },
-  { name: 'Ngày kết thúc', uid: 'endDate', sortable: true },
-  { name: 'Loại áp dụng', uid: 'applyType', sortable: true },
-  { name: 'Tỷ lệ giảm giá', uid: 'amountRate', sortable: true },
-  { name: 'Giá trị giảm giá', uid: 'amountValue', sortable: true },
-  { name: 'Đơn hàng tối thiểu', uid: 'minimumOrderValue', sortable: true },
-  { name: 'Giá trị tối đa', uid: 'maximumApplyValue', sortable: true },
-  { name: 'Giới hạn', uid: 'usageLimit', sortable: true },
-  { name: 'Đã sử dụng', uid: 'numberOfUsed', sortable: true },
-  { name: 'Trạng thái', uid: 'status', sortable: true },
-  { name: 'Thao tác', uid: 'actions' },
-];
-const promotionStatuses = [
-  { label: 'Khả dụng', key: 1 },
-  { label: 'Đã tắt', key: 2 },
-  { label: 'Đã xóa', key: 3 },
-];
-
-const promotionApplyTypes = [
-  { label: 'Áp dụng tỷ lệ', key: 1 },
-  { label: 'Áp dụng giá trị', key: 2 },
-];
 
 export {
   transactionColumns,
@@ -321,8 +295,6 @@ export {
   accountStatus,
   accountType,
   productDetail,
-  promotions,
-  promotionColumns,
-  promotionStatuses,
-  promotionApplyTypes,
+  accountDetail,
+  PROMOTIONS_SAMPLE_LIST,
 };

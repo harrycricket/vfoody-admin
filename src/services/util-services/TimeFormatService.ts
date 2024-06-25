@@ -23,6 +23,24 @@ export function formatDateString(dateString: string) {
   return `${day}/${month}/${year}`;
 }
 
+export const formatDateStringYYYYMMDD = (dateString: string): string => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = ('0' + (date.getMonth() + 1)).slice(-2);
+  const day = ('0' + date.getDate()).slice(-2);
+  return `${year}-${month}-${day}`;
+};
+
+export const formatDateStringYYYYMMDD_HHMM = (dateString: string): string => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = ('0' + (date.getMonth() + 1)).slice(-2);
+  const day = ('0' + date.getDate()).slice(-2);
+  const hours = ('0' + date.getHours()).slice(-2);
+  const minutes = ('0' + date.getMinutes()).slice(-2);
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+};
+
 export function formatDate(date: Date) {
   const day = date.getDate().toString().padStart(2, '0');
   const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed (January is 0)
@@ -30,6 +48,12 @@ export function formatDate(date: Date) {
 
   return `${day}/${month}/${year}`;
 }
+
+export const convertDateTimeToISO = (timeString: string) => {
+  const date = new Date(timeString);
+
+  return date.toISOString();
+};
 
 export const formatCurrency = (value: number | string) => {
   // Handle undefined, null, or empty values

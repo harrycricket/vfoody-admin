@@ -1,15 +1,15 @@
 import TestModel from '@/types/models/TestModel';
 import apiClient from './api-client';
 import createHttpService from './api-service';
-import PlatformPromotionModel from '@/types/models/PlatformPromotionModel';
+import PromotionModel from '@/types/models/PromotionModel';
 
 const endpoints = {
   TEST: 'https://my-json-server.typicode.com/duckodei/test-json-server/list/',
-  PLATFORM_PROMOTION: 'admin/promotion',
+  PROMOTION: 'admin/promotion',
 };
 
 export const testApiService = createHttpService<TestModel>(apiClient, endpoints.TEST);
-export const platfromPromotionApiService = createHttpService<PlatformPromotionModel>(
+export const promotionApiService = createHttpService<PromotionModel>(
   apiClient,
-  endpoints.PLATFORM_PROMOTION,
+  endpoints.PROMOTION,
 );

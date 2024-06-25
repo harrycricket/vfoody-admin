@@ -6,6 +6,7 @@ const useFetchWithReactQuery = <Model extends APIEntityModel, Query extends Pagi
   keyBase: any[],
   apiService: APIService<Model>,
   requestQuery: Query,
+  deps?: any[],
 ) => {
   return useFetchWithReactQueryConfig<Model>(
     keyBase,
@@ -13,7 +14,7 @@ const useFetchWithReactQuery = <Model extends APIEntityModel, Query extends Pagi
     {
       params: { ...requestQuery },
     },
-    [requestQuery],
+    [requestQuery, ...(deps || [])],
   );
 };
 
