@@ -18,6 +18,7 @@ import PromotionModel, {
   PromotionStatus,
   promotionStatuses,
   promotionApplyTypes,
+  initPromotionSampleObject,
 } from '@/types/models/PromotionModel';
 import { promotionApiService } from '@/services/api-services/api-service-instances';
 import usePromotionTargetState from '@/hooks/states/usePromotionTargetState';
@@ -36,25 +37,6 @@ interface CreatePromotionModalProps {
   onClose: () => void;
   onHandleSubmitSuccess: (promotion: PromotionModel) => void;
 }
-
-const initPromotionSampleObject = {
-  id: 0,
-  title: '',
-  description: '',
-  bannerUrl:
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5UW3VOtxCrPlSPnHEWVi_OndZbv7IzamS6g&s',
-  amountRate: 0,
-  minimumOrderValue: 1000,
-  maximumApplyValue: 40000,
-  amountValue: 0,
-  applyType: PromotionApplyType.RateApply,
-  status: PromotionStatus.Active,
-  startDate: formatDateStringYYYYMMDD_HHMM(new Date().toISOString()),
-  endDate: formatDateStringYYYYMMDD_HHMM(new Date().toISOString()),
-  usageLimit: 100,
-  numberOfUsed: 0,
-  promotionType: 1,
-};
 
 export default function PromotionCreateModal({
   isOpen,

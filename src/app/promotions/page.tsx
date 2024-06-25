@@ -47,12 +47,28 @@ const PromotionPage: NextPage = () => {
     onOpenChange: onCreateOpenChange,
     onClose: onCreateClose,
   } = useDisclosure();
+
   const {
     isOpen: isDetailOpen,
     onOpen: onDetailOpen,
     onOpenChange: onDetailOpenChange,
     onClose: onDetailClose,
   } = useDisclosure();
+  const onToDetailOpen = (id: number) => {
+    let promotion = promotions?.value?.items?.find((item) => item.id === id);
+    if (promotion) {
+      setPromotionTarget(promotion);
+      onDetailOpen();
+    } else {
+      Swal.fire({
+        position: 'center',
+        icon: 'info',
+        title: 'Không tìm thấy chương trình khuyến mãi #' + numberFormatUtilService.hashId(id),
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
 
   const {
     isOpen: isUpdateOpen,
@@ -250,16 +266,7 @@ const PromotionPage: NextPage = () => {
         filters={[statusFilter, applyTypeFilter]}
         renderCell={renderCell}
         onReset={() => setQuery({} as PromotionQuery)}
-        handleRowClick={(id) => {
-          let promotion = promotions?.value?.items?.find((item) => item.id === id);
-          console.log('Click row: ', id, promotion);
-          if (promotion) {
-            setPromotionTarget(promotion);
-            onDetailOpen();
-          } else {
-            window.alert('Không tìm thấy chương trình khuyến mãi');
-          }
-        }}
+        handleRowClick={onToDetailOpen}
       />
       <PromotionCreateModal
         isOpen={isCreateOpen}
@@ -416,9 +423,30 @@ const PromotionPage: NextPage = () => {
         onOpen={onUpdateOpen}
         onOpenChange={onUpdateOpenChange}
         onClose={onUpdateClose}
+        onCloseExtend={async () => {
+          await Swal.fire({
+            title:
+              `Bạn muốn hủy cập nhật cho: #` + numberFormatUtilService.hashId(promotion.id) + `?`,
+            text: 'Quay về chi tiết và thông tin vừa sửa đổi sẽ không được lưu!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: 'orange',
+            cancelButtonColor: 'gray',
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Không',
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              onUpdateClose();
+              onToDetailOpen(promotion.id);
+            } else {
+              onUpdateOpen();
+            }
+          });
+        }}
         onHandleSubmitSuccess={(promotion: PromotionModel) => {
           setPromotionTarget(promotion);
           refetch();
+          onToDetailOpen(promotion.id);
         }}
       />
     </div>

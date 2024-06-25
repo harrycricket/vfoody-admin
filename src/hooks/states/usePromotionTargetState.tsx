@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
-import PromotionModel from '@/types/models/PromotionModel';
+import PromotionModel, { initPromotionSampleObject } from '@/types/models/PromotionModel';
 interface PromotionState {
   id: number;
   model: PromotionModel;
@@ -10,7 +10,7 @@ interface PromotionState {
 
 const usePromotionTargetState = create<PromotionState>((set) => ({
   id: 0,
-  model: {} as PromotionModel,
+  model: { ...initPromotionSampleObject },
   setId: (id: number) => set((state) => ({ ...state, id })),
   setModel: (model: PromotionModel) => set((state) => ({ ...state, model })),
 }));

@@ -20,14 +20,21 @@ import PromotionModel, {
   promotionApplyTypes,
 } from '@/types/models/PromotionModel';
 import { promotionApiService } from '@/services/api-services/api-service-instances';
+import {
+  convertDateTimeToISO,
+  formatDateStringYYYYMMDD_HHMM,
+} from '@/services/util-services/TimeFormatService';
+import Swal from 'sweetalert2';
 import usePromotionTargetState from '@/hooks/states/usePromotionTargetState';
 import MutationResponse from '@/types/responses/MutationReponse';
+import numberFormatUtilService from '@/services/util-services/NumberFormatUtilService';
 
-interface CreatePromotionModalProps {
+interface UpdatePromotionModalProps {
   isOpen: boolean;
   onOpen: () => void;
   onOpenChange: (isOpen: boolean) => void;
   onClose: () => void;
+  onCloseExtend: () => void;
   onHandleSubmitSuccess: (promotion: PromotionModel) => void;
 }
 
@@ -36,31 +43,15 @@ export default function PromotionUpdateModal({
   onOpen,
   onOpenChange,
   onClose,
+  onCloseExtend,
   onHandleSubmitSuccess,
-}: CreatePromotionModalProps) {
+}: UpdatePromotionModalProps) {
   const isAnyRequestSubmit = useRef(false);
-  const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false);
-  const [promotion, setPromotion] = useState<PromotionModel>({
-    id: 0,
-    title: '',
-    description: '',
-    bannerUrl:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5UW3VOtxCrPlSPnHEWVi_OndZbv7IzamS6g&s',
-    amountRate: 0,
-    minimumOrderValue: 0,
-    maximumApplyValue: 0,
-    amountValue: 0,
-    applyType: PromotionApplyType.RateApply,
-    status: PromotionStatus.Active,
-    startDate: new Date().toDateString(),
-    endDate: new Date().toDateString(),
-    usageLimit: 100,
-    numberOfUsed: 0,
-    promotionType: 1,
-  });
-
+  const { model: promotion, setModel: setPromotion } = usePromotionTargetState();
+  // const [promotion, setPromotion] = useState<PromotionModel>({ ...promotionTarget });
   const [errors, setErrors] = useState<any>({});
   const validate = (promotion: PromotionModel) => {
+    console.log('Validating promotion: ', promotion);
     let tempErrors: any = {};
     if (promotion.title.length < 6) tempErrors.title = 'Tiêu đề ít nhất 6 kí tự.';
     if (
@@ -68,19 +59,20 @@ export default function PromotionUpdateModal({
       (promotion.amountRate < 1 || promotion.amountRate > 100)
     )
       tempErrors.amountRate = 'Tỉ lệ giảm giá nằm trong khoảng từ 1 đến 100 (%).';
-    if (promotion.minimumOrderValue < 0)
-      tempErrors.minimumOrderValue = 'Giá trị đơn hàng tối thiểu lớn hơn hoặc bằng 0.';
+    if (promotion.minimumOrderValue < 1000)
+      tempErrors.minimumOrderValue = 'Giá trị đơn hàng tối thiểu lớn hơn hoặc bằng 1000 đồng.';
     if (promotion.maximumApplyValue < 0)
       tempErrors.maximumApplyValue = 'Giá trị áp dụng tối đa cần lớn hơn hoặc bằng 0.';
     if (promotion.applyType == PromotionApplyType.AmountApply && promotion.amountValue < 1000)
       tempErrors.amountValue = 'Giá trị giảm giá cần lớn hơn hoặc bằng 1000 đồng.';
     if (new Date(promotion.startDate) > new Date(promotion.endDate))
-      tempErrors.startDate = 'Ngày bắt đầu cần trước hoặc bằng ngày kết thúc';
+      tempErrors.startDate = 'Thời gian bắt đầu cần trước hoặc bằng ngày kết thúc';
     if (promotion.usageLimit < 0)
       tempErrors.usageLimit = 'Giới hạn lượt sử dụng lớn hơn hoặc bằng 0.';
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
@@ -91,55 +83,86 @@ export default function PromotionUpdateModal({
         [name]: value,
       });
     }
-    setPromotion((prevPromotion) => ({
-      ...prevPromotion,
+    setPromotion({
+      ...promotion,
       [name]: value,
-    }));
+    });
   };
 
   const handleSubmit = () => {
     isAnyRequestSubmit.current = true;
     console.log('Promotion details:', promotion, validate(promotion), errors);
     if (validate(promotion)) {
-      console.log('Promotion details:', promotion);
+      promotion.startDate = convertDateTimeToISO(promotion.startDate);
+      promotion.endDate = convertDateTimeToISO(promotion.endDate);
       promotionApiService
-        .create(promotion)
+        .update(promotion)
         .then((res) => {
           let result = res.data as MutationResponse<PromotionModel>;
           if (result.isSuccess) {
-            // Simulate submission process
-            setIsSubmitSuccessful(true);
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Cập nhật thành công',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            onHandleSubmitSuccess({ ...promotion, ...result.value });
 
-            // Reset isSubmitSuccessful to false after 3 seconds
-            setTimeout(() => {
-              setIsSubmitSuccessful(false);
-            }, 3000);
-
-            onHandleSubmitSuccess(result.value);
+            // set to init
+            isAnyRequestSubmit.current = false;
+            onClose();
           } else {
             if (result.error.code == '500') {
-              window.alert('Máy chủ gặp lỗi trong quá trình tạo mới, vui lòng thử lại!');
+              Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Oh no, lỗi máy chủ!',
+                text: 'Máy chủ gặp sự cố trong quá trình cập nhật, vui lòng thử lại!',
+                showConfirmButton: false,
+                timer: 1500,
+              });
             } else {
-              window.alert(
-                'Gặp lỗi trong quá trình tạo mới, vui lòng thử lại: ' + result.error.message,
-              );
+              Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Oh no!',
+                text: 'Gặp lỗi trong quá trình cập nhật, vui lòng thử lại: ' + result.error.message,
+                showConfirmButton: false,
+                timer: 1500,
+              });
             }
           }
         })
         .catch((err) => {
-          window.alert('Something went wrong: ' + err.message);
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Oh no, lỗi máy chủ!',
+            text: 'Máy chủ gặp sự cố trong quá trình cập nhật, vui lòng thử lại!',
+            showConfirmButton: false,
+            timer: 1500,
+          });
         });
-      onClose();
+      promotion.startDate = formatDateStringYYYYMMDD_HHMM(promotion.startDate);
+      promotion.endDate = formatDateStringYYYYMMDD_HHMM(promotion.endDate);
     }
   };
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center" size="4xl">
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      onClose={onClose}
+      hideCloseButton
+      placement="top-center"
+      size="4xl"
+    >
       <ModalContent>
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Tạo mới chương trình khuyến mãi
+              Cập nhật chương trình #{numberFormatUtilService.hashId(promotion.id)}
             </ModalHeader>
             <ModalBody>
               <div className="flex gap-3">
@@ -153,6 +176,7 @@ export default function PromotionUpdateModal({
                       onChange={handleChange}
                       isInvalid={errors.title ? true : false}
                       errorMessage={errors.title}
+                      required
                       fullWidth
                     />
                   </div>
@@ -172,8 +196,9 @@ export default function PromotionUpdateModal({
                   <div className="flex gap-1">
                     <Input
                       name="startDate"
-                      label="Ngày bắt đầu"
-                      type="date"
+                      label="Thời gian bắt đầu"
+                      type="datetime-local"
+                      required
                       value={promotion.startDate}
                       onChange={handleChange}
                       fullWidth
@@ -181,8 +206,9 @@ export default function PromotionUpdateModal({
                     />
                     <Input
                       name="endDate"
-                      label="Ngày kết thúc"
-                      type="date"
+                      label="Thời gian kết thúc"
+                      type="datetime-local"
+                      required
                       value={promotion.endDate}
                       onChange={handleChange}
                       fullWidth
@@ -196,6 +222,7 @@ export default function PromotionUpdateModal({
                   <div className="input-container">
                     <Select
                       name="applyType"
+                      isDisabled={true}
                       label="Loại áp dụng"
                       selectedKeys={new Set([promotion.applyType.toString()])}
                       onChange={handleChange}
@@ -292,10 +319,10 @@ export default function PromotionUpdateModal({
                   name="status"
                   isSelected={promotion.status == PromotionStatus.Active}
                   onValueChange={(checked) => {
-                    setPromotion((prevPromotion) => ({
-                      ...prevPromotion,
+                    setPromotion({
+                      ...promotion,
                       status: checked ? PromotionStatus.Active : PromotionStatus.UnActive,
-                    }));
+                    });
                   }}
                 >
                   Trạng thái khả dụng
@@ -306,23 +333,13 @@ export default function PromotionUpdateModal({
               <Button color="primary" onPress={handleSubmit}>
                 Lưu
               </Button>
-              <Button color="danger" variant="flat" onPress={onClose}>
-                Đóng
+              <Button color="danger" variant="flat" onPress={onCloseExtend}>
+                Hủy
               </Button>
             </ModalFooter>
           </>
         )}
       </ModalContent>
-      {isSubmitSuccessful && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg p-4 shadow-lg text-center">
-            <p className="text-xl font-bold text-green-500 mb-3">Tạo mới thành công!</p>
-            <Button color="success" variant="flat" onPress={() => setIsSubmitSuccessful(false)}>
-              Đóng
-            </Button>
-          </div>
-        </div>
-      )}
     </Modal>
   );
 }

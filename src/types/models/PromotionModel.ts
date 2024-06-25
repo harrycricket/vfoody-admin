@@ -1,3 +1,5 @@
+import { formatDateStringYYYYMMDD_HHMM } from '@/services/util-services/TimeFormatService';
+
 export enum PromotionApplyType {
   RateApply = 1,
   AmountApply = 2,
@@ -53,3 +55,22 @@ export const promotionApplyTypes = [
   { label: 'Áp dụng tỷ lệ', key: 1 },
   { label: 'Áp dụng giá trị', key: 2 },
 ];
+
+export const initPromotionSampleObject = {
+  id: 0,
+  title: '',
+  description: '',
+  bannerUrl:
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5UW3VOtxCrPlSPnHEWVi_OndZbv7IzamS6g&s',
+  amountRate: 0,
+  minimumOrderValue: 1000,
+  maximumApplyValue: 40000,
+  amountValue: 0,
+  applyType: PromotionApplyType.RateApply,
+  status: PromotionStatus.Active,
+  startDate: formatDateStringYYYYMMDD_HHMM(new Date().toISOString()),
+  endDate: formatDateStringYYYYMMDD_HHMM(new Date().toISOString()),
+  usageLimit: 100,
+  numberOfUsed: 0,
+  promotionType: 1,
+} as PromotionModel;
