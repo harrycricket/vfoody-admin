@@ -55,6 +55,7 @@ export type TableCustomProps = {
   filters?: TableCustomFilter[]; // New prop for array of filters
 
   renderCell: (item: any, columnKey: React.Key) => React.ReactNode;
+  handleRowClick: (id: number) => void;
   onReset: () => void;
 };
 
@@ -78,6 +79,7 @@ export default function TableCommonCustom<T>({
   filters = [],
 
   renderCell,
+  handleRowClick,
   onReset,
 }: TableCustomProps) {
   const router = useRouter();
@@ -236,7 +238,7 @@ export default function TableCommonCustom<T>({
           </TableHeader>
           <TableBody emptyContent="No data found" items={arrayData}>
             {(item) => (
-              <TableRow key={item.id}>
+              <TableRow key={item.id} onClick={() => handleRowClick(item.id)}>
                 {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
               </TableRow>
             )}

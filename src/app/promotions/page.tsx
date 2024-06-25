@@ -247,6 +247,16 @@ const PromotionPage: NextPage = () => {
         filters={[statusFilter, applyTypeFilter]}
         renderCell={renderCell}
         onReset={() => setQuery({} as PromotionQuery)}
+        handleRowClick={(id) => {
+          let promotion = promotions?.value?.items?.find((item) => item.id === id);
+          console.log('Click row: ', id, promotion);
+          if (promotion) {
+            setPromotionTarget(promotion);
+            onDetailOpen();
+          } else {
+            window.alert('Không tìm thấy chương trình khuyến mãi');
+          }
+        }}
       />
       <PromotionCreateModal
         isOpen={isCreateOpen}
@@ -263,10 +273,11 @@ const PromotionPage: NextPage = () => {
         onOpen={onDetailOpen}
         onOpenChange={onDetailOpenChange}
         onClose={onDetailClose}
-        onHandleSubmitSuccess={(promotion: PromotionModel) => {
-          setPromotionTarget(promotion);
-          refetch();
+        onToUpdate={() => {
+          onDetailClose();
+          onUpdateOpen();
         }}
+        onToDelete={() => {}}
       />
 
       <PromotionUpdateModal

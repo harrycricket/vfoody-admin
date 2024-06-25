@@ -22,6 +22,10 @@ import PromotionModel, {
 import { promotionApiService } from '@/services/api-services/api-service-instances';
 import usePromotionTargetState from '@/hooks/states/usePromotionTargetState';
 import MutationResponse from '@/types/responses/MutationReponse';
+import {
+  formatDateStringYYYYMMDD,
+  formatDateStringYYYYMMDD_HHMM,
+} from '@/services/util-services/TimeFormatService';
 
 interface CreatePromotionModalProps {
   isOpen: boolean;
@@ -52,8 +56,8 @@ export default function PromotionCreateModal({
     amountValue: 0,
     applyType: PromotionApplyType.RateApply,
     status: PromotionStatus.Active,
-    startDate: new Date().toDateString(),
-    endDate: new Date().toDateString(),
+    startDate: formatDateStringYYYYMMDD_HHMM(new Date().toISOString()),
+    endDate: formatDateStringYYYYMMDD_HHMM(new Date().toISOString()),
     usageLimit: 100,
     numberOfUsed: 0,
     promotionType: 1,
@@ -61,6 +65,7 @@ export default function PromotionCreateModal({
 
   const [errors, setErrors] = useState<any>({});
   const validate = (promotion: PromotionModel) => {
+    console.log('Validating promotion: ', promotion);
     let tempErrors: any = {};
     if (promotion.title.length < 6) tempErrors.title = 'Tiêu đề ít nhất 6 kí tự.';
     if (
@@ -75,7 +80,7 @@ export default function PromotionCreateModal({
     if (promotion.applyType == PromotionApplyType.AmountApply && promotion.amountValue < 1000)
       tempErrors.amountValue = 'Giá trị giảm giá cần lớn hơn hoặc bằng 1000 đồng.';
     if (new Date(promotion.startDate) > new Date(promotion.endDate))
-      tempErrors.startDate = 'Ngày bắt đầu cần trước hoặc bằng ngày kết thúc';
+      tempErrors.startDate = 'Thời gian bắt đầu cần trước hoặc bằng ngày kết thúc';
     if (promotion.usageLimit < 0)
       tempErrors.usageLimit = 'Giới hạn lượt sử dụng lớn hơn hoặc bằng 0.';
     setErrors(tempErrors);
@@ -172,8 +177,8 @@ export default function PromotionCreateModal({
                   <div className="flex gap-1">
                     <Input
                       name="startDate"
-                      label="Ngày bắt đầu"
-                      type="date"
+                      label="Thời gian bắt đầu"
+                      type="datetime-local"
                       value={promotion.startDate}
                       onChange={handleChange}
                       fullWidth
@@ -181,8 +186,8 @@ export default function PromotionCreateModal({
                     />
                     <Input
                       name="endDate"
-                      label="Ngày kết thúc"
-                      type="date"
+                      label="Thời gian kết thúc"
+                      type="datetime-local"
                       value={promotion.endDate}
                       onChange={handleChange}
                       fullWidth
