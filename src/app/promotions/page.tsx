@@ -21,9 +21,12 @@ import PromotionCreateModal from '@/components/promotions/PromotionCreateModal';
 import usePromotionTargetState from '@/hooks/states/usePromotionTargetState';
 import PromotionDetailModal from '@/components/promotions/PromotionDetailModal';
 import PromotionUpdateModal from '@/components/promotions/PromotionUpdateModal';
+import APICommonResponse from '@/types/responses/APICommonResponse';
+import Swal from 'sweetalert2';
+import MutationResponse from '@/types/responses/MutationReponse';
 
 const PromotionPage: NextPage = () => {
-  const { setModel: setPromotionTarget } = usePromotionTargetState();
+  const { model: promotion, setModel: setPromotionTarget } = usePromotionTargetState();
   const { range, selected, setSelected, isSpecificTimeFilter } = usePeriodTimeFilterState();
   const [statuses, setStatuses] = useState<Selection>(new Set(['0']));
   const [applyTypes, setApplyTypes] = useState<Selection>(new Set(['0']));
@@ -278,7 +281,134 @@ const PromotionPage: NextPage = () => {
           onDetailClose();
           onUpdateOpen();
         }}
-        onToDelete={() => {}}
+        onToDelete={async () => {
+          await Swal.fire({
+            title:
+              `Bạn muốn xóa chương trình: #` + numberFormatUtilService.hashId(promotion.id) + `?`,
+            text: promotion.title,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: 'orange',
+            cancelButtonColor: 'gray',
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không',
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              await promotionApiService
+                .update({ ...promotion, status: 3 })
+                .then((res) => {
+                  let result = res.data as MutationResponse<PromotionModel>;
+                  if (result.isSuccess) {
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title: 'Đã xóa chương trình #' + numberFormatUtilService.hashId(promotion.id),
+                      showConfirmButton: false,
+                      timer: 1500,
+                    });
+                    setPromotionTarget(result.value);
+                  } else {
+                    if (result.error.code == '500') {
+                      Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Oh no, lỗi máy chủ!',
+                        text: 'Máy chủ gặp sự cố, vui lòng thử lại!',
+                        showConfirmButton: false,
+                        timer: 1500,
+                      });
+                    } else {
+                      Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Oh no!',
+                        text: 'Gặp lỗi, vui lòng thử lại: ' + result.error.message,
+                        showConfirmButton: false,
+                        timer: 1500,
+                      });
+                    }
+                  }
+                })
+                .catch((err) => {
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Oh no, lỗi máy chủ!',
+                    text: 'Máy chủ gặp sự cố trong quá trình tạo mới, vui lòng thử lại!',
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
+                });
+            }
+          });
+          onDetailOpen();
+        }}
+        onToRecover={async () => {
+          await Swal.fire({
+            title:
+              `Bạn muốn khôi phục chương trình: #` +
+              numberFormatUtilService.hashId(promotion.id) +
+              `?`,
+            text: promotion.title,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: 'orange',
+            cancelButtonColor: 'gray',
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không',
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              await promotionApiService
+                .update({ ...promotion, status: 1 })
+                .then((res) => {
+                  let result = res.data as MutationResponse<PromotionModel>;
+                  if (result.isSuccess) {
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title:
+                        'Đã khôi phục chương trình #' +
+                        numberFormatUtilService.hashId(promotion.id),
+                      showConfirmButton: false,
+                      timer: 1500,
+                    });
+                    setPromotionTarget(result.value);
+                  } else {
+                    if (result.error.code == '500') {
+                      Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Oh no, lỗi máy chủ!',
+                        text: 'Máy chủ gặp sự cố, vui lòng thử lại!',
+                        showConfirmButton: false,
+                        timer: 1500,
+                      });
+                    } else {
+                      Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Oh no!',
+                        text: 'Gặp lỗi, vui lòng thử lại: ' + result.error.message,
+                        showConfirmButton: false,
+                        timer: 1500,
+                      });
+                    }
+                  }
+                })
+                .catch((err) => {
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Oh no, lỗi máy chủ!',
+                    text: 'Máy chủ gặp sự cố trong quá trình tạo mới, vui lòng thử lại!',
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
+                });
+            }
+          });
+          onDetailOpen();
+        }}
       />
 
       <PromotionUpdateModal

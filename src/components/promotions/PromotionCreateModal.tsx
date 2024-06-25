@@ -144,7 +144,7 @@ export default function PromotionCreateModal({
                 position: 'center',
                 icon: 'error',
                 title: 'Oh no!',
-                text: "Gặp lỗi trong quá trình tạo mới, vui lòng thử lại: ' + result.error.message",
+                text: 'Gặp lỗi trong quá trình tạo mới, vui lòng thử lại: ' + result.error.message,
                 showConfirmButton: false,
                 timer: 1500,
               });

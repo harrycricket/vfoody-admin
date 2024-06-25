@@ -36,6 +36,7 @@ interface CreatePromotionModalProps {
   onClose: () => void;
   onToUpdate: () => void;
   onToDelete: () => void;
+  onToRecover: () => void;
 }
 
 export default function PromotionDetailModal({
@@ -45,6 +46,7 @@ export default function PromotionDetailModal({
   onClose,
   onToUpdate,
   onToDelete,
+  onToRecover,
 }: CreatePromotionModalProps) {
   const { model: promotion } = usePromotionTargetState();
   return (
@@ -71,11 +73,15 @@ export default function PromotionDetailModal({
                   </span>
                 </div>
                 <div className="flex gap-2 items-center mr-4">
-                  <Button color="secondary" variant="ghost">
+                  <Button color="secondary" variant="ghost" onClick={() => onToUpdate()}>
                     Chỉnh sửa
                   </Button>
-                  {promotion.status != PromotionStatus.Deleted && (
-                    <Button color="danger" variant="ghost">
+                  {promotion.status == PromotionStatus.Deleted ? (
+                    <Button color="danger" variant="ghost" onClick={() => onToRecover()}>
+                      Khôi phục
+                    </Button>
+                  ) : (
+                    <Button color="danger" variant="ghost" onClick={() => onToDelete()}>
                       Xóa
                     </Button>
                   )}
