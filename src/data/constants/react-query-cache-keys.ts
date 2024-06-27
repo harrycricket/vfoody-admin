@@ -5,6 +5,7 @@ const REACT_QUERY_CACHE_KEYS = {
   DASHBOARD_REVENUE: ['dashboard', 'revenue'],
   DASHBOARD_GROWTH: ['dashboard', 'growth'],
   PROMOTION_PLATFROM: ['promotion', 'platform'],
+  COMMISION: ['commision'],
 };
 
 export default REACT_QUERY_CACHE_KEYS;
