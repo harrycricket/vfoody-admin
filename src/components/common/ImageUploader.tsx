@@ -10,9 +10,9 @@ interface ImageUploaderResponse extends APICommonResponse {
 }
 
 const UNAVAILABLE_IMAGE_URL =
-  'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg';
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDmLmh7aQYs6uH6OgqySO76DH5CVwRowkSXVFz4muN64UgjnVCRy-YU8gqe31BNwroU84&usqp=CAU';
 const NO_IMAGE_URL =
-  'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg';
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDmLmh7aQYs6uH6OgqySO76DH5CVwRowkSXVFz4muN64UgjnVCRy-YU8gqe31BNwroU84&usqp=CAU';
 const UPLOAD_IMAGE_FAIL_URL =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutCAi6Zmu2u4Id0FZg7Mxh6IlEAs0b4VkMT2CUJGLQ4uzKEt6Fipk8PBuo0oWvBmG3y0&usqp=CAU';
 

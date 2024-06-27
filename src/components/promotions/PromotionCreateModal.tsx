@@ -20,7 +20,7 @@ import PromotionModel, {
   promotionApplyTypes,
   initPromotionSampleObject,
 } from '@/types/models/PromotionModel';
-import { promotionApiService } from '@/services/api-services/api-service-instances';
+import { endpoints, promotionApiService } from '@/services/api-services/api-service-instances';
 import usePromotionTargetState from '@/hooks/states/usePromotionTargetState';
 import MutationResponse from '@/types/responses/MutationReponse';
 import {
@@ -29,6 +29,7 @@ import {
   formatDateStringYYYYMMDD_HHMM,
 } from '@/services/util-services/TimeFormatService';
 import Swal from 'sweetalert2';
+import ImageUploader from '../common/ImageUploader';
 
 interface CreatePromotionModalProps {
   isOpen: boolean;
@@ -46,7 +47,10 @@ export default function PromotionCreateModal({
   onHandleSubmitSuccess,
 }: CreatePromotionModalProps) {
   const isAnyRequestSubmit = useRef(false);
-  const [promotion, setPromotion] = useState<PromotionModel>({ ...initPromotionSampleObject });
+  const [promotion, setPromotion] = useState<PromotionModel>({
+    ...initPromotionSampleObject,
+    bannerUrl: '',
+  });
 
   const [errors, setErrors] = useState<any>({});
   const validate = (promotion: PromotionModel) => {
@@ -125,7 +129,7 @@ export default function PromotionCreateModal({
 
             // set to init
             isAnyRequestSubmit.current = false;
-            setPromotion({ ...initPromotionSampleObject });
+            setPromotion({ ...initPromotionSampleObject, bannerUrl: '' });
             onClose();
           } else {
             if (result.error.code == '500') {
@@ -198,7 +202,13 @@ export default function PromotionCreateModal({
                       fullWidth
                     />
                   </div>
-                  <Image width={'100%'} radius="md" src={promotion.bannerUrl} />
+                  <ImageUploader
+                    uploadServiceEndpoint={endpoints.PROMOTION_IMAGE_UPLOAD}
+                    imageURL={promotion.bannerUrl}
+                    setImageURL={(url) => {
+                      setPromotion({ ...promotion, bannerUrl: url });
+                    }}
+                  />
                 </div>
                 <div className="flex-1 flex flex-col justify-between">
                   <div className="flex gap-1">

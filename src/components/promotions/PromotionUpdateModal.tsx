@@ -28,7 +28,6 @@ import Swal from 'sweetalert2';
 import usePromotionTargetState from '@/hooks/states/usePromotionTargetState';
 import MutationResponse from '@/types/responses/MutationReponse';
 import numberFormatUtilService from '@/services/util-services/NumberFormatUtilService';
-import ImageUpload from '../common/ImageUploader';
 import ImageUploader from '../common/ImageUploader';
 
 interface UpdatePromotionModalProps {
@@ -214,7 +213,7 @@ export default function PromotionUpdateModal({
                     setImageURL={(url) => {
                       setPromotion({ ...promotion, bannerUrl: url });
                     }}
-                  ></ImageUploader>
+                  />
                 </div>
                 <div className="flex-1 flex flex-col justify-between">
                   <div className="flex gap-1">
