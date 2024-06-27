@@ -19,7 +19,7 @@ import PromotionModel, {
   promotionStatuses,
   promotionApplyTypes,
 } from '@/types/models/PromotionModel';
-import { promotionApiService } from '@/services/api-services/api-service-instances';
+import { endpoints, promotionApiService } from '@/services/api-services/api-service-instances';
 import {
   convertDateTimeToISO,
   formatDateStringYYYYMMDD_HHMM,
@@ -28,6 +28,7 @@ import Swal from 'sweetalert2';
 import usePromotionTargetState from '@/hooks/states/usePromotionTargetState';
 import MutationResponse from '@/types/responses/MutationReponse';
 import numberFormatUtilService from '@/services/util-services/NumberFormatUtilService';
+import ImageUploader from '../common/ImageUploader';
 
 interface UpdatePromotionModalProps {
   isOpen: boolean;
@@ -122,6 +123,7 @@ export default function PromotionUpdateModal({
               showConfirmButton: false,
               timer: 1500,
             });
+            console.log('Updated result', { promotion, ...result.value });
             onHandleSubmitSuccess({ ...promotion, ...result.value });
 
             // set to init
@@ -205,7 +207,13 @@ export default function PromotionUpdateModal({
                       fullWidth
                     />
                   </div>
-                  <Image width={'100%'} radius="md" src={promotion.bannerUrl} />
+                  <ImageUploader
+                    uploadServiceEndpoint={endpoints.PROMOTION_IMAGE_UPLOAD}
+                    imageURL={promotion.bannerUrl}
+                    setImageURL={(url) => {
+                      setPromotion({ ...promotion, bannerUrl: url });
+                    }}
+                  />
                 </div>
                 <div className="flex-1 flex flex-col justify-between">
                   <div className="flex gap-1">
