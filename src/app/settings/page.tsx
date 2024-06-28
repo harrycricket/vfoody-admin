@@ -131,7 +131,7 @@ const Settings = () => {
             readOnly
             value={(commissionGetReponse?.value.commissionRate || 0).toString()}
             placeholder="Nhập chiết khấu..."
-            className="text-center max-w-[150px] font-bold mt-2 justify-center"
+            className="text-center max-w-[170px] font-bold mt-2 justify-center"
             startContent={
               <div
                 className="relative cursor-pointer flex justify-center items-center w-[150px] hover:scale-110 hover:text-blue-500 transition-transform duration-200"
