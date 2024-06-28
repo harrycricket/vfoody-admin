@@ -446,7 +446,7 @@ const PromotionPage: NextPage = () => {
         onHandleSubmitSuccess={(promotion: PromotionModel) => {
           setPromotionTarget(promotion);
           refetch();
-          onToDetailOpen(promotion.id);
+          onDetailOpen();
         }}
       />
     </div>

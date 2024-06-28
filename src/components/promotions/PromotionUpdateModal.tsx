@@ -123,7 +123,6 @@ export default function PromotionUpdateModal({
               showConfirmButton: false,
               timer: 1500,
             });
-            console.log('Updated result', { promotion, ...result.value });
             onHandleSubmitSuccess({ ...promotion, ...result.value });
 
             // set to init
@@ -215,7 +214,7 @@ export default function PromotionUpdateModal({
                     }}
                   />
                 </div>
-                <div className="flex-1 flex flex-col justify-between">
+                <div className="flex-1 flex flex-col justify-between gap-2">
                   <div className="flex gap-1">
                     <Input
                       name="startDate"

@@ -210,7 +210,7 @@ export default function PromotionCreateModal({
                     }}
                   />
                 </div>
-                <div className="flex-1 flex flex-col justify-between">
+                <div className="flex-1 flex flex-col justify-between gap-2">
                   <div className="flex gap-1">
                     <Input
                       name="startDate"
