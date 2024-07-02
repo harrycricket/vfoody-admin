@@ -23,7 +23,7 @@ export function formatDate(dateString: string) {
   return `${day}/${month}/${year}`;
 }
 
-export const formatCurrency = (value: number | string) => {
+export const formatCurrency = (value: number | string | undefined | null) => {
   // Handle undefined, null, or empty values
   if (value === undefined || value === null) {
     value = 0;

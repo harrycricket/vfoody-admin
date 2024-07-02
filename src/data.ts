@@ -14,55 +14,6 @@ const transactionStatus = [
   { name: 'Đã hủy', uid: 'Đã hủy' },
 ];
 
-const transactionDetail = {
-  id: 1,
-  shopName: 'Tiệm ăn tháng năm',
-  customerName: 'Huỳnh Văn Phướt',
-  phoneNumber: '0372548189',
-  status: 'Đã hoàn thành',
-  orderDate: '2024-06-14 10:23:22',
-  address: 'Tòa S202 Vinhomes Grand Park',
-  products: [
-    {
-      productId: 1,
-      name: 'Bún chả thơm ngon',
-      price: 50000,
-      quantity: 1,
-      image:
-        'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716573601283-9fb9570b-a1b2-4375-bce2-a73318b1dd8e',
-      question: [
-        { id: 1, name: 'Nước mắm', value: 'Ít', price: 0 },
-        { id: 2, name: 'Topping', value: 'Thêm 1 phần chả', price: 5000 },
-        { id: 3, name: 'Rau sống', value: 'Nhiều', price: 0 },
-      ],
-    },
-    {
-      productId: 2,
-      name: 'Nước chanh mát lạnh',
-      price: 20000,
-      quantity: 2,
-      image:
-        'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716573336608-02b81f10-0f34-4ad0-a0f9-759ab5cc8601',
-      question: [
-        { id: 1, name: 'Lượng đường', value: 'Vừa', price: 0 },
-        { id: 2, name: 'Lượng đá', value: 'Bỏ riêng', price: 0 },
-        { id: 3, name: 'Kích cỡ', value: 'Lớn', price: 7000 },
-      ],
-    },
-    {
-      productId: 3,
-      name: 'Gỏi cuốn tươi ngon',
-      price: 35000,
-      quantity: 1,
-      image:
-        'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716573222065-3dfc243d-5e6e-44c3-89b3-f115de0bd411',
-      question: [{ id: 1, name: 'Nước chấm', value: 'Sốt siêu cay', price: 0 }],
-    },
-  ],
-  totalPrice: 144000,
-  note: 'Bỏ riêng nước chanh với thức ăn',
-};
-
 // Manage shops
 const shopColumns = [
   { name: 'Thứ tự cửa hàng', uid: 'id', sortable: true },
@@ -106,20 +57,6 @@ const accountType = [
   { name: 'Khách hàng', uid: 'Khách hàng' },
   { name: 'Chủ cửa hàng', uid: 'Chủ cửa hàng' },
 ];
-
-// Product Detail
-const productDetail = {
-  id: 1,
-  shopName: 'Tiệm ăn tháng năm',
-  name: 'Phở gà',
-  des: 'Món phở gà thơm ngon',
-  price: 45000,
-  createdDate: '2024-05-21 21:07:55',
-  totalOrder: 100,
-  status: 'Đang bán',
-  image:
-    'https://v-foody.s3.ap-southeast-1.amazonaws.com/image/1716572943501-2b4a8028-27e2-44cf-8691-10de31c750cf',
-};
 
 // promotions
 const PROMOTIONS_SAMPLE_LIST = [
@@ -288,12 +225,10 @@ const PROMOTIONS_SAMPLE_LIST = [
 export {
   transactionColumns,
   transactionStatus,
-  transactionDetail,
   shopColumns,
   shopStatus,
   accountColumns,
   accountStatus,
   accountType,
-  productDetail,
   PROMOTIONS_SAMPLE_LIST,
 };

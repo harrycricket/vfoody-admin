@@ -39,7 +39,7 @@ export default function AccountDetails() {
           rootName="Quản lý tài khoản"
           childrenName="Thông tin tài khoản"
         />
-        <div className="p-4 bg-slate-100 rounded-lg flex gap-4">
+        <div className="p-4 shadow-md rounded-lg flex gap-4">
           <Image
             src={accountDetail?.avatarUrl || ''}
             width={200}

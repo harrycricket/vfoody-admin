@@ -71,7 +71,7 @@ export default function ShopDetails() {
           rootName="Quản lý cửa hàng"
           childrenName="Thông tin cửa hàng"
         />
-        <div className="px-8 py-4 bg-slate-100 rounded-lg">
+        <div className="px-8 py-4 shadow-md rounded-lg">
           <div className="flex flex-row justify-between">
             <div className="relative">
               <Image
@@ -91,7 +91,9 @@ export default function ShopDetails() {
             <div className="w-2/3 flex flex-col">
               <div className="flex items-center justify-between">
                 <h2 className="text-3xl font-bold text-primary">{shopDetail?.shopName}</h2>
-                <Button className="text-base text-white bg-green-500">
+                <Button
+                  className={`text-base text-white bg-green-500 ${shopDetail?.status === 'Đã phê duyệt' ? 'bg-green-500' : 'bg-gray-500'}`}
+                >
                   {shopDetail?.status === 'Đã phê duyệt' ? shopDetail?.active : shopDetail?.status}
                 </Button>
               </div>
@@ -134,18 +136,28 @@ export default function ShopDetails() {
           </div>
           <Divider className="mt-24 mb-4" />
           <div>
-            <h2 className="text-2xl font-bold mb-4">Sản phẩm đang bán:</h2>
-            <div className="flex flex-row justify-start flex-wrap">
-              {currentProducts.map((product) => (
-                <Product
-                  key={product.id}
-                  image={product.imageUrl}
-                  name={product.name}
-                  price={product.price}
-                  des={product.description}
-                />
-              ))}
-            </div>
+            {currentProducts.length ? (
+              <>
+                <h2 className="text-2xl font-bold mb-4">Sản phẩm đang bán:</h2>
+                <div className="flex flex-row justify-start flex-wrap">
+                  {currentProducts.map((product) => (
+                    <Product
+                      key={product.id}
+                      productId={product.id}
+                      shopId={shopDetail?.id}
+                      image={product.imageUrl}
+                      name={product.name}
+                      price={product.price}
+                      des={product.description}
+                    />
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="text-center text-red-500 text-xl font-bold">
+                Không có sản phẩm nào đang được bán
+              </div>
+            )}
           </div>
         </div>
         <div className="flex justify-center mt-8">

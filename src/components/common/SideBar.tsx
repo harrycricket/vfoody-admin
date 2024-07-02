@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IconType } from 'react-icons';
 import { FaRegUser } from 'react-icons/fa';
 import { MdOutlineDashboard, MdOutlineReportProblem } from 'react-icons/md';
@@ -27,8 +27,20 @@ export const SibarItemPropsList: Array<SibarItemProps> = [
 ];
 const SideBar = ({ activeContentIndex }: { activeContentIndex: number }) => {
   const router = useRouter();
-  const handleLogout = () => {
-    // handle logout here
+
+  const isAuthenticated = () => {
+    const token = localStorage.getItem('token');
+    return token !== null;
+  };
+
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      router.push('/login');
+    }
+  }, [router]);
+
+  const handleLogout = async () => {
+    localStorage.removeItem('token');
     router.push('/login');
   };
 
