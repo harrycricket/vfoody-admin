@@ -1,9 +1,9 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import { ThemeSwitch } from '@/components/common/theme-switch';
+import apiClient from '@/services/api-services/api-client';
 import { Button, Card, CardBody, CardFooter, CardHeader, Image, Input } from '@nextui-org/react';
-import React, { useState } from 'react';
-import authService from '@/services/auth-services/auth-service';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 const Login = () => {
   const router = useRouter();
@@ -38,14 +38,35 @@ const Login = () => {
       return;
     }
 
-    // Check if email and password match the sample credentials
-    if (await authService.login(email, password)) {
-      // Redirect to dashboard if login is successful
-      router.push('/dashboard');
-    } else {
-      // Show error message if login fails
+    const payload = {
+      email,
+      password,
+    };
+
+    const responseData = await apiClient.post('customer/login', payload);
+    console.log(payload);
+
+    if (responseData.data.isFailure) {
       setError('Email hoặc mật khẩu không đúng');
+      return;
     }
+
+    if (responseData.data.value.accountResponse.roleName !== 'Admin') {
+      setError('Bạn không có quyền truy cập');
+      return;
+    }
+    localStorage.setItem('token', responseData.data.value.accessTokenResponse.accessToken);
+    console.log(responseData.data.value.accessTokenResponse.accessToken, 'accessToken');
+    router.push('/dashboard');
+
+    // Check if email and password match the sample credentials
+    // if (await authService.login(email, password)) {
+    //   // Redirect to dashboard if login is successful
+    //   router.push('/dashboard');
+    // } else {
+    //   // Show error message if login fails
+    //   setError('Email hoặc mật khẩu không đúng');
+    // }
   };
 
   return (

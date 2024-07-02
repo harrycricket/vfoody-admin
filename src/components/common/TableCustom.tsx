@@ -294,7 +294,7 @@ export default function TableCustom({
         </div>
       </div>
     );
-  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+  }, [page, pages]);
 
   return (
     <AdminLayout activeContentIndex={indexPage}>

@@ -5,16 +5,18 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 type Props = {
+  productId: number;
+  shopId: number | undefined;
   name: string;
   des: string;
   price: number;
   image: string;
 };
 
-export default function Product({ name, price, image, des }: Props) {
+export default function Product({ productId, shopId, name, price, image, des }: Props) {
   const router = useRouter();
   const handleClick = () => {
-    router.push('/shops/shop-details/product-details');
+    router.push(`/shops/shop-details/product-details?shopId=${shopId}&productId=${productId}`);
   };
   return (
     <div className="w-1/2 cursor-pointer" onClick={handleClick}>

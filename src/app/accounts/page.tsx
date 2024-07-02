@@ -16,7 +16,7 @@ export default function Accounts() {
   useEffect(() => {
     (async () => {
       try {
-        const responseData = await apiClient.get('admin/account/all');
+        const responseData = await apiClient.get('admin/account/all?pageSize=200&pageIndex=1');
         if (responseData.data.isSuccess) {
           setAccounts(responseData.data?.value?.items);
         } else {
