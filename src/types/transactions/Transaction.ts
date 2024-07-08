@@ -1,4 +1,10 @@
 export default interface Transaction {
+  id: number;
+  shopName: string;
+  customerName: string;
+  price: number;
+  orderDate: string;
+  status: number;
   orderInfo: {
     orderId: number;
     orderStatus: number;
