@@ -33,11 +33,11 @@ const SideBar = ({ activeContentIndex }: { activeContentIndex: number }) => {
     return token !== null;
   };
 
-  useEffect(() => {
-    if (!isAuthenticated()) {
-      router.push('/login');
-    }
-  }, [router]);
+  // useEffect(() => {
+  //   if (!isAuthenticated()) {
+  //     router.push('/login');
+  //   }
+  // }, [router]);
 
   const handleLogout = async () => {
     localStorage.removeItem('token');
