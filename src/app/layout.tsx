@@ -3,6 +3,7 @@ import { Metadata, Viewport } from 'next';
 import { Roboto } from 'next/font/google';
 import NextUiProvider from '../configs/providers/NextUiProvider';
 import './globals.css';
+import AuthProvider from '@/configs/providers/AuthProvider';
 const roboto = Roboto({ subsets: ['vietnamese'], weight: ['400', '500', '700', '900'] });
 
 export const metadata: Metadata = {
@@ -32,7 +33,9 @@ export default async function RootLayout({
     <html lang="en">
       <body className={roboto.className}>
         <NextUiProvider themeProps={{ attribute: 'class', defaultTheme: 'dark', children }}>
-          <TanStackProvider>{children}</TanStackProvider>
+          <TanStackProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </TanStackProvider>
         </NextUiProvider>
       </body>
     </html>
