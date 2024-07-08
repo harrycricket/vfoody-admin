@@ -18,7 +18,7 @@ const Selector = ({ label, selected, options, onSelect, width }: Props) => {
       label={label}
       items={options}
       variant="bordered"
-      placeholder="Select an animal"
+      placeholder="Chọn khoảng thời gian"
       selectedKeys={[selected]}
       className={`w-[${width}]`}
       onChange={(event) => {
