@@ -2,9 +2,8 @@
 import BreadcrumbsCustom from '@/components/common/Breadcrumbs';
 import AdminLayout from '@/components/layouts/AdminLayout';
 import apiClient from '@/services/api-services/api-client';
-// import { accountDetail } from '@/data';
-import Account, { AccountStatus } from '@/types/accounts/Account';
-import { formatCurrency, formatDate, formatPhoneNumber } from '@/util';
+import Account from '@/types/accounts/Account';
+import { formatDate, formatPhoneNumber } from '@/util';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -70,20 +69,14 @@ export default function AccountDetails() {
               Trạng thái:{' '}
               <strong
                 className={`${
-                  accountDetail?.status === AccountStatus.Verify
+                  accountDetail?.status === 'Đang hoạt động'
                     ? 'text-green-500'
-                    : accountDetail?.status === AccountStatus.Ban
+                    : accountDetail?.status === 'Đã bị cấm'
                       ? 'text-red-500'
                       : 'text-gray-500'
                 }`}
               >
-                {accountDetail?.status === AccountStatus.Verify
-                  ? 'Đang hoạt động'
-                  : accountDetail?.status === AccountStatus.Ban
-                    ? 'Đã bị cấm'
-                    : accountDetail?.status === AccountStatus.Delete
-                      ? 'Đã xóa'
-                      : 'Chưa xác thực'}
+                {accountDetail?.status}
               </strong>
             </p>
           </div>
