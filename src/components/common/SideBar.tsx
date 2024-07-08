@@ -64,7 +64,10 @@ const SideBar = ({ activeContentIndex }: { activeContentIndex: number }) => {
               </Link>
             </li>
           ))}
-          <Button className="w-full text-base" onClick={handleLogout}>
+          <Button
+            className="w-full font-medium text-base hover:text-primary hover:bg-red-100"
+            onClick={handleLogout}
+          >
             Đăng xuất
           </Button>
         </ul>
