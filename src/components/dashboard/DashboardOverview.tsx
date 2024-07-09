@@ -26,6 +26,11 @@ const DashboardOverview = () => {
     [range],
   );
 
+  const totalTradingRate = data ? Math.round(data.value.totalTradingRate) : 0;
+  const totalRevenueRate = data ? Math.round(data.value.totalRevenueRate) : 0;
+  const totalOrderRate = data ? Math.round(data.value.totalOrderRate) : 0;
+  const totalUserRate = data ? Math.round(data.value.totalUserRate) : 0;
+
   return (
     <div className="grid grid-cols-2 gap-4 w-full">
       <div className="bg-white p-6 rounded-lg shadow-md flex items-center gap-4">
@@ -58,7 +63,7 @@ const DashboardOverview = () => {
               {isLoading && data ? (
                 <Skeleton className="flex rounded-full w-20 h-8" />
               ) : (
-                `${Math.abs(data?.value.totalTradingRate || 0)}% (${data?.value.dayCompareRate} ngày)`
+                `${Math.abs(totalTradingRate)}% (${data?.value.dayCompareRate} ngày)`
               )}
             </span>
           </div>
@@ -94,7 +99,7 @@ const DashboardOverview = () => {
               {isLoading && data ? (
                 <Skeleton className="flex rounded-full w-20 h-8" />
               ) : (
-                `${Math.abs(data?.value.totalRevenueRate || 0)}% (${data?.value.dayCompareRate} ngày)`
+                `${Math.abs(totalRevenueRate)}% (${data?.value.dayCompareRate} ngày)`
               )}
             </span>
           </div>
@@ -128,7 +133,7 @@ const DashboardOverview = () => {
               {isLoading && data ? (
                 <Skeleton className="flex rounded-full w-20 h-8" />
               ) : (
-                `${Math.abs(data?.value.totalOrderRate || 0)}% (${data?.value.dayCompareRate} ngày)`
+                `${Math.abs(totalOrderRate)}% (${data?.value.dayCompareRate} ngày)`
               )}
             </span>
           </div>
@@ -163,7 +168,7 @@ const DashboardOverview = () => {
               {isLoading && data ? (
                 <Skeleton className="flex rounded-full w-20 h-8" />
               ) : (
-                `${Math.abs(data?.value.totalUserRate || 0)}% (${data?.value.dayCompareRate} ngày)`
+                `${Math.abs(totalUserRate)}% (${data?.value.dayCompareRate} ngày)`
               )}
             </span>
           </div>
