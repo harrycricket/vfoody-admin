@@ -6,8 +6,7 @@ import apiClient from '@/services/api-services/api-client';
 import { DashboardOverviewAPIReponse } from '@/types/responses/DashboardResponse';
 import React from 'react';
 import Chart from 'react-apexcharts';
-const dashboardOverviewEndpoint =
-  'https://my-json-server.typicode.com/duckodei/vfoody-admin-sample-api/overview/';
+const dashboardOverviewEndpoint = '/admin/dashboard/overview';
 const DashboardGrowthChart = () => {
   const { range } = usePeriodTimeFilterState();
   const { data, isLoading, error } = useFetchWithRQWithFetchFunc(
@@ -20,9 +19,9 @@ const DashboardGrowthChart = () => {
         .then((response) => response.data),
     [range],
   );
-  const totalRevenueRate = data ? data.value.totalRevenueRate : 0;
-  const totalOrderRate = data ? data.value.totalOrderRate : 0;
-  const totalUserRate = data ? data.value.totalUserRate : 0;
+  const totalRevenueRate = data ? Math.round(data.value.totalRevenueRate) : 0;
+  const totalOrderRate = data ? Math.round(data.value.totalOrderRate) : 0;
+  const totalUserRate = data ? Math.round(data.value.totalUserRate) : 0;
   return (
     <div className="bg-white p-6 rounded-lg shadow-md flex flex-col w-full">
       <h2 className="text-xl font-semibold mb-4">Growh Rate</h2>

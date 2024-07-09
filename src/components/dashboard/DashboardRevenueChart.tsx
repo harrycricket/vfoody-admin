@@ -7,8 +7,7 @@ import { DashboardRevenueAPIReponse } from '@/types/responses/DashboardResponse'
 import React from 'react';
 import Chart, { Props } from 'react-apexcharts';
 
-const dashboardRevenueEndpoint =
-  'https://my-json-server.typicode.com/duckodei/vfoody-admin-sample-api/revenue/';
+const dashboardRevenueEndpoint = 'admin/dashboard/chart/revenue';
 
 const DashboardRevenueChart = () => {
   const { range } = usePeriodTimeFilterState();

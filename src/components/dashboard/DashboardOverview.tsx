@@ -11,8 +11,7 @@ import { FcMoneyTransfer } from 'react-icons/fc';
 import { GiBuyCard } from 'react-icons/gi';
 import numberFormatUtilServicevice from '@/services/util-services/NumberFormatUtilService';
 
-const dashboardOverviewEndpoint =
-  'https://my-json-server.typicode.com/duckodei/vfoody-admin-sample-api/overview/';
+const dashboardOverviewEndpoint = '/admin/dashboard/overview';
 
 const DashboardOverview = () => {
   const { range } = usePeriodTimeFilterState();

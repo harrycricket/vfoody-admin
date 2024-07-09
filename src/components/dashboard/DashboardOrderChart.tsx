@@ -7,8 +7,7 @@ import { DashboardOrderAPIReponse } from '@/types/responses/DashboardResponse';
 import React from 'react';
 import Chart, { Props } from 'react-apexcharts';
 
-const dashboardOrderEndpoint =
-  'https://my-json-server.typicode.com/duckodei/vfoody-admin-sample-api/order/';
+const dashboardOrderEndpoint = 'admin/dashboard/chart/order';
 const getLast7Days = () => {
   const data = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as string[];
   let today = new Date().getDay();
