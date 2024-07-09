@@ -8,6 +8,7 @@ const Header = () => {
     <div className="flex gap-5 justify-between items-center pl-4 pr-4">
       <div className="relative bg-white flex-1">
         <Input
+          disabled
           type="text"
           placeholder="Search..."
           className="w-full"

@@ -7,8 +7,7 @@ import { DashboardRevenueAPIReponse } from '@/types/responses/DashboardResponse'
 import React from 'react';
 import Chart, { Props } from 'react-apexcharts';
 
-const dashboardRevenueEndpoint =
-  'https://my-json-server.typicode.com/duckodei/vfoody-admin-sample-api/revenue/';
+const dashboardRevenueEndpoint = 'admin/dashboard/chart/revenue';
 
 const DashboardRevenueChart = () => {
   const { range } = usePeriodTimeFilterState();
@@ -23,8 +22,8 @@ const DashboardRevenueChart = () => {
     [range],
   );
 
-  const lastYear = data?.value?.lastYear ? data.value.lastYear.toString() : 'Last year';
-  const thisYear = data?.value?.thisYear ? data.value.thisYear.toString() : 'This year';
+  const lastYear = data?.value?.lastYear ? data.value.lastYear.toString() : 'Năm ngoái';
+  const thisYear = data?.value?.thisYear ? data.value.thisYear.toString() : 'Năm nay';
   const state: Props['series'] = [
     {
       name: lastYear,
@@ -64,18 +63,18 @@ const DashboardRevenueChart = () => {
 
     xaxis: {
       categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
+        'Tháng 1',
+        'Tháng 2',
+        'Tháng 3',
+        'Tháng 4',
+        'Tháng 5',
+        'Tháng 6',
+        'Tháng 7',
+        'Tháng 8',
+        'Tháng 9',
+        'Tháng 10',
+        'Tháng 11',
+        'Tháng 12',
       ],
       labels: {
         // show: false,
@@ -93,7 +92,7 @@ const DashboardRevenueChart = () => {
     },
     yaxis: {
       title: {
-        text: 'Millions VND',
+        text: 'triệu đồng',
         rotate: -90,
         offsetX: 0,
         offsetY: 0,
@@ -132,7 +131,7 @@ const DashboardRevenueChart = () => {
   };
   return (
     <div className="bg-white p-6 rounded-lg shadow-md w-full">
-      <h2 className="text-xl font-semibold mb-4">Total Revenue</h2>
+      <h2 className="text-xl font-semibold mb-4">Doanh thu</h2>
       <div id="chart">
         <Chart options={options} series={state} type="area" height={240} />
       </div>

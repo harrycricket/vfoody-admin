@@ -6,19 +6,20 @@ interface OptionItem {
 }
 interface Props {
   label: string;
+  placeholder: string;
   selected: number | string;
   options: OptionItem[];
   onSelect: (id: number | string) => void;
   width: string;
 }
 
-const Selector = ({ label, selected, options, onSelect, width }: Props) => {
+const Selector = ({ label, placeholder, selected, options, onSelect, width }: Props) => {
   return (
     <Select
       label={label}
       items={options}
       variant="bordered"
-      placeholder="Chọn khoảng thời gian"
+      placeholder={placeholder}
       selectedKeys={[selected]}
       className={`w-[${width}]`}
       onChange={(event) => {
