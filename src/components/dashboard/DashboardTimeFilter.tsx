@@ -24,12 +24,12 @@ const DashboardTimeFilter = () => {
   // Calculate initial range values
   const { range, setRange, setDateFrom, setDateTo, selected, setSelected, isSpecificTimeFilter } =
     usePeriodTimeFilterState();
+  const [choice, setChoice] = useState('1');
 
   //event handling
-  const onChangeDashboardTimeFilterQuery = (id: number) => {
-    let choice = parseInt(id.toString());
-    setSelected(choice);
-    console.log(choice, selected, range);
+  const onChangeDashboardTimeFilterQuery = (key: number) => {
+    setSelected(key);
+    console.log(key, selected, range);
   };
 
   const onDateRangePickerChange = (range: RangeValue<DateValue>) => {
@@ -46,8 +46,12 @@ const DashboardTimeFilter = () => {
       <Selector
         width="180px"
         label="Lọc theo thời gian"
-        onSelect={(id) => onChangeDashboardTimeFilterQuery(parseInt(id.toString()))}
-        selected={selected}
+        placeholder="Chọn khoảng thời gian"
+        onSelect={(id) => {
+          setChoice(id.toString());
+          onChangeDashboardTimeFilterQuery(parseInt(id.toString()));
+        }}
+        selected={choice}
         options={[
           { key: 1, label: 'Tất cả' },
           { key: 2, label: '7 ngày gần nhất' },
