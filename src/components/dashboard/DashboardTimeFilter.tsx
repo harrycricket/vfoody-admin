@@ -24,7 +24,7 @@ const DashboardTimeFilter = () => {
   // Calculate initial range values
   const { range, setRange, setDateFrom, setDateTo, selected, setSelected, isSpecificTimeFilter } =
     usePeriodTimeFilterState();
-  const [choice, setChoice] = useState('1');
+  const [choice, setChoice] = useState(selected.toString());
 
   //event handling
   const onChangeDashboardTimeFilterQuery = (key: number) => {
