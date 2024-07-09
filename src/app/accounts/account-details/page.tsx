@@ -1,16 +1,15 @@
 'use client';
 import BreadcrumbsCustom from '@/components/common/Breadcrumbs';
 import AdminLayout from '@/components/layouts/AdminLayout';
+import useIdListState from '@/hooks/states/useIdListState';
 import apiClient from '@/services/api-services/api-client';
 import Account from '@/types/accounts/Account';
 import { formatDate, formatPhoneNumber } from '@/util';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function AccountDetails() {
-  const account = useSearchParams();
-  const accountId = account.get('accountId');
+  const { accountId } = useIdListState();
   const [accountDetail, setAccountDetail] = useState<Account>();
 
   useEffect(() => {

@@ -11,7 +11,7 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'v-foody.s3.ap-southeast-1.amazonaws.com', // provide host name here
         port: '',
-        pathname: '/image/**', // detailed path can be specified here for more security
+        pathname: '/**', // detailed path can be specified here for more security
       },
       {
         protocol: 'https',

@@ -1,12 +1,12 @@
+import useIdListState from '@/hooks/states/useIdListState';
 import { formatCurrency } from '@/util';
 import { Card } from '@nextui-org/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React from 'react';
 
 type Props = {
   productId: number;
-  shopId: number | undefined;
+  shopId: number;
   name: string;
   des: string;
   price: number;
@@ -14,8 +14,11 @@ type Props = {
 };
 
 export default function Product({ productId, shopId, name, price, image, des }: Props) {
+  const { setProductId, setShopId } = useIdListState();
   const router = useRouter();
   const handleClick = () => {
+    setProductId(productId);
+    setShopId(shopId);
     router.push(`/shops/shop-details/product-details?shopId=${shopId}&productId=${productId}`);
   };
   return (

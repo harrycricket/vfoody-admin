@@ -1,29 +1,24 @@
 'use client';
 import BreadcrumbsCustom from '@/components/common/Breadcrumbs';
 import AdminLayout from '@/components/layouts/AdminLayout';
+import useIdListState from '@/hooks/states/useIdListState';
 import apiClient from '@/services/api-services/api-client';
 import Transaction from '@/types/transactions/Transaction';
 import { formatCurrency, formatPhoneNumber, formatTimeToSeconds } from '@/util';
 import { Divider } from '@nextui-org/react';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function OrderDetails() {
-  const order = useSearchParams();
-  const orderId = order.get('orderId');
-  console.log(orderId, 'Order');
-
+  const { orderId } = useIdListState();
   const [orderDetail, setOrderDetail] = useState<Transaction>();
 
   useEffect(() => {
     (async () => {
       try {
         const responseData = await apiClient.get(`customer/order/${orderId}`);
-        console.log('responseData', responseData);
 
         if (responseData.data.isSuccess) {
-          console.log('responseData.data.value', responseData.data.value);
           setOrderDetail(responseData.data?.value);
         } else {
           throw new Error(responseData.data.error.message);
@@ -61,33 +56,33 @@ export default function OrderDetails() {
             </div>
             <div className="flex justify-between">
               <p>Tên cửa hàng:</p>
-              <p className="font-semibold">{orderDetail?.shopInfo.name}</p>
+              <p className="font-semibold">{orderDetail?.shopInfo?.name}</p>
             </div>
             <div className="flex justify-between">
               <p>Thời gian giao dịch:</p>
               <p className="font-semibold">
-                {formatTimeToSeconds(orderDetail?.orderInfo.durationShipping ?? '')}
+                {formatTimeToSeconds(orderDetail?.orderInfo?.durationShipping ?? '')}
               </p>
             </div>
             <div className="flex justify-between">
               <p>Trạng thái đơn hàng:</p>
               <p
                 className={
-                  orderDetail?.orderInfo.orderStatus === 4
+                  orderDetail?.orderInfo?.orderStatus === 4
                     ? 'text-success-500 font-bold capitalize'
-                    : orderDetail?.orderInfo.orderStatus === 5 ||
-                        orderDetail?.orderInfo.orderStatus === 6 ||
-                        orderDetail?.orderInfo.orderStatus === 7
+                    : orderDetail?.orderInfo?.orderStatus === 5 ||
+                        orderDetail?.orderInfo?.orderStatus === 6 ||
+                        orderDetail?.orderInfo?.orderStatus === 7
                       ? 'text-danger-500 font-bold capitalize'
                       : 'text-purple-500 font-bold capitalize'
                 }
               >
-                {orderDetail?.orderInfo.orderStatus === 4
+                {orderDetail?.orderInfo?.orderStatus === 4
                   ? 'Đã hoàn thành'
-                  : orderDetail?.orderInfo.orderStatus === 5 ||
-                      orderDetail?.orderInfo.orderStatus === 7
-                    ? 'Đã hủy'
-                    : orderDetail?.orderInfo.orderStatus === 6
+                  : orderDetail?.orderInfo?.orderStatus === 5 ||
+                      orderDetail?.orderInfo?.orderStatus === 7
+                    ? `Đã hủy (${orderDetail?.orderInfo?.reason})`
+                    : orderDetail?.orderInfo?.orderStatus === 6
                       ? 'Giao không thành công'
                       : 'Đang thực hiện'}
               </p>

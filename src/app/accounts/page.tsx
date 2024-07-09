@@ -1,9 +1,10 @@
 'use client';
 import TableCustom from '@/components/common/TableCustom';
 import { accountColumns, accountStatus, accountType } from '@/data';
+import useIdListState from '@/hooks/states/useIdListState';
 import apiClient from '@/services/api-services/api-client';
 import Account from '@/types/accounts/Account';
-import { formatDate, formatPhoneNumber } from '@/util';
+import { formatDate, formatPhoneNumber, toast } from '@/util';
 import {
   Button,
   Chip,
@@ -34,17 +35,18 @@ const statusColorMap: Record<string, ChipProps['color']> = {
 };
 
 export default function Accounts() {
+  const { setAccountId } = useIdListState();
   const [accounts, setAccounts] = useState<any[]>([]);
   const [accountIdSelected, setAccountIdSelected] = useState<number>(0);
   const [reason, setReason] = useState('');
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
-  // const [toast, setToast] = useState('');
 
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const handleClick = (accountId: number) => {
+    setAccountId(accountId);
     router.push(`/accounts/account-details?accountId=${accountId}`);
   };
 
@@ -65,12 +67,13 @@ export default function Accounts() {
       };
       const responseData = await apiClient.put('admin/account/ban', payload);
       if (responseData.data.isSuccess) {
+        toast('success', responseData.data.value);
         onClose();
       } else {
         throw new Error(responseData.data.error.message);
       }
     } catch (error) {
-      console.log('>>> error', error);
+      toast('error', (error as any).response.data.error?.message);
     }
   };
 
@@ -86,12 +89,13 @@ export default function Accounts() {
       };
       const responseData = await apiClient.put('admin/account/unban', payload);
       if (responseData.data.isSuccess) {
+        toast('success', responseData.data.value);
         onClose();
       } else {
         throw new Error(responseData.data.error.message);
       }
     } catch (error) {
-      console.log('>>> error', error);
+      toast('error', (error as any).response.data.error?.message);
     }
   };
 

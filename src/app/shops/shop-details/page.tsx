@@ -9,16 +9,11 @@ import Shop from '@/types/shops/Shop';
 import { formatCurrency, formatNumber, formatPhoneNumber } from '@/util';
 import { Avatar, Button, Divider, Pagination } from '@nextui-org/react';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 
 export default function ShopDetails() {
-  // const shop = useSearchParams();
-  // const shopId = shop.get('shopId');
   const { shopId } = useIdListState();
-  // console.log(shopId);
-
   const [shopDetail, setShopDetail] = useState<Shop>();
   const [products, setProducts] = useState<Products[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -147,7 +142,7 @@ export default function ShopDetails() {
                     <Product
                       key={product.id}
                       productId={product.id}
-                      shopId={shopDetail?.id}
+                      shopId={shopDetail?.id ?? 0}
                       image={product.imageUrl}
                       name={product.name}
                       price={product.price}
