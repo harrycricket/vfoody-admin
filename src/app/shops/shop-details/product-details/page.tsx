@@ -1,17 +1,15 @@
 'use client';
 import BreadcrumbsCustom from '@/components/common/Breadcrumbs';
 import AdminLayout from '@/components/layouts/AdminLayout';
+import useIdListState from '@/hooks/states/useIdListState';
 import apiClient from '@/services/api-services/api-client';
 import Products from '@/types/shops/Product';
-import { formatCurrency, formatNumber } from '@/util';
+import { formatCurrency } from '@/util';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function ProductDetails() {
-  const account = useSearchParams();
-  const productId = account.get('productId');
-  const shopId = account.get('shopId');
+  const { shopId, productId } = useIdListState();
   const [productDetail, setProductDetail] = useState<Products>();
 
   useEffect(() => {

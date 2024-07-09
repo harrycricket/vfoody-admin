@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 export function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -51,4 +53,14 @@ export const formatPhoneNumber = (phone: string) => {
     return match[1] + '-' + match[2] + '-' + match[3];
   }
   return null;
+};
+
+export const toast = (icon: 'success' | 'error', content: string) => {
+  Swal.fire({
+    position: 'center',
+    icon: icon,
+    text: content,
+    showConfirmButton: true,
+    timer: 2000,
+  });
 };

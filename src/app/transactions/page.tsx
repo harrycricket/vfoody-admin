@@ -2,14 +2,17 @@
 import RenderCell, { INITIAL_VISIBLE_COLUMNS, statusColorMap } from '@/app/transactions/renderCell';
 import TableCustom from '@/components/common/TableCustom';
 import { transactionColumns, transactionStatus } from '@/data';
+import useIdListState from '@/hooks/states/useIdListState';
 import apiClient from '@/services/api-services/api-client';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function Transactions() {
+  const { setOrderId } = useIdListState();
   const [transactions, setTransactions] = useState<any[]>([]);
   const router = useRouter();
   const handleClick = (orderId: number) => {
+    setOrderId(orderId);
     router.push(`/transactions/order-details?orderId=${orderId}`);
   };
 

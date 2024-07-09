@@ -4,7 +4,7 @@ import { shopColumns, shopStatus } from '@/data';
 import useIdListState from '@/hooks/states/useIdListState';
 import apiClient from '@/services/api-services/api-client';
 import Shop from '@/types/shops/Shop';
-import { formatCurrency, formatDate, formatNumber, formatPhoneNumber } from '@/util';
+import { formatCurrency, formatDate, formatNumber, formatPhoneNumber, toast } from '@/util';
 import {
   Button,
   Chip,
@@ -48,7 +48,7 @@ export default function Shops() {
   const [reason, setReason] = useState('');
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
-  const [toast, setToast] = useState('');
+  const [isReload, setIsReload] = useState(false);
 
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -75,13 +75,14 @@ export default function Shops() {
       };
       const responseData = await apiClient.put('admin/shop/ban', payload);
       if (responseData.data.isSuccess) {
+        toast('success', responseData.data.value);
+        setIsReload(!isReload);
         onClose();
-        setToast(responseData.data.value);
       } else {
         throw new Error(responseData.data.error.message);
       }
     } catch (error) {
-      console.log('>>> error', error);
+      toast('error', (error as any).response.data.error?.message);
     }
   };
 
@@ -97,13 +98,14 @@ export default function Shops() {
       };
       const responseData = await apiClient.put('admin/shop/unban', payload);
       if (responseData.data.isSuccess) {
+        toast('success', responseData.data.value);
+        setIsReload(!isReload);
         onClose();
-        setToast(responseData.data.value);
       } else {
         throw new Error(responseData.data.error.message);
       }
     } catch (error) {
-      console.log('>>> error', error);
+      toast('error', (error as any).response.data.error?.message);
     }
   };
 
@@ -113,13 +115,15 @@ export default function Shops() {
         shopId,
       };
       const responseData = await apiClient.put('admin/shop/approve', payload);
+      console.log(responseData, responseData.data?.error?.message);
       if (responseData.data.isSuccess) {
-        setToast(responseData.data.value);
+        toast('success', responseData.data.value);
+        setIsReload(!isReload);
       } else {
         throw new Error(responseData.data.error.message);
       }
     } catch (error) {
-      console.log('>>> error', error);
+      toast('error', (error as any).response.data.error?.message);
     }
   };
 
@@ -137,7 +141,7 @@ export default function Shops() {
         console.log('>>> error', error);
       }
     })();
-  }, [toast]);
+  }, [isReload]);
 
   const renderCell = useCallback((shop: Shop, columnKey: React.Key) => {
     const cellValue = shop[columnKey as keyof Shop];

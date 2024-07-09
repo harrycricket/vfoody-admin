@@ -17,6 +17,7 @@ export default interface Transaction {
     durationShipping: string;
     shopId: number;
     note: string;
+    reason: string;
     building: {
       buildingId: number;
       address: string;
