@@ -33,14 +33,14 @@ const DashboardOverview = () => {
           <FaMoneyBillWheat size={24} color="green" />
         </div>
         <div>
-          <p className="text-gray-500">Total Trading</p>
+          <p className="text-gray-500">Tổng giao dịch</p>
           <p className="text-3xl font-bold">
             {isLoading && data ? (
               <Skeleton className="flex rounded-full w-20 h-8" />
             ) : data?.value.totalTrading ? (
-              numberFormatUtilServicevice.formatMillionNumberWithDotEach3digits(
+              numberFormatUtilServicevice.formatThousandNumberWithDotEach3digits(
                 data.value.totalTrading,
-              ) + 'M'
+              ) + ' đ'
             ) : (
               '---'
             )}
@@ -58,7 +58,7 @@ const DashboardOverview = () => {
               {isLoading && data ? (
                 <Skeleton className="flex rounded-full w-20 h-8" />
               ) : (
-                `${Math.abs(data?.value.totalTradingRate || 0)}% (${data?.value.dayCompareRate} days)`
+                `${Math.abs(data?.value.totalTradingRate || 0)}% (${data?.value.dayCompareRate} ngày)`
               )}
             </span>
           </div>
@@ -69,14 +69,14 @@ const DashboardOverview = () => {
           <FcMoneyTransfer size={24} />
         </div>
         <div>
-          <p className="text-gray-500">Total Revenue</p>
+          <p className="text-gray-500">Tổng doanh thu</p>
           <p className="text-3xl font-bold">
             {isLoading && data ? (
               <Skeleton className="flex rounded-full w-20 h-8" />
             ) : data?.value.totalRevenue ? (
-              numberFormatUtilServicevice.formatMillionNumberWithDotEach3digits(
+              numberFormatUtilServicevice.formatThousandNumberWithDotEach3digits(
                 data.value.totalRevenue,
-              ) + 'M'
+              ) + ' đ'
             ) : (
               '---'
             )}
@@ -94,7 +94,7 @@ const DashboardOverview = () => {
               {isLoading && data ? (
                 <Skeleton className="flex rounded-full w-20 h-8" />
               ) : (
-                `${Math.abs(data?.value.totalRevenueRate || 0)}% (${data?.value.dayCompareRate} days)`
+                `${Math.abs(data?.value.totalRevenueRate || 0)}% (${data?.value.dayCompareRate} ngày)`
               )}
             </span>
           </div>
@@ -105,7 +105,7 @@ const DashboardOverview = () => {
           <GiBuyCard color="green" size={25} />
         </div>
         <div>
-          <p className="text-gray-500">Total Orders</p>
+          <p className="text-gray-500">Tổng đơn hàng</p>
           <p className="text-3xl font-bold">
             {isLoading && data ? (
               <Skeleton className="flex rounded-full w-20 h-8" />
@@ -128,7 +128,7 @@ const DashboardOverview = () => {
               {isLoading && data ? (
                 <Skeleton className="flex rounded-full w-20 h-8" />
               ) : (
-                `${Math.abs(data?.value.totalOrderRate || 0)}% (${data?.value.dayCompareRate} days)`
+                `${Math.abs(data?.value.totalOrderRate || 0)}% (${data?.value.dayCompareRate} ngày)`
               )}
             </span>
           </div>
@@ -139,7 +139,7 @@ const DashboardOverview = () => {
           <FaUser size={24} color="green" />
         </div>
         <div>
-          <p className="text-gray-500">Total Users</p>
+          <p className="text-gray-500">Số người dùng</p>
           <p className="text-3xl font-bold">
             {' '}
             {isLoading && data ? (
@@ -163,7 +163,7 @@ const DashboardOverview = () => {
               {isLoading && data ? (
                 <Skeleton className="flex rounded-full w-20 h-8" />
               ) : (
-                `${Math.abs(data?.value.totalUserRate || 0)}% (${data?.value.dayCompareRate} days)`
+                `${Math.abs(data?.value.totalUserRate || 0)}% (${data?.value.dayCompareRate} ngày)`
               )}
             </span>
           </div>

@@ -9,7 +9,15 @@ import Chart, { Props } from 'react-apexcharts';
 
 const dashboardOrderEndpoint = 'admin/dashboard/chart/order';
 const getLast7Days = () => {
-  const data = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as string[];
+  const data = [
+    'Chủ nhật',
+    'Thứ hai',
+    'Thứ ba',
+    'Thứ tư',
+    'Thứ năm',
+    'Thứ sáu',
+    'Thứ bảy',
+  ] as string[];
   let today = new Date().getDay();
   const res = ['0', '1', '2', '3', '4', '5', '6', '7'] as string[];
   for (let i = 0; i < 7; i++) {
@@ -31,29 +39,29 @@ const DashboardOrderChart = () => {
   );
   const state: Props['series'] = [
     {
-      name: 'Total',
+      name: 'Tổng',
       data: data?.value?.week
         ? data.value.week.map((item) => item.totalOfOrder)
         : [0, 0, 0, 0, 0, 0, 0],
     },
     {
-      name: 'Successful',
+      name: 'Thành công',
       data: data?.value?.week
         ? data.value.week.map((item) => item.successful)
         : [0, 0, 0, 0, 0, 0, 0],
     },
     {
-      name: 'Processing',
+      name: 'Đang xử lý',
       data: data?.value?.week
         ? data.value.week.map((item) => item.pending + item.confirmed + item.deliverying)
         : [0, 0, 0, 0, 0, 0, 0],
     },
     {
-      name: 'Failed',
+      name: 'Thất bại',
       data: data?.value?.week ? data.value.week.map((item) => item.failed) : [0, 0, 0, 0, 0, 0, 0],
     },
     {
-      name: 'Cancelled',
+      name: 'Hủy bỏ',
       data: data?.value?.week
         ? data.value.week.map((item) => item.cancelled)
         : [0, 0, 0, 0, 0, 0, 0],
@@ -116,6 +124,7 @@ const DashboardOrderChart = () => {
           fontFamily: 'Inter, sans-serif',
         },
       },
+      tickAmount: 1,
     },
     tooltip: {
       enabled: false,
@@ -139,9 +148,9 @@ const DashboardOrderChart = () => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md w-full">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold">Order Chart</h2>
+        <h2 className="text-xl font-semibold">Biểu đồ đơn hàng</h2>
         <button className="text-blue-500">
-          <i className="fas fa-download"></i> Save Report
+          <i className="fas fa-download"></i> Lưu báo cáo
         </button>
       </div>
       <div id="chartOrder">

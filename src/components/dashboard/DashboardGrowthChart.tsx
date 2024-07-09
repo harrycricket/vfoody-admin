@@ -24,7 +24,7 @@ const DashboardGrowthChart = () => {
   const totalUserRate = data ? Math.round(data.value.totalUserRate) : 0;
   return (
     <div className="bg-white p-6 rounded-lg shadow-md flex flex-col w-full">
-      <h2 className="text-xl font-semibold mb-4">Growh Rate</h2>
+      <h2 className="text-xl font-semibold mb-4">Tăng trưởng</h2>
       <div className="grid grid-cols-3 gap-2">
         <div className="text-center relative mx-[-24px]">
           <Chart
@@ -55,7 +55,7 @@ const DashboardGrowthChart = () => {
           />
           <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center">
             <div className="text-blue-500 text-2xl font-bold">{totalRevenueRate}%</div>
-            <div className="text-gray-500 text-sm">Revenue Growth</div>
+            <div className="text-gray-500 text-sm">Doanh thu</div>
           </div>
         </div>
         <div className="text-center relative mx-[-24px]">
@@ -88,7 +88,7 @@ const DashboardGrowthChart = () => {
           />
           <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center">
             <div className="text-yellow-500 text-2xl font-bold">{totalOrderRate}%</div>
-            <div className="text-gray-500 text-sm">Total Order Growth</div>
+            <div className="text-gray-500 text-sm">Số đơn</div>
           </div>
         </div>
         <div className="text-center relative mx-[-24px]">
@@ -121,7 +121,7 @@ const DashboardGrowthChart = () => {
           />
           <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center">
             <div className="text-green-500 text-2xl font-bold">{totalUserRate}%</div>
-            <div className="text-gray-500 text-sm">User Growth</div>
+            <div className="text-gray-500 text-sm">Người dùng</div>
           </div>
         </div>
       </div>

@@ -40,8 +40,8 @@ const Dashboard: NextPage = () => {
       <div className="px-4">
         <div className="flex justify-between items-center">
           <div>
-            <h2 className="text-xl">Dashboard</h2>
-            <p>Hi Duy Đức. Welcome back to VFoody Admin.</p>
+            <h2 className="text-xl">Tổng quan thống kê</h2>
+            <p>Chào mừng đến VFoody Admin.</p>
           </div>
           <DashboardTimeFilter />
         </div>
