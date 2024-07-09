@@ -2,6 +2,7 @@
 import BreadcrumbsCustom from '@/components/common/Breadcrumbs';
 import AdminLayout from '@/components/layouts/AdminLayout';
 import Product from '@/components/shop/Product';
+import useIdListState from '@/hooks/states/useIdListState';
 import apiClient from '@/services/api-services/api-client';
 import Products from '@/types/shops/Product';
 import Shop from '@/types/shops/Shop';
@@ -13,8 +14,10 @@ import { useEffect, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 
 export default function ShopDetails() {
-  const shop = useSearchParams();
-  const shopId = shop.get('shopId');
+  // const shop = useSearchParams();
+  // const shopId = shop.get('shopId');
+  const { shopId } = useIdListState();
+  // console.log(shopId);
 
   const [shopDetail, setShopDetail] = useState<Shop>();
   const [products, setProducts] = useState<Products[]>([]);

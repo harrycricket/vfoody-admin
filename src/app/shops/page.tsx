@@ -1,6 +1,7 @@
 'use client';
 import TableCustom from '@/components/common/TableCustom';
 import { shopColumns, shopStatus } from '@/data';
+import useIdListState from '@/hooks/states/useIdListState';
 import apiClient from '@/services/api-services/api-client';
 import Shop from '@/types/shops/Shop';
 import { formatCurrency, formatDate, formatNumber, formatPhoneNumber } from '@/util';
@@ -41,6 +42,7 @@ const statusColorMap: Record<string, ChipProps['color']> = {
 };
 
 export default function Shops() {
+  const { setShopId } = useIdListState();
   const [shops, setShops] = useState<any[]>([]);
   const [shopIdSelected, setShopIdSelected] = useState<number>(0);
   const [reason, setReason] = useState('');
@@ -52,6 +54,7 @@ export default function Shops() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const handleClick = (shopId: number) => {
+    setShopId(shopId);
     router.push(`/shops/shop-details?shopId=${shopId}`);
   };
 
