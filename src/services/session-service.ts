@@ -1,6 +1,7 @@
 const sessionService = {
   getAuthToken: () => {
-    return '';
+    const token = localStorage.getItem('token');
+    return token;
   },
 };
 
