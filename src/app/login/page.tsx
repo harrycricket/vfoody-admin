@@ -114,7 +114,6 @@ const Login = () => {
           >
             Đăng nhập
           </Button>
-          <ThemeSwitch />
         </CardFooter>
       </Card>
     </div>
