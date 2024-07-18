@@ -71,7 +71,6 @@ const Login = () => {
 
   return (
     <div className="w-screen h-screen flex justify-center items-center">
-      <ThemeSwitch className="fixed right-6 bottom-6" />
       <Card className="w-[400px] p-4">
         <CardHeader className="flex gap-3 justify-center items-center">
           <div style={{ marginLeft: '-12px' }}>
