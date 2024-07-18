@@ -60,7 +60,7 @@ const DashboardOverview = () => {
             ) : data?.value.totalTrading ? (
               totalTrading + ' đ'
             ) : (
-              '---'
+              0
             )}
           </p>
           <div className="flex items-center mt-[4px]">
@@ -95,7 +95,7 @@ const DashboardOverview = () => {
             ) : data?.value.totalRevenue ? (
               totalRevenue + ' đ'
             ) : (
-              '---'
+              0
             )}
           </p>
           <div className="flex items-center mt-[4px]">
@@ -130,7 +130,7 @@ const DashboardOverview = () => {
             ) : data?.value.totalOrder ? (
               totalOrder
             ) : (
-              '---'
+              0
             )}
           </p>
           <div className="flex items-center mt-[4px]">
@@ -166,7 +166,7 @@ const DashboardOverview = () => {
             ) : data?.value.totalUser ? (
               totalUser
             ) : (
-              '---'
+              0
             )}
           </p>
           <div className="flex items-center mt-[4px]">
