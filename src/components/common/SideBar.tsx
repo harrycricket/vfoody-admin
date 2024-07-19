@@ -1,14 +1,14 @@
+import { Button } from '@nextui-org/button';
 import Link from 'next/link';
-import React, { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import React from 'react';
 import { IconType } from 'react-icons';
+import { BsShop } from 'react-icons/bs';
 import { FaRegUser } from 'react-icons/fa';
-import { MdOutlineDashboard, MdOutlineReportProblem } from 'react-icons/md';
 import { GrTransaction } from 'react-icons/gr';
 import { IoMdGift } from 'react-icons/io';
 import { IoSettingsOutline } from 'react-icons/io5';
-import { BsShop } from 'react-icons/bs';
-import { Button } from '@nextui-org/button';
-import { useRouter } from 'next/navigation';
+import { MdOutlineDashboard, MdOutlineReportProblem } from 'react-icons/md';
 import { PiHandWithdraw } from 'react-icons/pi';
 
 interface SibarItemProps {
@@ -23,7 +23,7 @@ export const SibarItemPropsList: Array<SibarItemProps> = [
   { title: 'Quản lý cửa hàng', icon: BsShop, iconSize: 19, link: '/shops' },
   { title: 'Quản lý tài khoản', icon: FaRegUser, iconSize: 17, link: '/accounts' },
   { title: 'Quản lý khuyến mãi', icon: IoMdGift, iconSize: 19, link: '/promotions' },
-  { title: 'Yêu cầu nạp rút', icon: PiHandWithdraw, iconSize: 19, link: '/withdraws' },
+  { title: 'Yêu cầu rút tiền', icon: PiHandWithdraw, iconSize: 19, link: '/withdraws' },
   { title: 'Quản lý báo cáo', icon: MdOutlineReportProblem, iconSize: 19, link: '/reports' },
   { title: 'Cài đặt', icon: IoSettingsOutline, iconSize: 19, link: '/settings' },
 ];
