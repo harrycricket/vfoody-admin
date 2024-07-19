@@ -22,6 +22,7 @@ export const SibarItemPropsList: Array<SibarItemProps> = [
   { title: 'Quản lý cửa hàng', icon: BsShop, iconSize: 19, link: '/shops' },
   { title: 'Quản lý tài khoản', icon: FaRegUser, iconSize: 17, link: '/accounts' },
   { title: 'Quản lý khuyến mãi', icon: IoMdGift, iconSize: 19, link: '/promotions' },
+  { title: 'Yêu cầu nạp rút', icon: FaRegUser, iconSize: 17, link: '/withdraws' },
   { title: 'Quản lý báo cáo', icon: MdOutlineReportProblem, iconSize: 19, link: '/reports' },
   { title: 'Cài đặt', icon: IoSettingsOutline, iconSize: 19, link: '/settings' },
 ];
