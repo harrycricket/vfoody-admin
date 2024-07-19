@@ -70,6 +70,11 @@ const PromotionPage: NextPage = () => {
     }
   };
 
+  const handleRowClickByModel = (model: PromotionModel) => {
+    setPromotionTarget(model);
+    onDetailOpen();
+  };
+
   const {
     isOpen: isUpdateOpen,
     onOpen: onUpdateOpen,
@@ -209,6 +214,17 @@ const PromotionPage: NextPage = () => {
             </p>
           </div>
         );
+      case 'actions':
+        return (
+          <Button
+            size="sm"
+            color="secondary"
+            variant="ghost"
+            onClick={() => handleRowClickByModel(promotion)}
+          >
+            Chi tiết
+          </Button>
+        );
       default:
         return (
           <div className="flex flex-col">
@@ -238,6 +254,7 @@ const PromotionPage: NextPage = () => {
           'amountValue',
           'status',
           'numberOfUsed',
+          'actions',
         ]}
         leftHeaderNode={
           <Button

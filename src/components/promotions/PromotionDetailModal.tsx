@@ -114,7 +114,7 @@ export default function PromotionDetailModal({
                 </div>
                 <Image width={'100%'} radius="md" src={promotion.bannerUrl} />
               </div>
-              <div className="flex-1 flex flex-col justify-between">
+              <div className="flex-1 flex flex-col gap-2 justify-between">
                 <div className="flex gap-1">
                   <Input
                     name="startDate"

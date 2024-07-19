@@ -35,8 +35,8 @@ const WithdrawPage: NextPage = () => {
     pageIndex: 1,
     pageSize: 10,
     status: 0,
-    // dateFrom: range.dateFrom,
-    // dateTo: range.dateTo,
+    dateFrom: range.dateFrom,
+    dateTo: range.dateTo,
     shopId: 0,
     shopName: '',
     orderBy: 0,
@@ -79,8 +79,8 @@ const WithdrawPage: NextPage = () => {
   useEffect(() => {
     setQuery((prevQuery) => ({
       ...prevQuery,
-      // dateFrom: range.dateFrom,
-      // dateTo: range.dateTo,
+      dateFrom: range.dateFrom,
+      dateTo: range.dateTo,
     }));
   }, [range]);
 
@@ -100,6 +100,27 @@ const WithdrawPage: NextPage = () => {
       setQuery({ ...query, status: value });
     },
   } as TableCustomFilter;
+
+  const handleRowClick = (id: number) => {
+    let withdraw = withdraws?.value?.items?.find((item) => item.requestId === id);
+    if (withdraw) {
+      setSelectedWithdraw(withdraw);
+      onDetailOpen();
+    } else {
+      Swal.fire({
+        position: 'center',
+        icon: 'info',
+        title: 'Không tìm thấy yêu cầu #' + numberFormatUtilService.hashId(id),
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
+
+  const handleRowClickByModel = (model: WithdrawModel) => {
+    setSelectedWithdraw(model);
+    onDetailOpen();
+  };
 
   const renderCell = useCallback((withdraw: WithdrawModel, columnKey: React.Key): ReactNode => {
     const cellValue = withdraw[columnKey as keyof WithdrawModel];
@@ -155,6 +176,17 @@ const WithdrawPage: NextPage = () => {
               {withdrawStatuses.find((item) => item.key === withdraw.status)?.label}
             </span>
           </div>
+        );
+      case 'actions':
+        return (
+          <Button
+            size="sm"
+            color="secondary"
+            variant="ghost"
+            onClick={() => handleRowClickByModel(withdraw)}
+          >
+            Chi tiết
+          </Button>
         );
       default:
         return (
@@ -255,21 +287,6 @@ const WithdrawPage: NextPage = () => {
     }
     onDetailOpen();
   };
-  const handleRowClick = (id: number) => {
-    let withdraw = withdraws?.value?.items?.find((item) => item.requestId === id);
-    if (withdraw) {
-      setSelectedWithdraw(withdraw);
-      onDetailOpen();
-    } else {
-      Swal.fire({
-        position: 'center',
-        icon: 'info',
-        title: 'Không tìm thấy yêu cầu #' + numberFormatUtilService.hashId(id),
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    }
-  };
 
   return (
     <div style={{ position: 'relative' }}>
@@ -286,6 +303,7 @@ const WithdrawPage: NextPage = () => {
           'amount',
           'note',
           'status',
+          'actions',
         ]}
         searchHandler={(value: string) => {
           setQuery({ ...query, shopName: value });
