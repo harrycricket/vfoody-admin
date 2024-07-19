@@ -22,6 +22,7 @@ import FetchResponse from '@/types/responses/FetchResponse';
 import { endpoints } from '@/services/api-services/api-service-instances';
 import apiClient from '@/services/api-services/api-client';
 import useWithdrawTargetState from '@/hooks/states/useWithdrawTargetState';
+import sessionService from '@/services/session-service';
 
 const WithdrawPage: NextPage = () => {
   const { setModel: setSelectedWithdraw } = useWithdrawTargetState();
@@ -55,8 +56,14 @@ const WithdrawPage: NextPage = () => {
     REACT_QUERY_CACHE_KEYS.WITHDRAW,
     (): Promise<FetchResponse<WithdrawModel>> =>
       apiClient
-        .get<FetchResponse<WithdrawModel>>(endpoints.WITHDRAW_GET)
+        .get<FetchResponse<WithdrawModel>>(endpoints.WITHDRAW_GET, {
+          headers: {
+            Authorization: `Bearer ${sessionService.getAuthToken()}`,
+          },
+          params: { ...query },
+        })
         .then((response) => response.data),
+    [query],
   );
 
   useEffect(() => {
