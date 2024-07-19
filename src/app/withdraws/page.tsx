@@ -4,6 +4,7 @@ import TableCommonCustom, { TableCustomFilter } from '@/components/common/TableC
 import { Avatar, Button, Selection, useDisclosure } from '@nextui-org/react';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
 import WithdrawModel, {
+  WithdrawStatus,
   withdrawStatuses,
   withdrawTableColumns,
 } from '@/types/models/WithdrawModel';
@@ -27,7 +28,7 @@ import usePeriodTimeFilterState from '@/hooks/states/usePeriodTimeFilterQuery';
 
 const WithdrawPage: NextPage = () => {
   const { range, selected, setSelected, isSpecificTimeFilter } = usePeriodTimeFilterState();
-  const { setModel: setSelectedWithdraw } = useWithdrawTargetState();
+  const { model: selectedWithdraw, setModel: setSelectedWithdraw } = useWithdrawTargetState();
   const [withdrawList, setWithdrawList] = useState<WithdrawModel[]>([]);
   const [statuses, setStatuses] = useState<Selection>(new Set(['0']));
   const [query, setQuery] = useState<WithdrawQuery>({
@@ -144,14 +145,14 @@ const WithdrawPage: NextPage = () => {
           <div className="flex flex-col">
             <span
               className={
-                withdraw.status == 1
+                withdraw.status === WithdrawStatus.Approved
                   ? 'w-fit bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300'
-                  : withdraw.status == 2
-                    ? 'w-fit bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300'
-                    : 'w-fit bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300'
+                  : withdraw.status === WithdrawStatus.Rejected
+                    ? 'w-fit bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-pink-700 dark:text-pink-300'
+                    : 'w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300'
               }
             >
-              {withdrawStatuses.find((item) => item.key == withdraw.status)?.label}
+              {withdrawStatuses.find((item) => item.key === withdraw.status)?.label}
             </span>
           </div>
         );
@@ -165,8 +166,8 @@ const WithdrawPage: NextPage = () => {
   }, []);
 
   const handleApprove = async (withdraw: WithdrawModel) => {
-    const { value: note } = await Swal.fire({
-      title: 'Nhập ghi chú phê duyệt',
+    await Swal.fire({
+      title: 'Phê duyệt yêu cầu #' + numberFormatUtilService.hashId(withdraw.requestId),
       input: 'textarea',
       inputLabel: 'Ghi chú',
       inputPlaceholder: 'Nhập ghi chú tại đây...',
@@ -176,32 +177,37 @@ const WithdrawPage: NextPage = () => {
           return 'Bạn cần nhập ghi chú!';
         }
       },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await apiClient
+          .put<APICommonResponse>(`admin/shop/${withdraw.shopId}/withdrawal/approve`, {
+            shopId: withdraw.shopId,
+            requestId: withdraw.requestId,
+            note: result.value,
+          })
+          .then(async (response) => {
+            if (response.data.isSuccess) {
+              await Swal.fire('Thành công!', 'Yêu cầu đã được phê duyệt.', 'success');
+              // onDetailOpen();
+              refetch();
+            } else {
+              await Swal.fire('Thất bại!', 'Đã xảy ra lỗi khi phê duyệt yêu cầu.', 'error');
+              onDetailOpen();
+            }
+          })
+          .catch(async (error) => {
+            await Swal.fire('Thất bại!', 'Đã xảy ra lỗi khi phê duyệt yêu cầu.', 'error');
+            onDetailOpen();
+          });
+      } else {
+      }
     });
-
-    if (note) {
-      await apiClient
-        .put<APICommonResponse>(endpoints.WITHDRAW_APPROVE, {
-          shopId: withdraw.shopId,
-          requestId: withdraw.requestId,
-          note,
-        })
-        .then((response) => {
-          if (response.data.isSuccess) {
-            Swal.fire('Thành công!', 'Yêu cầu đã được phê duyệt.', 'success');
-            refetch();
-          } else {
-            Swal.fire('Thất bại!', 'Đã xảy ra lỗi khi phê duyệt yêu cầu.', 'error');
-          }
-        })
-        .catch((error) => {
-          Swal.fire('Thất bại!', 'Đã xảy ra lỗi khi phê duyệt yêu cầu.', 'error');
-        });
-    }
   };
 
   const handleReject = async (withdraw: WithdrawModel) => {
+    onDetailOpen();
     const { value: reason } = await Swal.fire({
-      title: 'Nhập lý do từ chối',
+      title: 'Từ chối yêu cầu #' + numberFormatUtilService.hashId(withdraw.requestId),
       input: 'textarea',
       inputLabel: 'Lý do',
       inputPlaceholder: 'Nhập lý do tại đây...',
@@ -215,21 +221,24 @@ const WithdrawPage: NextPage = () => {
 
     if (reason) {
       await apiClient
-        .put<APICommonResponse>(endpoints.WITHDRAW_REJECT, {
+        .put<APICommonResponse>(`admin/shop/${withdraw.shopId}/withdrawal/reject`, {
           shopId: withdraw.shopId,
           requestId: withdraw.requestId,
           reason,
         })
-        .then((response) => {
+        .then(async (response) => {
           if (response.data.isSuccess) {
-            Swal.fire('Thành công!', 'Yêu cầu rút tiền đã được từ chối.', 'success');
+            await Swal.fire('Thành công!', 'Yêu cầu rút tiền đã được từ chối.', 'success');
+            // onDetailOpen();
             refetch();
           } else {
-            Swal.fire('Thất bại!', 'Đã xảy ra lỗi khi từ chối yêu cầu.', 'error');
+            await Swal.fire('Thất bại!', 'Đã xảy ra lỗi khi từ chối yêu cầu.', 'error');
+            onDetailOpen();
           }
         })
-        .catch((error) => {
-          Swal.fire('Thất bại!', 'Đã xảy ra lỗi khi từ chối yêu cầu.', 'error');
+        .catch(async (error) => {
+          await Swal.fire('Thất bại!', 'Đã xảy ra lỗi khi từ chối yêu cầu.', 'error');
+          onDetailOpen();
         });
     }
   };

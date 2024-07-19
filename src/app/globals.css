@@ -27,3 +27,10 @@ body {
     text-wrap: balance;
   }
 } */
+::ng-deep.swal2-container,
+.swal2-container,
+.swal-overlay,
+.swal-overlay *,
+.swal2-container * {
+  z-index: 100000000 !important;
+}

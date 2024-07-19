@@ -14,6 +14,7 @@ import {
 import WithdrawModel, { WithdrawStatus, withdrawStatuses } from '@/types/models/WithdrawModel';
 import useWithdrawTargetState from '@/hooks/states/useWithdrawTargetState';
 import numberFormatUtilService from '@/services/util-services/NumberFormatUtilService';
+import { formatDateStringYYYYMMDD_HHMM } from '@/services/util-services/TimeFormatService';
 
 interface WithdrawDetailModalProps {
   isOpen: boolean;
@@ -37,7 +38,13 @@ export default function WithdrawDetailModal({
   const [reason, setReason] = useState('');
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center" size="4xl">
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      placement="top-center"
+      size="4xl"
+      style={{ zIndex: 100 }} // Đảm bảo modal có z-index thấp hơn
+    >
       <ModalContent>
         <>
           <ModalHeader className="flex flex-col gap-1">
@@ -54,8 +61,8 @@ export default function WithdrawDetailModal({
                     withdraw.status === WithdrawStatus.Approved
                       ? 'w-fit bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300'
                       : withdraw.status === WithdrawStatus.Rejected
-                        ? 'w-fit bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300'
-                        : 'w-fit bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300'
+                        ? 'w-fit bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-pink-700 dark:text-pink-300'
+                        : 'w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300'
                   }
                 >
                   {withdrawStatuses.find((item) => item.key === withdraw.status)?.label}
@@ -81,7 +88,7 @@ export default function WithdrawDetailModal({
                 <div className="input-container">
                   <Input
                     name="shopName"
-                    label="Tên Shop"
+                    label="Tên cửa hàng"
                     placeholder="Nhập tên Shop"
                     value={withdraw.shopName}
                     readOnly
@@ -89,10 +96,20 @@ export default function WithdrawDetailModal({
                   />
                 </div>
                 <div className="input-container">
-                  <Textarea
-                    name="description"
-                    label="Mô tả"
-                    placeholder={withdraw.bankCode ? '' : 'Chưa có mô tả...'}
+                  <Input
+                    name="email"
+                    label="Email"
+                    placeholder="Nhập email"
+                    value={withdraw.email}
+                    readOnly
+                    fullWidth
+                  />
+                </div>
+                <div className="input-container">
+                  <Input
+                    name="bankCode"
+                    label="Mã ngân hàng"
+                    placeholder="Nhập mã ngân hàng"
                     value={withdraw.bankCode.toString()}
                     readOnly
                     fullWidth
@@ -100,55 +117,86 @@ export default function WithdrawDetailModal({
                 </div>
                 <div className="input-container">
                   <Input
-                    name="amount"
-                    label="Số tiền"
-                    placeholder="Nhập số tiền"
-                    value={withdraw.bankCode.toString()}
+                    name="balance"
+                    label="Số dư"
+                    placeholder="Nhập số dư"
+                    value={
+                      numberFormatUtilService.formatNumberWithDotEach3digits(withdraw.balance) +
+                      ' đ'
+                    }
                     readOnly
                     fullWidth
                   />
                 </div>
                 <div className="input-container">
-                  <Select
-                    name="status"
-                    label="Trạng thái"
-                    selectedKeys={new Set([withdraw.status.toString()])}
-                    isDisabled={true}
+                  <Input
+                    name="amount"
+                    label="Số tiền yêu cầu"
+                    placeholder="Nhập số tiền yêu cầu"
+                    value={
+                      numberFormatUtilService.formatNumberWithDotEach3digits(
+                        withdraw.requestedAmount,
+                      ) + ' đ'
+                    }
+                    readOnly
                     fullWidth
-                  >
-                    {withdrawStatuses.map((status) => (
-                      <SelectItem key={status.key} value={status.key}>
-                        {status.label}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                  />
                 </div>
               </div>
-              <div className="flex-1 flex flex-col gap-2">
-                {withdraw.status === WithdrawStatus.Pending && (
-                  <>
-                    <div className="input-container">
-                      <Textarea
-                        name="note"
-                        label="Ghi chú"
-                        placeholder="Nhập ghi chú"
-                        value={note}
-                        onChange={(e) => setNote(e.target.value)}
-                        fullWidth
-                      />
-                    </div>
-                    <div className="input-container">
-                      <Textarea
-                        name="reason"
-                        label="Lý do từ chối"
-                        placeholder="Nhập lý do từ chối"
-                        value={reason}
-                        onChange={(e) => setReason(e.target.value)}
-                        fullWidth
-                      />
-                    </div>
-                  </>
+              <div className="flex-1 flex flex-col gap-2 justify-between">
+                <div className="input-container">
+                  <Input
+                    name="bankShortName"
+                    label="Tên ngân hàng"
+                    placeholder="Nhập tên ngân hàng"
+                    value={withdraw.bankShortName}
+                    readOnly
+                    fullWidth
+                  />
+                </div>
+                <div className="input-container">
+                  <Input
+                    name="bankAccountNumber"
+                    label="Số tài khoản"
+                    placeholder="Nhập số tài khoản"
+                    value={withdraw.bankAccountNumber}
+                    readOnly
+                    fullWidth
+                  />
+                </div>
+                <div className="input-container">
+                  <Input
+                    name="requestedDate"
+                    label="Ngày yêu cầu"
+                    placeholder="Nhập ngày yêu cầu"
+                    value={formatDateStringYYYYMMDD_HHMM(withdraw.requestedDate)}
+                    readOnly
+                    fullWidth
+                  />
+                </div>
+                {withdraw.status != WithdrawStatus.Pending && (
+                  <div className="input-container">
+                    <Input
+                      name="processedDate"
+                      label="Ngày xử lý"
+                      placeholder="Nhập ngày xử lý"
+                      value={formatDateStringYYYYMMDD_HHMM(withdraw.processedDate)}
+                      readOnly
+                      fullWidth
+                    />
+                  </div>
                 )}
+
+                <div className="input-container">
+                  <Textarea
+                    name="note"
+                    label="Ghi chú"
+                    placeholder={withdraw.note ? '' : 'Chưa có ghi chú...'}
+                    value={withdraw.note ?? ''}
+                    readOnly
+                    fullWidth
+                  />
+                </div>
               </div>
             </div>
           </ModalBody>
