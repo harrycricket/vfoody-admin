@@ -32,7 +32,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
-        <NextUiProvider themeProps={{ attribute: 'class', defaultTheme: 'dark', children }}>
+        <NextUiProvider themeProps={{ attribute: 'class', defaultTheme: 'light', children }}>
           <TanStackProvider>
             <AuthProvider>{children}</AuthProvider>
           </TanStackProvider>
