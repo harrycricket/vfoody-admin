@@ -33,12 +33,12 @@ export const withdrawTableColumns = [
   { name: 'Số dư', uid: 'balance', sortable: true },
   { name: 'Email', uid: 'email', sortable: true },
   { name: 'Số tiền yêu cầu', uid: 'requestedAmount', sortable: true },
-  { name: 'Trạng thái', uid: 'status', sortable: true },
   { name: 'Ngân hàng', uid: 'bankShortName', sortable: true },
   { name: 'Số tài khoản', uid: 'bankAccountNumber', sortable: true },
   { name: 'Ngày yêu cầu', uid: 'requestedDate', sortable: true },
   { name: 'Ngày xử lý', uid: 'processedDate', sortable: true },
   { name: 'Ghi chú', uid: 'note' },
+  { name: 'Trạng thái', uid: 'status', sortable: true },
   { name: 'Thao tác', uid: 'actions' },
 ];
 

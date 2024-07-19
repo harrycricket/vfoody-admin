@@ -112,6 +112,12 @@ const WithdrawPage: NextPage = () => {
             </p>
           </div>
         );
+      case 'logoUrl':
+        return (
+          <div className="flex flex-col">
+            <Avatar src={withdraw.logoUrl} />
+          </div>
+        );
       case 'shopName':
         return (
           <div className="flex flex-col">
@@ -249,7 +255,16 @@ const WithdrawPage: NextPage = () => {
         indexPage={5}
         title="Yêu cầu rút tiền"
         description="Danh sách các yêu cầu rút tiền của cửa hàng"
-        initColumns={['id', 'shopName', 'dateRequested', 'amount', 'status']}
+        initColumns={[
+          'requestId',
+          'logoUrl',
+          'shopName',
+          'dateRequested',
+          'requestedAmount',
+          'amount',
+          'note',
+          'status',
+        ]}
         searchHandler={(value: string) => {
           setQuery({ ...query, shopName: value });
         }}
