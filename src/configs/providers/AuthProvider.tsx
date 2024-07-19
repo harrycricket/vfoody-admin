@@ -9,6 +9,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
+
   const authenticate = async () => {
     const token = localStorage.getItem('token') || '';
     let result = true;
@@ -29,8 +30,15 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    authenticate();
+    if (typeof window !== 'undefined' && !pathname.includes('login')) {
+      authenticate();
+    }
   }, []);
+
+  if (typeof window !== 'undefined' && pathname.includes('login')) {
+    return children;
+  }
+
   return isLoading ? (
     <div className="h-screen w-screen flex flex-col gap-3 justify-center items-center">
       <div className="flex gap-3 justify-center items-center">
@@ -41,7 +49,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
           <h1 className="text-2xl font-medium text-primary">VFOODY</h1>
         </div>
       </div>
-      <div className="flex gap-3 justify-center items-center">
+      <div className="flex gap-3 justify-center items-center mt-2">
         <Spinner color="default" />
         <Spinner color="primary" />
         <Spinner color="secondary" />
