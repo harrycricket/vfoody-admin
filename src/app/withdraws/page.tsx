@@ -204,11 +204,11 @@ const WithdrawPage: NextPage = () => {
       inputLabel: 'Ghi chú',
       inputPlaceholder: 'Nhập ghi chú tại đây...',
       showCancelButton: true,
-      inputValidator: (value) => {
-        if (!value) {
-          return 'Bạn cần nhập ghi chú!';
-        }
-      },
+      // inputValidator: (value) => {
+      //   if (!value) {
+      //     return 'Bạn cần nhập ghi chú!';
+      //   }
+      // },
     }).then(async (result) => {
       if (result.isConfirmed) {
         await apiClient
