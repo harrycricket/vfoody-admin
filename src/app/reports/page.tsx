@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function Reports() {
   return (
-    <AdminLayout activeContentIndex={5}>
+    <AdminLayout activeContentIndex={6}>
       <div className="px-4 py-2">
         <h1 className="text-3xl font-bold text-primary">Quản lý báo cáo</h1>
         <p className="text-lg text-center font-bold my-auto text-danger-500">

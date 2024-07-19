@@ -8,6 +8,9 @@ export const endpoints = {
   TEST: 'https://my-json-server.typicode.com/duckodei/test-json-server/list/',
   PROMOTION: 'admin/promotion',
   PROMOTION_IMAGE_UPLOAD: 'admin/promotion/upload',
+  WITHDRAW_GET: 'admin/shop/withdrawal/request',
+  WITHDRAW_APPROVE: 'admin/shop/withdrawal/approve',
+  WITHDRAW_REJECT: 'admin/shop/withdrawal/reject',
   COMMISSION: 'admin/commission',
 };
 
