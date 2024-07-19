@@ -1,5 +1,4 @@
 'use client';
-import { ThemeSwitch } from '@/components/common/theme-switch';
 import apiClient from '@/services/api-services/api-client';
 import { Button, Card, CardBody, CardFooter, CardHeader, Image, Input } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
