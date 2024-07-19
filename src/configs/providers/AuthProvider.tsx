@@ -17,6 +17,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       .get<APICommonResponse>('auth/admin')
       .then((response) => {
         result = true;
+        router.push('/dashboard');
       })
       .catch(async (error) => {
         result = false;
@@ -30,14 +31,10 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && !pathname.includes('login')) {
+    if (typeof window !== 'undefined') {
       authenticate();
     }
   }, []);
-
-  if (typeof window !== 'undefined' && pathname.includes('login')) {
-    return children;
-  }
 
   return isLoading ? (
     <div className="h-screen w-screen flex flex-col gap-3 justify-center items-center">
