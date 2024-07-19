@@ -17,12 +17,11 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       .get<APICommonResponse>('auth/admin')
       .then((response) => {
         result = true;
-        router.push('/dashboard');
+        if (typeof window !== 'undefined' && pathname.includes('login')) router.push('/dashboard');
       })
       .catch(async (error) => {
         result = false;
-        if (typeof window !== 'undefined' && !pathname.includes('login'))
-          await router.push('/login');
+        if (typeof window !== 'undefined' && !pathname.includes('login')) router.push('/login');
       });
     setTimeout(() => {
       setIsLoading(false);
