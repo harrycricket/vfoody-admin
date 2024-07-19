@@ -131,7 +131,7 @@ const WithdrawPage: NextPage = () => {
             <p className="text-bold text-small">{formatDateString(withdraw.requestedDate)}</p>
           </div>
         );
-      case 'amount':
+      case 'requestedAmount':
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small">
@@ -189,7 +189,13 @@ const WithdrawPage: NextPage = () => {
             if (response.data.isSuccess) {
               await Swal.fire('Thành công!', 'Yêu cầu đã được phê duyệt.', 'success');
               // onDetailOpen();
+              setSelectedWithdraw({
+                ...selectedWithdraw,
+                status: WithdrawStatus.Approved,
+                note: result.value,
+              });
               refetch();
+              onDetailOpen();
             } else {
               await Swal.fire('Thất bại!', 'Đã xảy ra lỗi khi phê duyệt yêu cầu.', 'error');
               onDetailOpen();
@@ -201,6 +207,7 @@ const WithdrawPage: NextPage = () => {
           });
       } else {
       }
+      onDetailOpen();
     });
   };
 
@@ -229,7 +236,12 @@ const WithdrawPage: NextPage = () => {
         .then(async (response) => {
           if (response.data.isSuccess) {
             await Swal.fire('Thành công!', 'Yêu cầu rút tiền đã được từ chối.', 'success');
-            // onDetailOpen();
+            setSelectedWithdraw({
+              ...selectedWithdraw,
+              status: WithdrawStatus.Rejected,
+              note: reason || '',
+            });
+            onDetailOpen();
             refetch();
           } else {
             await Swal.fire('Thất bại!', 'Đã xảy ra lỗi khi từ chối yêu cầu.', 'error');
@@ -241,6 +253,7 @@ const WithdrawPage: NextPage = () => {
           onDetailOpen();
         });
     }
+    onDetailOpen();
   };
   const handleRowClick = (id: number) => {
     let withdraw = withdraws?.value?.items?.find((item) => item.requestId === id);
