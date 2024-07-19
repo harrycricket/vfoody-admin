@@ -1,12 +1,12 @@
 import PagingRequestQuery from './PagingRequestQuery';
 interface WithdrawQuery extends PagingRequestQuery {
-  shopId?: string;
+  shopId?: number;
   shopName?: string;
   status?: number;
-  dateFrom?: string;
-  dateTo?: string;
-  orderBy?: string;
-  orderMode?: string;
+  dateFrom?: Date;
+  dateTo?: Date;
+  orderBy?: number;
+  orderMode?: number;
 }
 
 export default WithdrawQuery;

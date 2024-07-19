@@ -23,8 +23,10 @@ import { endpoints } from '@/services/api-services/api-service-instances';
 import apiClient from '@/services/api-services/api-client';
 import useWithdrawTargetState from '@/hooks/states/useWithdrawTargetState';
 import sessionService from '@/services/session-service';
+import usePeriodTimeFilterState from '@/hooks/states/usePeriodTimeFilterQuery';
 
 const WithdrawPage: NextPage = () => {
+  const { range, selected, setSelected, isSpecificTimeFilter } = usePeriodTimeFilterState();
   const { setModel: setSelectedWithdraw } = useWithdrawTargetState();
   const [withdrawList, setWithdrawList] = useState<WithdrawModel[]>([]);
   const [statuses, setStatuses] = useState<Selection>(new Set(['0']));
@@ -32,12 +34,12 @@ const WithdrawPage: NextPage = () => {
     pageIndex: 1,
     pageSize: 10,
     status: 0,
-    dateFrom: '',
-    dateTo: '',
-    shopId: '',
+    // dateFrom: range.dateFrom,
+    // dateTo: range.dateTo,
+    shopId: 0,
     shopName: '',
-    orderBy: '',
-    orderMode: '',
+    orderBy: 0,
+    orderMode: 0,
   } as WithdrawQuery);
 
   const {
@@ -72,6 +74,14 @@ const WithdrawPage: NextPage = () => {
         withdraws.value.items.map((item) => ({ ...item, id: item.requestId }) as WithdrawModel),
       );
   }, [withdraws]);
+
+  useEffect(() => {
+    setQuery((prevQuery) => ({
+      ...prevQuery,
+      // dateFrom: range.dateFrom,
+      // dateTo: range.dateTo,
+    }));
+  }, [range]);
 
   const statusFilterOptions = [{ key: 0, desc: 'Tất cả' }].concat(
     withdrawStatuses.map((item) => ({ key: item.key, desc: item.label })),
@@ -243,7 +253,7 @@ const WithdrawPage: NextPage = () => {
         searchHandler={(value: string) => {
           setQuery({ ...query, shopName: value });
         }}
-        placeHolderSearch="Tìm kiếm cửa hàng..."
+        placeHolderSearch="Tìm kiếm yêu cầu từ cửa hàng..."
         arrayData={withdrawList}
         arrayDataColumns={withdrawTableColumns}
         pagination={withdraws?.value as PageableModel}
