@@ -27,8 +27,8 @@ export default interface WithdrawModel {
 
 export const withdrawTableColumns = [
   { name: 'Mã yêu cầu', uid: 'requestId', sortable: true },
-  { name: 'Tên tiệm', uid: 'shopName', sortable: true },
-  { name: 'Logo', uid: 'logoUrl', imageable: true },
+  { name: 'Tên cửa hàng', uid: 'shopName', sortable: true },
+  // { name: 'Logo', uid: 'logoUrl', imageable: true },
   { name: 'Banner', uid: 'bannerUrl', imageable: true },
   { name: 'Số dư', uid: 'balance', sortable: true },
   { name: 'Email', uid: 'email', sortable: true },

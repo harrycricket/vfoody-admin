@@ -57,15 +57,6 @@ const Login = () => {
     localStorage.setItem('token', responseData.data.value.accessTokenResponse.accessToken);
     console.log(responseData.data.value.accessTokenResponse.accessToken, 'accessToken');
     router.push('/dashboard');
-
-    // Check if email and password match the sample credentials
-    // if (await authService.login(email, password)) {
-    //   // Redirect to dashboard if login is successful
-    //   router.push('/dashboard');
-    // } else {
-    //   // Show error message if login fails
-    //   setError('Email hoặc mật khẩu không đúng');
-    // }
   };
 
   return (

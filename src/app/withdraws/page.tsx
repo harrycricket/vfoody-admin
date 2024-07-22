@@ -1,30 +1,28 @@
 'use client';
-import { NextPage } from 'next';
 import TableCommonCustom, { TableCustomFilter } from '@/components/common/TableCommonCustom';
-import { Avatar, Button, Selection, useDisclosure } from '@nextui-org/react';
-import { ReactNode, useCallback, useEffect, useState } from 'react';
+import WithdrawDetailModal from '@/components/withdraws/WithdrawDetailModal';
+import REACT_QUERY_CACHE_KEYS from '@/data/constants/react-query-cache-keys';
+import useFetchWithRQWithFetchFunc from '@/hooks/fetching/useFetchWithRQWithFetchFunc';
+import usePeriodTimeFilterState from '@/hooks/states/usePeriodTimeFilterQuery';
+import useWithdrawTargetState from '@/hooks/states/useWithdrawTargetState';
+import apiClient from '@/services/api-services/api-client';
+import { endpoints } from '@/services/api-services/api-service-instances';
+import sessionService from '@/services/session-service';
+import numberFormatUtilService from '@/services/util-services/NumberFormatUtilService';
+import { formatCurrency, formatDateString } from '@/services/util-services/TimeFormatService';
+import PageableModel from '@/types/models/PageableModel';
 import WithdrawModel, {
   WithdrawStatus,
   withdrawStatuses,
   withdrawTableColumns,
 } from '@/types/models/WithdrawModel';
-import { formatDateString } from '@/services/util-services/TimeFormatService';
-import useFetchWithReactQuery from '@/hooks/fetching/useFetchWithRQ';
 import WithdrawQuery from '@/types/queries/WithdrawQuery';
-import REACT_QUERY_CACHE_KEYS from '@/data/constants/react-query-cache-keys';
-import PageableModel from '@/types/models/PageableModel';
-import numberFormatUtilService from '@/services/util-services/NumberFormatUtilService';
-import WithdrawDetailModal from '@/components/withdraws/WithdrawDetailModal';
 import APICommonResponse from '@/types/responses/APICommonResponse';
-import Swal from 'sweetalert2';
-import MutationResponse from '@/types/responses/MutationReponse';
-import useFetchWithRQWithFetchFunc from '@/hooks/fetching/useFetchWithRQWithFetchFunc';
 import FetchResponse from '@/types/responses/FetchResponse';
-import { endpoints } from '@/services/api-services/api-service-instances';
-import apiClient from '@/services/api-services/api-client';
-import useWithdrawTargetState from '@/hooks/states/useWithdrawTargetState';
-import sessionService from '@/services/session-service';
-import usePeriodTimeFilterState from '@/hooks/states/usePeriodTimeFilterQuery';
+import { Avatar, Button, Selection, useDisclosure } from '@nextui-org/react';
+import { NextPage } from 'next';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 const WithdrawPage: NextPage = () => {
   const { range, selected, setSelected, isSpecificTimeFilter } = usePeriodTimeFilterState();
@@ -142,11 +140,12 @@ const WithdrawPage: NextPage = () => {
         );
       case 'shopName':
         return (
-          <div className="flex flex-col">
+          <div className="flex flex-row items-center gap-2">
+            <Avatar src={withdraw.logoUrl} />
             <p className="text-bold text-small">{withdraw.shopName}</p>
           </div>
         );
-      case 'dateRequested':
+      case 'requestedDate':
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small">{formatDateString(withdraw.requestedDate)}</p>
@@ -155,10 +154,7 @@ const WithdrawPage: NextPage = () => {
       case 'requestedAmount':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small">
-              {numberFormatUtilService.formatNumberWithDotEach3digits(withdraw.requestedAmount) +
-                ' đ'}
-            </p>
+            <p className="text-bold text-small">{formatCurrency(withdraw.requestedAmount)}</p>
           </div>
         );
       case 'status':
@@ -198,49 +194,24 @@ const WithdrawPage: NextPage = () => {
   }, []);
 
   const handleApprove = async (withdraw: WithdrawModel) => {
-    await Swal.fire({
-      title: 'Phê duyệt yêu cầu #' + numberFormatUtilService.hashId(withdraw.requestId),
-      input: 'textarea',
-      inputLabel: 'Ghi chú',
-      inputPlaceholder: 'Nhập ghi chú tại đây...',
-      showCancelButton: true,
-      // inputValidator: (value) => {
-      //   if (!value) {
-      //     return 'Bạn cần nhập ghi chú!';
-      //   }
-      // },
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        await apiClient
-          .put<APICommonResponse>(`admin/shop/${withdraw.shopId}/withdrawal/approve`, {
-            shopId: withdraw.shopId,
-            requestId: withdraw.requestId,
-            note: result.value,
-          })
-          .then(async (response) => {
-            if (response.data.isSuccess) {
-              await Swal.fire('Thành công!', 'Yêu cầu đã được phê duyệt.', 'success');
-              // onDetailOpen();
-              setSelectedWithdraw({
-                ...selectedWithdraw,
-                status: WithdrawStatus.Approved,
-                note: result.value,
-              });
-              refetch();
-              onDetailOpen();
-            } else {
-              await Swal.fire('Thất bại!', 'Đã xảy ra lỗi khi phê duyệt yêu cầu.', 'error');
-              onDetailOpen();
-            }
-          })
-          .catch(async (error) => {
-            await Swal.fire('Thất bại!', 'Đã xảy ra lỗi khi phê duyệt yêu cầu.', 'error');
-            onDetailOpen();
-          });
-      } else {
-      }
-      onDetailOpen();
-    });
+    await apiClient
+      .put<APICommonResponse>(`admin/shop/${withdraw.shopId}/withdrawal/approve`, {
+        shopId: withdraw.shopId,
+        requestId: withdraw.requestId,
+      })
+      .then(async (response) => {
+        if (response.data.isSuccess) {
+          await Swal.fire('Thành công!', 'Yêu cầu đã được phê duyệt.', 'success');
+          refetch();
+        } else {
+          await Swal.fire('Thất bại!', 'Đã xảy ra lỗi khi phê duyệt yêu cầu.', 'error');
+          onDetailOpen();
+        }
+      })
+      .catch(async (error) => {
+        await Swal.fire('Thất bại!', 'Đã xảy ra lỗi khi phê duyệt yêu cầu.', error);
+        onDetailOpen();
+      });
   };
 
   const handleReject = async (withdraw: WithdrawModel) => {

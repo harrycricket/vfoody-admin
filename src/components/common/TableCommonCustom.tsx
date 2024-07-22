@@ -1,8 +1,9 @@
 // components/common/TableCustom.tsx
+import DashboardTimeFilter from '@/components/dashboard/DashboardTimeFilter';
 import AdminLayout from '@/components/layouts/AdminLayout';
+import PageableModel from '@/types/models/PageableModel';
 import {
   Button,
-  ChipProps,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -10,21 +11,17 @@ import {
   Input,
   Pagination,
   Selection,
-  SortDescriptor,
   Table,
   TableBody,
   TableCell,
   TableColumn,
   TableHeader,
   TableRow,
-  pagination,
 } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { CiSearch } from 'react-icons/ci';
 import { IoChevronDown } from 'react-icons/io5';
-import DashboardTimeFilter from '@/components/dashboard/DashboardTimeFilter';
-import PageableModel from '@/types/models/PageableModel';
 
 export interface TableCustomFilter {
   label: string;
@@ -238,7 +235,7 @@ export default function TableCommonCustom<T>({
           </TableHeader>
           <TableBody emptyContent="No data found" items={arrayData}>
             {(item) => (
-              <TableRow key={item.id} onDoubleClick={() => handleRowClick(item.id)}>
+              <TableRow key={item.id} onClick={() => handleRowClick(item.id)}>
                 {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
               </TableRow>
             )}

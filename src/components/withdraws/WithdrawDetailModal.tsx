@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Input,
-  Textarea,
-  Select,
-  SelectItem,
-} from '@nextui-org/react';
-import WithdrawModel, { WithdrawStatus, withdrawStatuses } from '@/types/models/WithdrawModel';
 import useWithdrawTargetState from '@/hooks/states/useWithdrawTargetState';
 import numberFormatUtilService from '@/services/util-services/NumberFormatUtilService';
-import { formatDateStringYYYYMMDD_HHMM } from '@/services/util-services/TimeFormatService';
+import {
+  formatCurrency,
+  formatDateStringYYYYMMDD_HHMM,
+  formatTimeToSeconds,
+} from '@/services/util-services/TimeFormatService';
+import WithdrawModel, { WithdrawStatus, withdrawStatuses } from '@/types/models/WithdrawModel';
+import {
+  Button,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Textarea,
+} from '@nextui-org/react';
+import { useState } from 'react';
 
 interface WithdrawDetailModalProps {
   isOpen: boolean;
@@ -89,77 +91,19 @@ export default function WithdrawDetailModal({
                   <Input
                     name="shopName"
                     label="Tên cửa hàng"
-                    placeholder="Nhập tên Shop"
                     value={withdraw.shopName}
                     readOnly
                     fullWidth
                   />
                 </div>
                 <div className="input-container">
-                  <Input
-                    name="email"
-                    label="Email"
-                    placeholder="Nhập email"
-                    value={withdraw.email}
-                    readOnly
-                    fullWidth
-                  />
-                </div>
-                <div className="input-container">
-                  <Input
-                    name="bankCode"
-                    label="Mã ngân hàng"
-                    placeholder="Nhập mã ngân hàng"
-                    value={withdraw.bankCode.toString()}
-                    readOnly
-                    fullWidth
-                  />
+                  <Input name="email" label="Email" value={withdraw.email} readOnly fullWidth />
                 </div>
                 <div className="input-container">
                   <Input
                     name="balance"
-                    label="Số dư"
-                    placeholder="Nhập số dư"
-                    value={
-                      numberFormatUtilService.formatNumberWithDotEach3digits(withdraw.balance) +
-                      ' đ'
-                    }
-                    readOnly
-                    fullWidth
-                  />
-                </div>
-                <div className="input-container">
-                  <Input
-                    name="amount"
-                    label="Số tiền yêu cầu"
-                    placeholder="Nhập số tiền yêu cầu"
-                    value={
-                      numberFormatUtilService.formatNumberWithDotEach3digits(
-                        withdraw.requestedAmount,
-                      ) + ' đ'
-                    }
-                    readOnly
-                    fullWidth
-                  />
-                </div>
-              </div>
-              <div className="flex-1 flex flex-col gap-2 justify-between">
-                <div className="input-container">
-                  <Input
-                    name="bankShortName"
-                    label="Tên ngân hàng"
-                    placeholder="Nhập tên ngân hàng"
-                    value={withdraw.bankShortName}
-                    readOnly
-                    fullWidth
-                  />
-                </div>
-                <div className="input-container">
-                  <Input
-                    name="bankAccountNumber"
-                    label="Số tài khoản"
-                    placeholder="Nhập số tài khoản"
-                    value={withdraw.bankAccountNumber}
+                    label="Số dư hiện tại"
+                    value={formatCurrency(withdraw.balance)}
                     readOnly
                     fullWidth
                   />
@@ -168,8 +112,7 @@ export default function WithdrawDetailModal({
                   <Input
                     name="requestedDate"
                     label="Ngày yêu cầu"
-                    placeholder="Nhập ngày yêu cầu"
-                    value={formatDateStringYYYYMMDD_HHMM(withdraw.requestedDate)}
+                    value={formatTimeToSeconds(withdraw.requestedDate)}
                     readOnly
                     fullWidth
                   />
@@ -179,14 +122,41 @@ export default function WithdrawDetailModal({
                     <Input
                       name="processedDate"
                       label="Ngày xử lý"
-                      placeholder="Nhập ngày xử lý"
-                      value={formatDateStringYYYYMMDD_HHMM(withdraw.processedDate)}
+                      value={formatTimeToSeconds(withdraw.processedDate)}
                       readOnly
                       fullWidth
                     />
                   </div>
                 )}
-
+              </div>
+              <div className="flex-1 flex flex-col gap-2 justify-between">
+                <div className="input-container">
+                  <Input
+                    name="bankShortName"
+                    label="Tên ngân hàng"
+                    value={withdraw.bankShortName}
+                    readOnly
+                    fullWidth
+                  />
+                </div>
+                <div className="input-container">
+                  <Input
+                    name="bankAccountNumber"
+                    label="Số tài khoản"
+                    value={withdraw.bankAccountNumber}
+                    readOnly
+                    fullWidth
+                  />
+                </div>
+                <div className="input-container">
+                  <Input
+                    name="amount"
+                    label="Số tiền yêu cầu"
+                    value={formatCurrency(withdraw.requestedAmount)}
+                    readOnly
+                    fullWidth
+                  />
+                </div>
                 <div className="input-container">
                   <Textarea
                     name="note"
