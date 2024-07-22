@@ -114,7 +114,7 @@ const Settings = () => {
   };
 
   return (
-    <AdminLayout activeContentIndex={6}>
+    <AdminLayout activeContentIndex={7}>
       <div className="px-8 py-4">
         <h1 className="text-3xl font-bold text-primary">Cài đặt thông tin nền tảng</h1>
         <span className="text-default-400 text-small mt-2">
