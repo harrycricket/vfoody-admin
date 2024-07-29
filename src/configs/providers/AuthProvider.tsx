@@ -30,7 +30,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' || pathname.includes('mln122-grading-mail-noti')) {
       authenticate();
     }
   }, []);
