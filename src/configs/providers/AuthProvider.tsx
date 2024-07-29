@@ -35,6 +35,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  if (pathname.includes('mln122-grading-mail-noti')) {
+    return children;
+  }
   return isLoading ? (
     <div className="h-screen w-screen flex flex-col gap-3 justify-center items-center">
       <div className="flex gap-3 justify-center items-center">
